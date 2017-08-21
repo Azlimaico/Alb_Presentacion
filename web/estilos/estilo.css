@@ -1,0 +1,106 @@
+@charset "utf-8";
+.highlightTableRow {
+    background: none repeat scroll 0 0 salmon;
+    font-weight: bold;
+}
+
+
+.tabla{
+    border: solid 2px #2E2EFE ;
+    border-collapse: collapse;
+    color: #424242;
+    font-weight: bold;
+}
+.a{
+    width: 5px;
+
+}
+.cabeceraTabla{
+    color: #FFFFFF;
+    background: #0080FF;
+    padding:5px;
+}
+.fila1{
+    text-align: center;
+    background:#FFFFFF;
+
+}
+.fila2{
+    text-align: center;
+    background:#EFEFFB;
+    border: solid 2px #2E2EFE;
+}
+.msjError{
+    color: #FF0000;
+    font-weight: bold;
+    margin: 0px 0px 0px 15px;
+}
+.form{
+    border: solid 2px #2E2EFE;
+    width: 800px;
+    padding: 20px;
+}
+.label{
+    width: 300px;
+}
+.scroll
+{
+    height: 20px;
+    overflow: auto;
+}
+p { color: black;  }
+
+.input {
+
+    font-weight:bold;
+
+}
+.animated .ui-progressbar-value { 
+    background-image: url(/imagenes/pbar-ani.gif); 
+}
+
+.event1 .fc-event-inner {
+
+    background: Red;
+    border-color: Yellow;
+}
+
+
+div[id="growlForm:growl_container"] > div[class~="g-fatal"] {
+    background-color: black !important;
+}
+
+div[id="growlForm:growl_container"] > div[class~="g-error"] {
+    background-color: red !important;
+}
+
+div[id="growlForm:growl_container"] > div[class~="g-warn"]{
+    background-color: orange !important;
+}
+
+div[id="growlForm:growl_container"] > div[class~="g-info"]{
+    background-color: green !important;
+}
+
+.ui-growl-image-info ~ .ui-growl-message {
+    color:#fff;
+}
+.ui-growl-image-error ~ .ui-growl-message {
+    color:#fff;
+}
+.ui-growl-image-warn ~ .ui-growl-message {
+    color:#fff;
+}
+.ui-growl-image-fatal ~ .ui-growl-message {
+    color:#fff;
+}
+
+
+
+.ui-state-highlight,
+.ui-widget-content .ui-state-highlight,
+.ui-widget-header .ui-state-highlight {
+    border: 1px solid #f5ecb0;
+    background: #48c9b0 url("images/ui-bg_glass_55_f49241_1x400.png") 50% 50% repeat-x;
+    color: #363636;
+}
