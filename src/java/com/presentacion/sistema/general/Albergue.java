@@ -76,6 +76,7 @@ public class Albergue implements Serializable {
 
     @PostConstruct
     public void init() {
+        //Hola
         if (!guardadoCabecera) {
             listaTempAlbAlbergue.clear();
             albAlbergue = new AlbAlbergue();
