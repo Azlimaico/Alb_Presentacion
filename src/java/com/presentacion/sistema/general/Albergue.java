@@ -142,27 +142,6 @@ public class Albergue implements Serializable {
 
     }
 
-//    public void agregarCanton() {
-//        if (this.IdSeleccionCO != null && this.IdSeleccionCO != 0) {
-//            for (AlbCanton can : this.listaCanton) {
-//                if (getIdSeleccionCO().equals(can.getAlbProvincia().getProId())) {
-//                    this.listaTemCanton.clear();
-//                    this.listaTemCanton.add(can);
-//                }
-//            }
-//        }
-//
-//    }
-//    public void agregarParroquia() {
-//        if (this.IdSeleccionCanton != null && this.IdSeleccionCanton != 0) {
-//            for (AlbParroquia par : this.listaParroquia) {
-//                if (getIdSeleccionCanton().equals(par.getAlbCanton().getCanId())) {
-//                    this.listaTemParroquia.add(par);
-//                }
-//            }
-//        }
-//
-//    }
     public List<SelectItem> getListaProvincia1() {
         this.genListaSelected = new ArrayList<SelectItem>();
         for (AlbProvincia obj : listaProvincia1) {
@@ -197,18 +176,6 @@ public class Albergue implements Serializable {
         }
         return genListaSelectedParroquia;
     }
-
-//    public List<SelectItem> getListReportPelotones() {
-//        this.genListaSelected = new ArrayList<SelectItem>();
-//        if (IdSeleccionCompanias != null) {
-//            List<CeoJuegoUnidadOrganica> Lista = getCeoJuegoServicio().ListReportPelotones(IdSeleccionCompanias);
-//            for (CeoJuegoUnidadOrganica obj : Lista) {
-//                SelectItem selectItem = new SelectItem(obj.getJuorUniId(), obj.getJuorNombre());
-//                this.genListaSelected.add(selectItem);
-//            }
-//        }
-//        return genListaSelected;
-//    }
 
     public List<SelectItem> getListaAvanceImplementacion() {
         this.genListaSelectedAvanceImplementacion = new ArrayList<SelectItem>();
@@ -329,7 +296,6 @@ public class Albergue implements Serializable {
                 getAlbAlbergueServicio().guardarJuego(listaTempAlbAlbergue);
                 albAlbergue = new AlbAlbergue();
                 guardadoCabecera = true;
-                mensajeEAS.info(true);
                 init();
                 mensajeEAS.Modificar();
             }
@@ -432,12 +398,5 @@ public class Albergue implements Serializable {
         eliminarUsuarioSistema(selectedSegUsuarioEliminar);
     }
 
-//
-//    public void setListaCantonTem(List<SelectItem> listaCantonTem) {
-//        this.listaCantonTem = listaCantonTem;
-//    }
-//
-//    public void setGenListaSelectedParroquiaTem(List<SelectItem> genListaSelectedParroquiaTem) {
-//        this.genListaSelectedParroquiaTem = genListaSelectedParroquiaTem;
-//    }
+    
 }

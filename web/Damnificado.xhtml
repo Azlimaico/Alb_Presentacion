@@ -58,50 +58,22 @@ and open the template in the editor.
                                 <h:outputText value="#{object.damCedula}" />
                             </p:column>
 
-                            <p:column   filterBy="#{object.albEstadoCivil.eciTipo}" headerText="ESTADO CIVIL"  width="100"
+                            <p:column   filterBy="#{object.albDiscapacidad.disTipo}" headerText="NIVEL DE DISCAPACIDAD"  width="100"
                                         filterMatchMode="contains">
+                                <h:outputText value="#{object.albDiscapacidad.disTipo}" />
+                            </p:column>
+
+                            <p:column    headerText="ESTADO CIVIL"  width="100"
+                                         filterMatchMode="contains">
                                 <h:outputText value="#{object.albEstadoCivil.eciTipo}" />
                             </p:column>
 
-                            <p:column   filterBy="#{object.damSexo}" headerText="SEXO"  width="100"
-                                        filterMatchMode="contains">
-                                <h:outputText value="#{object.damSexo}" />
-                            </p:column>
-
-                            <p:column   headerText="LUGAR DE NACIMIENTO"  width="100"
-                                        filterMatchMode="contains">
-                                <h:outputText value="#{object.damLugarNacimiento}" />
-                            </p:column>
-
-                            <p:column    headerText="FECHA DE NACIMIENTO"  width="100"
-                                         filterMatchMode="contains">
-                                <h:outputText value="#{object.damFechaNacimiento}" />
-                            </p:column>
 
                             <p:column   headerText="DOMICILIO"  width="100"
                                         filterMatchMode="contains">
                                 <h:outputText value="#{object.damDireccionDomicilio}" />
                             </p:column>                    
 
-                            <p:column   headerText="NIVEL DE INSTRUCCIÃN"  width="100"
-                                        filterMatchMode="contains">
-                                <h:outputText value="#{object.albInstruccion.insNombre}" />
-                            </p:column>
-
-                            <p:column    headerText="OCUPACIÃN"  width="100"
-                                         filterMatchMode="contains">
-                                <h:outputText value="#{object.albProfesion.prfProfesion}" />
-                            </p:column>
-
-                            <p:column   headerText="NOMBRES Y APELLIDOS MATERNO"  width="100"
-                                        filterMatchMode="contains">
-                                <h:outputText value="#{object.damDatosMadre}" />
-                            </p:column>
-
-                            <p:column   headerText="NOMBRES Y APELLIDOS PATERNO"  width="100"
-                                        filterMatchMode="contains">
-                                <h:outputText value="#{object.damDatosPadre}" />
-                            </p:column>
 
                             <p:column  headerText="CELULAR"  width="100"
                                        filterMatchMode="contains">
@@ -112,32 +84,12 @@ and open the template in the editor.
                                         filterMatchMode="contains">
                                 <h:outputText value="#{object.damEmail}" />
                             </p:column>
-
-                            <p:column    headerText="NIVEL DE DISCAPACIDAD"  width="100"
-                                         filterMatchMode="contains">
-                                <h:outputText value="#{object.albDiscapacidad.disTipo}" />
-                            </p:column>
-
-                            <p:column    headerText="EMBARAZO"  width="100"
-                                         filterMatchMode="contains">
-                                <h:outputText value="#{object.damEmbarazo}" />
-                            </p:column>                            
-
-                            <p:column   headerText="NÂ° NÃCLEO FAMILIAR"  width="100"
-                                        filterMatchMode="contains">
-                                <h:outputText value="#{object.albFamilia.famNumIntegrantes}" />
-                            </p:column>
-
-
-                            <p:column   headerText="OBSERVACIONES"  width="100"
-                                        filterMatchMode="contains">
-                                <h:outputText value="#{object.damObservaciones}" />
-                            </p:column>
-
-                            <p:column   headerText="EDITAR" width="50"  style="text-align: center" >
-                                <p:commandButton id="btn_Editar"   icon="fa fa-edit"  onclick="PF('dlgEditar').show();" update="formEditarDamnificado" >
+                            <p:column   headerText="EDITAR" width="65"  style="text-align: center" >
+                                <p:commandButton icon="fa fa-edit"  update=":#{p:component('editarDamnificad')}" 
+                                                 oncomplete="PF('dlgEditar').show()"    
+                                                 >
                                     <f:setPropertyActionListener value="#{object}" target="#{damnificado.selectedDamnificadoEditar}" />
-                                    <p:resetInput target=":formEditarDamnificado" />
+
                                 </p:commandButton>
                             </p:column>
 
@@ -158,10 +110,9 @@ and open the template in the editor.
                     </p:panel>
                 </h:panelGrid>
             </h:form>
-
-            <p:dialog header="EDITAR DAMNIFICADO" widgetVar="dlgEditar"  modal="false"
-                      minHeight="40" closable="false" draggable="false" >
-                <h:form id="formEditarDamnificado">
+            <h:form id="formEditarDamnificado">
+                <p:dialog header="EDITAR DAMNIFICADO" widgetVar="dlgEditar"  
+                          minHeight="40" closable="false" draggable="false" id="editarDamnificad" >           
                     <p:growl id="msgsUsuario"  />
 
                     <h:panelGrid columns="2" cellpadding="3" >
@@ -192,15 +143,7 @@ and open the template in the editor.
                                      required="true" >
                         </p:inputText>
 
-                        <h:outputLabel value="Lugar de Nacimiento: *" ></h:outputLabel>
-                        <p:inputText id="txt_lugarNaci_Edit"  value="#{damnificado.segDamnificadoObjects.damLugarNacimiento}" 
-                                     required="true" >
-                        </p:inputText>
 
-                        <h:outputLabel value="Fecha de Nacimiento: *" ></h:outputLabel>
-                        <p:inputText id="txt_fechaNaci_Edit"  value="#{damnificado.segDamnificadoObjects.damFechaNacimiento}" 
-                                     required="true" >
-                        </p:inputText>
 
                         <h:outputLabel value="DirecciÃ³n domicilio: *" ></h:outputLabel>
                         <p:inputText id="txt_domicilio_Edit"  value="#{damnificado.segDamnificadoObjects.damDireccionDomicilio}" 
@@ -262,7 +205,7 @@ and open the template in the editor.
                         </p:inputText>             
 
                         <f:facet name="footer">
-                            <p:commandButton id="editar" value="GUARDAR" type="button" update="msgs,:formh:" icon="fa fa-save"
+                            <p:commandButton id="editar" value="GUARDAR" update="msgs,:formh:" icon="fa fa-save"
                                              action="#{damnificado.actualizarDamnificad}" onclick="PF('dlgEditar').hide()"  >
                                 <p:confirm header="ConfirmaciÃ³n" message="¿Está seguro de actualizar?" />
                             </p:commandButton>
@@ -277,9 +220,10 @@ and open the template in the editor.
                         </f:facet>
                     </h:panelGrid>
 
-                </h:form>
-                
-                <h:form id="jC" >      
+                </p:dialog>
+            </h:form>
+
+            <h:form id="jC" > 
                 <p:dialog header="NUEVO DAMNIFICADO" widgetVar="pNuevoDamnificado" id="dlgNuevoJ" 
                           closable="false">
                     <h:panelGrid columns="2" cellpadding="2">
@@ -293,53 +237,49 @@ and open the template in the editor.
                                      value="#{damnificado.albDamnificado.damApellidos}" 
                                      size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
                                      /> 
-                        
+
                         <p:outputLabel value="CÃ©dula:" />
                         <p:inputText id="cedula" style="text-transform: uppercase; font-weight:bold; color: black " 
                                      value="#{damnificado.albDamnificado.damCedula}" 
                                      size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
                                      />
-                        
+
                         <p:outputLabel value="Estado Civil:" />
                         <p:selectOneMenu  id="estadoCivil" value="#{damnificado.idSeleccionEstadoCivil}" style="width:150px">
                             <f:selectItem  itemValue="" itemLabel="Seleccione Estado Civil: " noSelectionOption="false" />
                             <f:selectItems value="#{damnificado.listaEditarEstadoCivil}" />
                         </p:selectOneMenu>
-                        
+
                         <p:outputLabel value="Sexo:" />
                         <p:inputText id="sexo" style="text-transform: uppercase; font-weight:bold; color: black " 
                                      value="#{damnificado.albDamnificado.damSexo}" 
                                      size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
                                      />
-                        
-                         <p:outputLabel value="Lugar de Nacimiento:" />
+
+                        <p:outputLabel value="Lugar de Nacimiento:" />
                         <p:inputText id="LugarNacim" style="text-transform: uppercase; font-weight:bold; color: black " 
                                      value="#{damnificado.albDamnificado.damLugarNacimiento}" 
                                      size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
                                      />
-                         <p:outputLabel value="Fecha de Nacimiento:" />
-                        <p:inputText id="FechaNacim" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{damnificado.albDamnificado.damFechaNacimiento}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
+
                         <p:outputLabel value="Direccion de domicilio:" />
                         <p:inputText id="domicilio" style="text-transform: uppercase; font-weight:bold; color: black " 
                                      value="#{damnificado.albDamnificado.damDireccionDomicilio}" 
                                      size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
                                      />
-                        
+
                         <p:outputLabel value="Nivel de InstrucciÃ³n:" />
                         <p:selectOneMenu  id="instruccion" value="#{damnificado.idSeleccionNivInstrucc}" style="width:150px">
                             <f:selectItem  itemValue="" itemLabel="Seleccione Nivel de InstrucciÃ³n: " noSelectionOption="false" />
                             <f:selectItems value="#{damnificado.listaEditarNivInstrucc}" />
                         </p:selectOneMenu>
-                        
+
                         <p:outputLabel value="OcupaciÃ³n:" />
                         <p:selectOneMenu  id="ocupacion" value="#{damnificado.idSeleccionProfesion}" style="width:150px">
                             <f:selectItem  itemValue="" itemLabel="Seleccione OcupaciÃ³n: " noSelectionOption="false" />
                             <f:selectItems value="#{damnificado.listaEditarProfesion}" />
                         </p:selectOneMenu>
-                        
+
                         <p:outputLabel value="Datos Padre:" />
                         <p:inputText id="padre" style="text-transform: uppercase; font-weight:bold; color: black " 
                                      value="#{damnificado.albDamnificado.damDatosPadre}" 
@@ -355,30 +295,30 @@ and open the template in the editor.
                                      value="#{damnificado.albDamnificado.damCelular}" 
                                      size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
                                      />
-                         <p:outputLabel value="E-mail:" />
+                        <p:outputLabel value="E-mail:" />
                         <p:inputText id="mail" style="text-transform: uppercase; font-weight:bold; color: black " 
                                      value="#{damnificado.albDamnificado.damEmail}" 
                                      size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
                                      />
-                        
+
                         <p:outputLabel value="Nivel de discapacidad:" />
                         <p:selectOneMenu  id="discapacidad" value="#{damnificado.idSeleccionDiscapacidad}" style="width:150px">
                             <f:selectItem  itemValue="" itemLabel="Seleccione Nivel de discapacidad: " noSelectionOption="false" />
                             <f:selectItems value="#{damnificado.listaEditarDiscapacida}" />
                         </p:selectOneMenu>
-                        
+
                         <p:outputLabel value="Embarazo:" />
                         <p:inputText id="embarazo" style="text-transform: uppercase; font-weight:bold; color: black " 
                                      value="#{damnificado.albDamnificado.damEmbarazo}" 
                                      size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
                                      />
-                        
+
                         <p:outputLabel value="NÂ° NÃºcleo familiar:" />
                         <p:selectOneMenu  id="familia" value="#{damnificado.idSeleccionNumFlia}" style="width:150px">
                             <f:selectItem  itemValue="" itemLabel="Seleccione NÂ° NÃºcleo familiar: " noSelectionOption="false" />
                             <f:selectItems value="#{damnificado.listaEditarNumFlia}" />
                         </p:selectOneMenu>
-                        
+
                         <p:outputLabel value="Observaciones:" />
                         <p:inputText id="observaciones" value="#{damnificado.albDamnificado.damObservaciones}" 
                                      style="text-transform: uppercase; font-weight:bold; color: black" 
@@ -386,11 +326,11 @@ and open the template in the editor.
                                      />  
 
                         <h:panelGrid columns="2" cellpadding="1">
-                            <p:commandButton id="btn_guardar" value="GUARDAR"  update="msgs,:formh:,:jC" icon="fa fa-save"
-                                             action="#{damnificado.guardarDamnificado}"   >
-                                <p:confirm header="ConfirmaciÃ³n" message="#{msg['mensaje_advertencia_guardar']}" />
+                            <p:commandButton value="GUARDAR"  update="msgs,:formh:,:jC" icon="fa fa-save"
+                                             action="#{damnificado.guardarDamnificado}" onclick="PF('pNuevoDamnificado').hide()"   >
+                                <p:confirm header="ConfirmaciÃ³n" message="¿Está seguro de guardar?" />
                             </p:commandButton>
-                            <p:commandButton value="SALIR" icon="fa fa-close" onclick="PF('pNuevoDamnificado').hide()"
+                            <p:commandButton value="SALIR" style="  height: 28px" icon="fa fa-sign-in" onclick="PF('pNuevoDamnificado').hide()"
                                              action="#{damnificado.cancelarCargaDatos}"/>
                             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" severity="alert">
                                 <p:commandButton   value="Si" type="button" styleClass="ui-confirmdialog-yes" 
@@ -398,12 +338,10 @@ and open the template in the editor.
                                 <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
                             </p:confirmDialog>
                         </h:panelGrid>
-
                     </h:panelGrid>
                 </p:dialog>
             </h:form>
-                
-            </p:dialog>
+
         </h:body>
     </ui:define>
 </ui:composition>

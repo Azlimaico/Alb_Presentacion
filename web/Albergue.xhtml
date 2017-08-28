@@ -80,7 +80,6 @@
                             </p:column> 
 
                             <p:column   headerText="EDITAR" width="50"  style="text-align: center" >
-
                                 <p:commandButton id="btn_Editar"   icon="fa fa-edit"  onclick="PF('dlgEditar').show();" update="formEditarUsuario" >
                                     <f:setPropertyActionListener value="#{object}" target="#{albergue.selectedAlbergueEditar}" />
                                     <p:resetInput target=":formEditarUsuario" />
@@ -91,7 +90,15 @@
                             <p:column   headerText="ELIMINAR" width="50" style="text-align: center" >
                                 <p:commandButton id="btn_Eliminar"  update="msgs,:formh:" icon="ui-icon-trash"  >
                                     <f:setPropertyActionListener value="#{object}" target="#{albergue.selectedSegUsuarioEliminar}" />
+                                    <p:confirm header="Confirmación" message="Está seguro de Eliminar?" />
                                 </p:commandButton>
+
+                                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" severity="alert">
+                                    <p:commandButton   value="Si" type="button" styleClass="ui-confirmdialog-yes" 
+                                                       icon="ui-icon-check" />
+                                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                </p:confirmDialog>
+
                             </p:column>
                         </p:dataTable>
                     </p:panel>
@@ -126,7 +133,7 @@
                             <f:selectItem  itemValue="" itemLabel="Seleccione Parroquia: " noSelectionOption="false" />
                             <f:selectItems value="#{albergue.listaParroquia}" />                            
                         </p:selectOneMenu>
-                        
+
                         <p:outputLabel value="Dirección:" />
                         <p:inputText id="direccion" value="#{albergue.albAlbergue.albDireccion}" 
                                      style="text-transform: uppercase; font-weight:bold; color: black" 
@@ -168,7 +175,7 @@
                         <h:panelGrid columns="2" cellpadding="1">
                             <p:commandButton id="btn_guardar" value="GUARDAR"  update="msgs,:formh:,:jC" icon="fa fa-save"
                                              action="#{albergue.guardarAlbergue}"   >
-                                <p:confirm header="Confirmación" message="#{msg['mensaje_advertencia_guardar']}" />
+                                <p:confirm header="Confirmación" message="¿Está seguro de guardar?" />
                             </p:commandButton>
                             <p:commandButton value="SALIR" icon="fa fa-close" onclick="PF('pNuevoJ').hide()"
                                              action="#{albergue.cancelarCargaDatos()}"/>
@@ -247,11 +254,7 @@
                         <p:inputText id="txt_observa_Edit"  value="#{albergue.segAlbergueObjects.albObservaciones}" 
                                      required="true" >
                         </p:inputText>              
-
-
-
                         <f:facet name="footer">
-
                             <p:commandButton value="GUARDAR"  update="msgs,:formh:" icon="fa fa-save"
                                              action="#{albergue.actualizarUsuarioSistema}" onclick="PF('dlgEditar').hide()"  >
                                 <p:confirm header="Confirmación" message="Está seguro de actualizar?" />

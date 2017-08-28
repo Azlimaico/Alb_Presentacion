@@ -25,8 +25,48 @@ http://www.springframework.org/schema/tx/spring-tx-4.1.xsd">
         <property name="sessionFactory" ref="SessionFactory" />
     </bean>
     
-   
-       
+    <bean id="AlbDamnificadoServicioImpl" class="com.negocio.servicio.damnificado.AlbDamnificadoServicioImpl">
+        <property name="albDamnificadoDao" ref="AlbDamnificadoDao" />
+    </bean>
+    <bean id="AlbDamnificadoDao" class="com.negocio.dao.damnificado.AlbDamnificadoDaoImpl">
+        <property name="sessionFactory" ref="SessionFactory" />
+    </bean>
+    
+    <bean id="AlbEstadoCivilServicioImpl" class="com.negocio.servicio.general.sistema.AlbEstadoCivilServicioImpl">
+        <property name="albEstadoCivilDao" ref="AlbEstadoCivilDao" />
+    </bean>
+    <bean id="AlbEstadoCivilDao" class="com.negocio.dao.general.sistema.AlbEstadoCivilDaoImpl">
+        <property name="sessionFactory" ref="SessionFactory" />
+    </bean>
+    
+    <bean id="AlbInstruccionServicioImpl" class="com.negocio.servicio.general.sistema.AlbInstruccionServicioImpl">
+        <property name="albInstruccionDao" ref="AlbInstruccionDao" />
+    </bean>
+    <bean id="AlbInstruccionDao" class="com.negocio.dao.general.sistema.AlbInstruccionDaoImpl">
+        <property name="sessionFactory" ref="SessionFactory" />
+    </bean>
+    
+    <bean id="AlbProfesionServicioImpl" class="com.negocio.servicio.general.sistema.AlbProfesionServicioImpl">
+        <property name="albProfesionDao" ref="AlbProfesionDao" />
+    </bean>
+    <bean id="AlbProfesionDao" class="com.negocio.dao.general.sistema.AlbProfesionDaoImpl">
+        <property name="sessionFactory" ref="SessionFactory" />
+    </bean>
+    
+    <bean id="AlbDiscapacidadServicioImpl" class="com.negocio.servicio.general.sistema.AlbDiscapacidadServicioImpl">
+        <property name="albDiscapacidadDao" ref="AlbDiscapacidadDao" />
+    </bean>
+    <bean id="AlbDiscapacidadDao" class="com.negocio.dao.general.sistema.AlbDiscapacidadDaoImpl">
+        <property name="sessionFactory" ref="SessionFactory" />
+    </bean>
+    
+    <bean id="AlbFamiliaServicioImpl" class="com.negocio.servicio.general.sistema.AlbFamiliaServicioImpl">
+        <property name="albFamiliaDao" ref="AlbFamiliaDao" />
+    </bean>
+    <bean id="AlbFamiliaDao" class="com.negocio.dao.general.sistema.AlbFamiliaDaoImpl">
+        <property name="sessionFactory" ref="SessionFactory" />
+    </bean>
+    
     <bean id="DataSource"  class="org.springframework.jdbc.datasource.DriverManagerDataSource" >
         <property name="driverClassName"   value="com.mysql.jdbc.Driver" />
         <property name="url"  value="jdbc:mysql://localhost/bdd_alb"/>
