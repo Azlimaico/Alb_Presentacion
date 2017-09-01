@@ -53,7 +53,7 @@ and open the template in the editor.
                                 <h:outputText value="#{object.damApellidos}" />
                             </p:column>
 
-                            <p:column   filterBy="#{object.damCedula}" headerText="CÃDULA"  width="100"
+                            <p:column   filterBy="#{object.damCedula}" headerText="CÃÂÃÂDULA"  width="100"
                                         filterMatchMode="contains">
                                 <h:outputText value="#{object.damCedula}" />
                             </p:column>
@@ -85,7 +85,7 @@ and open the template in the editor.
                                 <h:outputText value="#{object.damEmail}" />
                             </p:column>
                             <p:column   headerText="EDITAR" width="65"  style="text-align: center" >
-                                <p:commandButton icon="fa fa-edit"  update=":#{p:component('editarDamnificad')}" 
+                                <p:commandButton icon="ui-icon-pencil" update=":#{p:component('editarDamnificad')}" 
                                                  oncomplete="PF('dlgEditar').show()"    
                                                  >
                                     <f:setPropertyActionListener value="#{object}" target="#{damnificado.selectedDamnificadoEditar}" />
@@ -93,10 +93,10 @@ and open the template in the editor.
                                 </p:commandButton>
                             </p:column>
 
-                            <p:column   headerText="ELIMINAR" width="50" style="text-align: center" >
+                            <p:column   headerText="ELIMINAR" width="60" style="text-align: center" >
                                 <p:commandButton id="btn_Eliminar"  update="msgs,:formh:" icon="ui-icon-trash"  >
                                     <f:setPropertyActionListener value="#{object}" target="#{damnificado.selectedSegDamnificadoEliminar}" />
-                                    <p:confirm header="ConfirmaciÃ³n" message="¿Está seguro de Eliminar?" />
+                                    <p:confirm header="ConfirmaciÃÂÃÂ³n" message="ÃÂ¿EstÃÂ¡ seguro de Eliminar?" />
                                 </p:commandButton>
 
                                 <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" severity="alert">
@@ -104,6 +104,15 @@ and open the template in the editor.
                                                        icon="ui-icon-check" />
                                     <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
                                 </p:confirmDialog>
+                            </p:column>
+                            
+                             <p:column   headerText="ASIGNAR A ALBERGUE" width="80"  style="text-align: center" >
+                               <p:commandButton icon="ui-icon-transferthick-e-w"  update=":#{p:component('dlgAsigAlb')}" 
+                                                 oncomplete="PF('asiAlb').show()"    
+                                                 >
+                                   <f:setPropertyActionListener value="#{object}" target="#{damnificado.selectedDamnificadoEditar}" />
+                                </p:commandButton>
+
                             </p:column>
 
                         </p:dataTable>
@@ -127,7 +136,7 @@ and open the template in the editor.
                                      required="true" >
                         </p:inputText>
 
-                        <h:outputLabel value="CÃ©dula : *" ></h:outputLabel>
+                        <h:outputLabel value="CÃÂÃÂ©dula : *" ></h:outputLabel>
                         <p:inputText id="txt_CedulaEditar"  value="#{damnificado.segDamnificadoObjects.damCedula}" 
                                      required="true" >
                         </p:inputText>
@@ -145,18 +154,18 @@ and open the template in the editor.
 
 
 
-                        <h:outputLabel value="DirecciÃ³n domicilio: *" ></h:outputLabel>
+                        <h:outputLabel value="DirecciÃÂÃÂ³n domicilio: *" ></h:outputLabel>
                         <p:inputText id="txt_domicilio_Edit"  value="#{damnificado.segDamnificadoObjects.damDireccionDomicilio}" 
                                      required="true" >
                         </p:inputText>
 
-                        <h:outputLabel value="Nivel de InstrucciÃ³n: *" ></h:outputLabel>
+                        <h:outputLabel value="Nivel de InstrucciÃÂÃÂ³n: *" ></h:outputLabel>
                         <p:selectOneMenu  id="txtinstruccion_edit"  value="#{damnificado.idSeleccionNivInstrucc}" style="width:150px" >
                             <f:selectItem  itemValue="" itemLabel="#{damnificado.segDamnificadoObjects.albInstruccion.insNombre} " noSelectionOption="false"  />
                             <f:selectItems value="#{damnificado.listaEditarNivInstrucc}" /> 
                         </p:selectOneMenu>
 
-                        <h:outputLabel value="Ocupación: *" ></h:outputLabel>
+                        <h:outputLabel value="OcupaciÃÂ³n: *" ></h:outputLabel>
                         <p:selectOneMenu  id="txtOcupacion_edit"  value="#{damnificado.idSeleccionProfesion}" style="width:150px" >
                             <f:selectItem  itemValue="" itemLabel="#{damnificado.segDamnificadoObjects.albProfesion.prfProfesion} " noSelectionOption="false"  />
                             <f:selectItems value="#{damnificado.listaEditarProfesion}" /> 
@@ -172,7 +181,7 @@ and open the template in the editor.
                                      required="true" >
                         </p:inputText>
 
-                        <h:outputLabel value="CÃ©dula: *" ></h:outputLabel>
+                        <h:outputLabel value="CÃÂÃÂ©dula: *" ></h:outputLabel>
                         <p:inputText id="txt_cedula_Edit"  value="#{damnificado.segDamnificadoObjects.damCedula}" 
                                      required="true" >
                         </p:inputText> 
@@ -193,7 +202,7 @@ and open the template in the editor.
                                      required="true" >
                         </p:inputText>
 
-                        <h:outputLabel value="NÂ° nÃºcleo familiar: *" ></h:outputLabel>
+                        <h:outputLabel value="NÃÂÃÂ° nÃÂÃÂºcleo familiar: *" ></h:outputLabel>
                         <p:selectOneMenu  id="txtNumFlia_edit"  value="#{damnificado.idSeleccionNumFlia}" style="width:150px" >
                             <f:selectItem  itemValue="" itemLabel="#{damnificado.segDamnificadoObjects.albFamilia.famNumIntegrantes} " noSelectionOption="false"  />
                             <f:selectItems value="#{damnificado.listaEditarNumFlia}" /> 
@@ -207,7 +216,7 @@ and open the template in the editor.
                         <f:facet name="footer">
                             <p:commandButton id="editar" value="GUARDAR" update="msgs,:formh:" icon="fa fa-save"
                                              action="#{damnificado.actualizarDamnificad}" onclick="PF('dlgEditar').hide()"  >
-                                <p:confirm header="ConfirmaciÃ³n" message="¿Está seguro de actualizar?" />
+                                <p:confirm header="ConfirmaciÃÂÃÂ³n" message="ÃÂ¿EstÃÂ¡ seguro de actualizar?" />
                             </p:commandButton>
                             <p:commandButton value="SALIR" type="reset" icon="fa fa-close"
                                              onclick="PF('dlgEditar').hide()"/>
@@ -238,7 +247,7 @@ and open the template in the editor.
                                      size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
                                      /> 
 
-                        <p:outputLabel value="CÃ©dula:" />
+                        <p:outputLabel value="CÃÂÃÂ©dula:" />
                         <p:inputText id="cedula" style="text-transform: uppercase; font-weight:bold; color: black " 
                                      value="#{damnificado.albDamnificado.damCedula}" 
                                      size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
@@ -268,15 +277,15 @@ and open the template in the editor.
                                      size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
                                      />
 
-                        <p:outputLabel value="Nivel de InstrucciÃ³n:" />
+                        <p:outputLabel value="Nivel de InstrucciÃÂÃÂ³n:" />
                         <p:selectOneMenu  id="instruccion" value="#{damnificado.idSeleccionNivInstrucc}" style="width:150px">
-                            <f:selectItem  itemValue="" itemLabel="Seleccione Nivel de InstrucciÃ³n: " noSelectionOption="false" />
+                            <f:selectItem  itemValue="" itemLabel="Seleccione Nivel de InstrucciÃÂÃÂ³n: " noSelectionOption="false" />
                             <f:selectItems value="#{damnificado.listaEditarNivInstrucc}" />
                         </p:selectOneMenu>
 
-                        <p:outputLabel value="OcupaciÃ³n:" />
+                        <p:outputLabel value="OcupaciÃÂÃÂ³n:" />
                         <p:selectOneMenu  id="ocupacion" value="#{damnificado.idSeleccionProfesion}" style="width:150px">
-                            <f:selectItem  itemValue="" itemLabel="Seleccione OcupaciÃ³n: " noSelectionOption="false" />
+                            <f:selectItem  itemValue="" itemLabel="Seleccione OcupaciÃÂÃÂ³n: " noSelectionOption="false" />
                             <f:selectItems value="#{damnificado.listaEditarProfesion}" />
                         </p:selectOneMenu>
 
@@ -313,9 +322,9 @@ and open the template in the editor.
                                      size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
                                      />
 
-                        <p:outputLabel value="NÂ° NÃºcleo familiar:" />
+                        <p:outputLabel value="NÃÂÃÂ° NÃÂÃÂºcleo familiar:" />
                         <p:selectOneMenu  id="familia" value="#{damnificado.idSeleccionNumFlia}" style="width:150px">
-                            <f:selectItem  itemValue="" itemLabel="Seleccione NÂ° NÃºcleo familiar: " noSelectionOption="false" />
+                            <f:selectItem  itemValue="" itemLabel="Seleccione NÃÂÃÂ° NÃÂÃÂºcleo familiar: " noSelectionOption="false" />
                             <f:selectItems value="#{damnificado.listaEditarNumFlia}" />
                         </p:selectOneMenu>
 
@@ -328,7 +337,7 @@ and open the template in the editor.
                         <h:panelGrid columns="2" cellpadding="1">
                             <p:commandButton value="GUARDAR"  update="msgs,:formh:,:jC" icon="fa fa-save"
                                              action="#{damnificado.guardarDamnificado}" onclick="PF('pNuevoDamnificado').hide()"   >
-                                <p:confirm header="ConfirmaciÃ³n" message="¿Está seguro de guardar?" />
+                                <p:confirm header="ConfirmaciÃÂÃÂ³n" message="ÃÂ¿EstÃÂ¡ seguro de guardar?" />
                             </p:commandButton>
                             <p:commandButton value="SALIR" style="  height: 28px" icon="fa fa-sign-in" onclick="PF('pNuevoDamnificado').hide()"
                                              action="#{damnificado.cancelarCargaDatos}"/>
@@ -340,7 +349,42 @@ and open the template in the editor.
                         </h:panelGrid>
                     </h:panelGrid>
                 </p:dialog>
+            </h:form>            
+            
+
+
+            <h:form id="asigAlb" >      
+                <p:dialog header="ASIGNACIÃN ALBERGUE" widgetVar="asiAlb" id="dlgAsigAlb" 
+                          closable="false">
+                    <h:panelGrid columns="2" cellpadding="1">
+                        <h:outputLabel value="Nombres :" ></h:outputLabel>
+                        <h:outputText id="txt_nombre"  value="#{damnificado.segDamnificadoObjects.damNombres}" />
+                        <h:outputLabel value="Apellidos :" ></h:outputLabel>
+                        <h:outputText id="txt_apellidos"  value="#{damnificado.segDamnificadoObjects.damApellidos}" />
+                        
+                        <h:outputLabel value="Albergue: " ></h:outputLabel>
+                        <p:selectOneMenu  id="txtAlbergue_asig"  value="#{damnificado.idSeleccionAlbergue}" style="width:150px" >
+                            <f:selectItem  itemValue="" itemLabel="Seleccione Albergue" noSelectionOption="false"  />
+                            <f:selectItems value="#{damnificado.listaAsignarAlbergue}" /> 
+                        </p:selectOneMenu>
+                        
+                        <h:panelGrid columns="2" cellpadding="1">
+                            <p:commandButton value="GUARDAR"   icon="fa fa-save"
+                                             action="#{damnificado.actualizarDamnificadoAlbergue()}" onclick="PF('asiAlb').hide()"   >
+                                <p:confirm header="ConfirmaciÃÂÃÂ³n" message="ÃÂ¿EstÃÂ¡ seguro de guardar?" />
+                            </p:commandButton>
+                            <p:commandButton value="SALIR" style="  height: 28px" icon="fa fa-sign-in" onclick="PF('asiAlb').hide()"
+                                             />
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" severity="alert">
+                                <p:commandButton   value="Si" type="button" styleClass="ui-confirmdialog-yes" 
+                                                   icon="ui-icon-check" />
+                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog>
+                        </h:panelGrid>
+                    </h:panelGrid>
+                </p:dialog>
             </h:form>
+
 
         </h:body>
     </ui:define>

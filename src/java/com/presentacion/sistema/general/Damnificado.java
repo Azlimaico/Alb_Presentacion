@@ -5,12 +5,15 @@
  */
 package com.presentacion.sistema.general;
 
+import com.negocio.servicio.albergue.AlbAlbergueServicio;
 import com.negocio.servicio.damnificado.AlbDamnificadoServicio;
 import com.negocio.servicio.general.sistema.AlbDiscapacidadServicio;
 import com.negocio.servicio.general.sistema.AlbEstadoCivilServicio;
 import com.negocio.servicio.general.sistema.AlbFamiliaServicio;
 import com.negocio.servicio.general.sistema.AlbInstruccionServicio;
 import com.negocio.servicio.general.sistema.AlbProfesionServicio;
+import com.persistencia.albergue.AlbAlbergue;
+import com.persistencia.albergue.DamnificadoAlbergue;
 import com.persistencia.damnificado.AlbDamnificado;
 import com.persistencia.general.sistema.AlbDiscapacidad;
 import com.persistencia.general.sistema.AlbEstadoCivil;
@@ -55,11 +58,14 @@ public class Damnificado implements Serializable {
     @ManagedProperty(value = "#{AlbFamiliaServicioImpl}")
     AlbFamiliaServicio albFamiliaServicio;
     private AlbDamnificado albDamnificado = new AlbDamnificado();
+    @ManagedProperty(value = "#{AlbAlbergueServicioImpl}")
+    AlbAlbergueServicio albAlbergueServicio;
     private List<AlbDamnificado> listaTempAlbDamnificado = new ArrayList<>();
+    private List<DamnificadoAlbergue> listaTempDamnificadoAlbergue = new ArrayList<>();
 
     //VER DAMNIFICADO
     private AlbDamnificado dammificadoObjects = new AlbDamnificado();
-    private Long estado, IdEditar;
+    private Long estado, IdEditar, IdAsignar;
     private Long IdSeleccionEstadoCivil;
     List<SelectItem> listaEditarEstadoCivil = new ArrayList<SelectItem>();
     private List<AlbEstadoCivil> listaEstadoCivil = new ArrayList<>();
@@ -80,6 +86,10 @@ public class Damnificado implements Serializable {
     List<SelectItem> listaEditarNumFlia = new ArrayList<SelectItem>();
     private List<AlbFamilia> listaNumFlia = new ArrayList<>();
 
+    private Long IdSeleccionAlbergue;
+    List<SelectItem> listaAsignarAlbergue = new ArrayList<SelectItem>();
+    private List<AlbAlbergue> listaAlbergue = new ArrayList<>();
+
     //EDITAR ALBERGUE
     private AlbDamnificado selectedDamnificadoEditar = new AlbDamnificado();
     private AlbDamnificado segDamnificadoObjects = new AlbDamnificado();
@@ -87,9 +97,14 @@ public class Damnificado implements Serializable {
     //ELIMINAR ALBERGUE
     private AlbDamnificado selectedSegDamnificadoEliminar = new AlbDamnificado();
 
+    //ASIGNAR DAMNIFICADOALBERGUE
+    private DamnificadoAlbergue selectedDamnificadoAlbergue = new DamnificadoAlbergue();
+    private DamnificadoAlbergue segDamnificadoAlbergueObjects = new DamnificadoAlbergue();
+
     @PostConstruct
     public void init() {
         if (!guardadoCabecera) {
+            listaTempDamnificadoAlbergue.clear();
             listaTempAlbDamnificado.clear();
             albDamnificado = new AlbDamnificado();
             listaEstadoCivil.clear();
@@ -102,7 +117,8 @@ public class Damnificado implements Serializable {
             this.listaDiscapacida.addAll(getAlbDiscapacidadServicio().listarDiscapacidad());
             listaNumFlia.clear();
             this.listaNumFlia.addAll(getAlbFamiliaServicio().listarFamilia());
-
+            listaAlbergue.clear();
+            this.listaAlbergue.addAll(getAlbAlbergueServicio().listarAlbergue());
         }
         this.listaDamnificado.clear();
         this.listaDamnificado.addAll(getAlbDamnificadoServicio().listarDamnificado());
@@ -112,6 +128,22 @@ public class Damnificado implements Serializable {
         albDamnificado = new AlbDamnificado();
         listaDamnificado.clear();
         this.listaDamnificado.addAll(getAlbDamnificadoServicio().listarDamnificado());
+
+    }
+
+    public void asignarDamnificadoAlbergueSistema(DamnificadoAlbergue obj) {
+        try {
+            segDamnificadoAlbergueObjects = new DamnificadoAlbergue();
+            AlbAlbergue objAlbergue = new AlbAlbergue();
+            objAlbergue.setAlbId(obj.getAlbAlbergue().getAlbId());
+            AlbDamnificado objDamnificado = new AlbDamnificado();
+            objDamnificado.setDamId(obj.getAlbDamnificado().getDamId());
+            segDamnificadoAlbergueObjects.setAlbAlbergue(objAlbergue);
+            segDamnificadoAlbergueObjects.setAlbDamnificado(albDamnificado);
+        } catch (Exception ex) {
+            LOG.error("Error: " + ex.getMessage());
+            mensajeEAS.error();
+        }
 
     }
 
@@ -310,6 +342,52 @@ public class Damnificado implements Serializable {
 
     }
 
+    public void actualizarDamnificadoAlbergue() {
+        try {
+            AlbAlbergue objAlbergue = new AlbAlbergue();
+            AlbDamnificado objDamnificado = new AlbDamnificado();
+            DamnificadoAlbergue damnificadoAlbergue;            
+            Long var=this.IdSeleccionAlbergue;
+            Long varDam=IdEditar;
+            objAlbergue.setAlbId(var);
+            objDamnificado.setDamId(varDam);
+         //  damnificadoAlbergue= new DamnificadoAlbergue(2, objAlbergue, objDamnificado);
+            listaTempDamnificadoAlbergue.clear();
+           // listaTempDamnificadoAlbergue.add(damnificadoAlbergue);
+            getAlbDamnificadoServicio().guardarDamnificadoAlbergue(listaTempDamnificadoAlbergue);
+            damnificadoAlbergue = new DamnificadoAlbergue();
+            guardadoCabecera = true;
+            init();
+            
+        } catch (Exception ex) {
+            LOG.error("Error: " + ex.getMessage());
+            mensajeEAS.error();
+        }
+
+    }
+    
+//     public void actualizarDamnificadoAlbergue() {
+//        try {
+//            AlbAlbergue objAlbergue = new AlbAlbergue();
+//            AlbDamnificado objDamnificado = new AlbDamnificado();
+//            DamnificadoAlbergue damnificadoAlbergue = new DamnificadoAlbergue();
+//            damnificadoAlbergue.getAlbDamnificado().getDamId();
+//            damnificadoAlbergue.setAlbDamnificado(albDamnificado);
+//            listaTempDamnificadoAlbergue.clear();
+//            listaTempDamnificadoAlbergue.add(damnificadoAlbergue);
+//            getAlbDamnificadoServicio().guardarDamnificadoAlbergue(listaTempDamnificadoAlbergue);
+//            damnificadoAlbergue = new DamnificadoAlbergue();
+//            guardadoCabecera = true;
+//            init();
+//            
+//        } catch (Exception ex) {
+//            LOG.error("Error: " + ex.getMessage());
+//            mensajeEAS.error();
+//        }
+//
+//    }
+
+
     public AlbDamnificadoServicio getAlbDamnificadoServicio() {
         return albDamnificadoServicio;
     }
@@ -486,7 +564,16 @@ public class Damnificado implements Serializable {
     public void setSelectedDamnificadoEditar(AlbDamnificado selectedDamnificadoEditar) {
         this.selectedDamnificadoEditar = selectedDamnificadoEditar;
         editarDamnificadoSistema(selectedDamnificadoEditar);
-        
+
+    }
+
+    public DamnificadoAlbergue getSelectedDamnificadoAlbergue() {
+        return selectedDamnificadoAlbergue;
+    }
+
+    public void setSelectedDamnificadoAlbergue(DamnificadoAlbergue selectedDamnificadoAlbergue) {
+        this.selectedDamnificadoAlbergue = selectedDamnificadoAlbergue;
+        asignarDamnificadoAlbergueSistema(selectedDamnificadoAlbergue);
     }
 
     public AlbDamnificado getSegDamnificadoObjects() {
@@ -512,6 +599,35 @@ public class Damnificado implements Serializable {
 
     public void setAlbDamnificado(AlbDamnificado albDamnificado) {
         this.albDamnificado = albDamnificado;
+    }
+
+    public AlbAlbergueServicio getAlbAlbergueServicio() {
+        return albAlbergueServicio;
+    }
+
+    public void setAlbAlbergueServicio(AlbAlbergueServicio albAlbergueServicio) {
+        this.albAlbergueServicio = albAlbergueServicio;
+    }
+
+    public List<SelectItem> getListaAsignarAlbergue() {
+        this.listaAsignarAlbergue = new ArrayList<SelectItem>();
+        for (AlbAlbergue obj : listaAlbergue) {
+            SelectItem selectItem = new SelectItem(obj.getAlbId(), obj.getAlbNombre());
+            this.listaAsignarAlbergue.add(selectItem);
+        }
+        return listaAsignarAlbergue;
+    }
+
+    public void setListaAsignarAlbergue(List<SelectItem> listaAsignarAlbergue) {
+        this.listaAsignarAlbergue = listaAsignarAlbergue;
+    }
+
+    public Long getIdSeleccionAlbergue() {
+        return IdSeleccionAlbergue;
+    }
+
+    public void setIdSeleccionAlbergue(Long IdSeleccionAlbergue) {
+        this.IdSeleccionAlbergue = IdSeleccionAlbergue;
     }
 
 }
