@@ -78,7 +78,7 @@ http://www.springframework.org/schema/tx/spring-tx-4.1.xsd">
         <property name="dataSource" ref="DataSource" />
         <property name="mappingResources">
             <list>
-               <value>com/persistencia/albergue/DamnificadoAlbergue.hbm.xml</value>
+              
                <value>com/persistencia/damnificado/AlbDamnificado.hbm.xml</value>                          
                <value>com/persistencia/albergue/AlbAlbergue.hbm.xml</value>
                 <value>com/persistencia/albergue/PartediarioAlbergue.hbm.xml</value>

@@ -13,7 +13,6 @@ import com.negocio.servicio.general.sistema.AlbFamiliaServicio;
 import com.negocio.servicio.general.sistema.AlbInstruccionServicio;
 import com.negocio.servicio.general.sistema.AlbProfesionServicio;
 import com.persistencia.albergue.AlbAlbergue;
-import com.persistencia.albergue.DamnificadoAlbergue;
 import com.persistencia.damnificado.AlbDamnificado;
 import com.persistencia.general.sistema.AlbDiscapacidad;
 import com.persistencia.general.sistema.AlbEstadoCivil;
@@ -25,6 +24,7 @@ import com.presentacion.mensajes.MensajeEAS;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -61,7 +61,7 @@ public class Damnificado implements Serializable {
     @ManagedProperty(value = "#{AlbAlbergueServicioImpl}")
     AlbAlbergueServicio albAlbergueServicio;
     private List<AlbDamnificado> listaTempAlbDamnificado = new ArrayList<>();
-    private List<DamnificadoAlbergue> listaTempDamnificadoAlbergue = new ArrayList<>();
+    private List<AlbDamnificado> listaTempDamnificadoAlbergue = new ArrayList<>();
 
     //VER DAMNIFICADO
     private AlbDamnificado dammificadoObjects = new AlbDamnificado();
@@ -98,8 +98,8 @@ public class Damnificado implements Serializable {
     private AlbDamnificado selectedSegDamnificadoEliminar = new AlbDamnificado();
 
     //ASIGNAR DAMNIFICADOALBERGUE
-    private DamnificadoAlbergue selectedDamnificadoAlbergue = new DamnificadoAlbergue();
-    private DamnificadoAlbergue segDamnificadoAlbergueObjects = new DamnificadoAlbergue();
+    private AlbDamnificado selectedAlbergueDamnificado = new AlbDamnificado();
+    private AlbDamnificado segDamnificadoObjects1 = new AlbDamnificado();
 
     @PostConstruct
     public void init() {
@@ -131,22 +131,49 @@ public class Damnificado implements Serializable {
 
     }
 
-    public void asignarDamnificadoAlbergueSistema(DamnificadoAlbergue obj) {
-        try {
-            segDamnificadoAlbergueObjects = new DamnificadoAlbergue();
-            AlbAlbergue objAlbergue = new AlbAlbergue();
-            objAlbergue.setAlbId(obj.getAlbAlbergue().getAlbId());
-            AlbDamnificado objDamnificado = new AlbDamnificado();
-            objDamnificado.setDamId(obj.getAlbDamnificado().getDamId());
-            segDamnificadoAlbergueObjects.setAlbAlbergue(objAlbergue);
-            segDamnificadoAlbergueObjects.setAlbDamnificado(albDamnificado);
-        } catch (Exception ex) {
-            LOG.error("Error: " + ex.getMessage());
-            mensajeEAS.error();
-        }
-
-    }
-
+//    public void damnificadoAlbergue(DamnificadoAlbergue obj) {
+//        try {
+//            //segDamnificadoAlbergueObjects = new DamnificadoAlbergue();
+//            AlbAlbergue objAlbergue = new AlbAlbergue();
+//            objAlbergue.setAlbId(obj.getAlbAlbergue().getAlbId());
+//            AlbDamnificado objDamnificado = new AlbDamnificado();
+//            objDamnificado.setDamId(obj.getAlbDamnificado().getDamId());
+//            AlbEstadoCivil objEstCivil = new AlbEstadoCivil();
+//            objEstCivil.setEciId(objDamnificado.getAlbEstadoCivil().getEciId());
+//            objEstCivil.setEciTipo(objDamnificado.getAlbEstadoCivil().getEciTipo());
+//            AlbInstruccion objInstruccion = new AlbInstruccion();
+//            objInstruccion.setInsId(objDamnificado.getAlbInstruccion().getInsId());
+//            objInstruccion.setInsNombre(objDamnificado.getAlbInstruccion().getInsNombre());
+//            AlbProfesion objProfesion = new AlbProfesion();
+//            objProfesion.setPrfId(objDamnificado.getAlbProfesion().getPrfId());
+//            objProfesion.setPrfProfesion(objDamnificado.getAlbProfesion().getPrfProfesion());
+//            AlbDiscapacidad objDiscapacidad = new AlbDiscapacidad();
+//            objDiscapacidad.setDisId(objDamnificado.getAlbDiscapacidad().getDisId());
+//            objDiscapacidad.setDisTipo(objDamnificado.getAlbDiscapacidad().getDisTipo());
+//            AlbFamilia objFamilia = new AlbFamilia();
+//            objFamilia.setFamId(objDamnificado.getAlbFamilia().getFamId());
+//            objFamilia.setFamNumIntegrantes(objDamnificado.getAlbFamilia().getFamNumIntegrantes());
+//            IdAsignar = objDamnificado.getDamId();
+//            objDamnificado.getDamNombres();
+//            objDamnificado.getDamApellidos();
+//            objDamnificado.getDamCedula();
+//            objDamnificado.getDamSexo();
+//            objDamnificado.getDamLugarNacimiento();
+//            objDamnificado.getDamFechaNacimiento();
+//            objDamnificado.getDamDireccionDomicilio();
+//            objDamnificado.getDamDatosPadre();
+//            objDamnificado.getDamDatosMadre();
+//            objDamnificado.getDamCelular();
+//            objDamnificado.getDamEmail();
+//            objDamnificado.getDamEmbarazo();
+//            objDamnificado.getDamObservaciones();
+//
+//        } catch (Exception ex) {
+//            LOG.error("Error: " + ex.getMessage());
+//            mensajeEAS.error();
+//        }
+//
+//    }
     public void editarDamnificadoSistema(AlbDamnificado objPUE) {
         try {
             segDamnificadoObjects = new AlbDamnificado();
@@ -198,6 +225,65 @@ public class Damnificado implements Serializable {
             segDamnificadoObjects.setAlbFamilia(objFamilia);
             segDamnificadoObjects.setDamObservaciones(objPUE.getDamObservaciones());
             segDamnificadoObjects.setDamEstado(1);
+        } catch (Exception ex) {
+            LOG.error("Error: " + ex.getMessage());
+            mensajeEAS.error();
+        }
+
+    }
+
+    public void albergueDamnificadoSistema(AlbDamnificado objPUE) {
+        try {
+            segDamnificadoObjects1 = new AlbDamnificado();
+            AlbEstadoCivil objEstCivil = new AlbEstadoCivil();
+            objEstCivil.setEciId(objPUE.getAlbEstadoCivil().getEciId());
+            objEstCivil.setEciTipo(objPUE.getAlbEstadoCivil().getEciTipo());
+            AlbInstruccion objInstruccion = new AlbInstruccion();
+            objInstruccion.setInsId(objPUE.getAlbInstruccion().getInsId());
+            objInstruccion.setInsNombre(objPUE.getAlbInstruccion().getInsNombre());
+            AlbProfesion objProfesion = new AlbProfesion();
+            objProfesion.setPrfId(objPUE.getAlbProfesion().getPrfId());
+            objProfesion.setPrfProfesion(objPUE.getAlbProfesion().getPrfProfesion());
+            AlbDiscapacidad objDiscapacidad = new AlbDiscapacidad();
+            objDiscapacidad.setDisId(objPUE.getAlbDiscapacidad().getDisId());
+            objDiscapacidad.setDisTipo(objPUE.getAlbDiscapacidad().getDisTipo());
+            AlbFamilia objFamilia = new AlbFamilia();
+            objFamilia.setFamId(objPUE.getAlbFamilia().getFamId());
+            objFamilia.setFamNumIntegrantes(objPUE.getAlbFamilia().getFamNumIntegrantes());
+            IdAsignar = objPUE.getDamId();
+            objPUE.getDamNombres();
+            objPUE.getDamApellidos();
+            objPUE.getDamCedula();
+            objPUE.getDamSexo();
+            objPUE.getDamLugarNacimiento();
+            objPUE.getDamFechaNacimiento();
+            objPUE.getDamDireccionDomicilio();
+            objPUE.getDamDatosPadre();
+            objPUE.getDamDatosMadre();
+            objPUE.getDamCelular();
+            objPUE.getDamEmail();
+            objPUE.getDamEmbarazo();
+            objPUE.getDamObservaciones();
+            segDamnificadoObjects1.setDamNombres(objPUE.getDamNombres());
+            segDamnificadoObjects1.setDamApellidos(objPUE.getDamApellidos());
+            segDamnificadoObjects1.setDamCedula(objPUE.getDamCedula());
+            segDamnificadoObjects1.setAlbEstadoCivil(objEstCivil);
+            segDamnificadoObjects1.setDamSexo(objPUE.getDamSexo());
+            segDamnificadoObjects1.setDamLugarNacimiento(objPUE.getDamLugarNacimiento());
+            segDamnificadoObjects1.setDamId(objPUE.getDamId());
+            segDamnificadoObjects1.setDamFechaNacimiento(objPUE.getDamFechaNacimiento());
+            segDamnificadoObjects1.setDamDireccionDomicilio(objPUE.getDamDireccionDomicilio());
+            segDamnificadoObjects1.setAlbInstruccion(objInstruccion);
+            segDamnificadoObjects1.setAlbProfesion(objProfesion);
+            segDamnificadoObjects1.setDamDatosPadre(objPUE.getDamDatosPadre());
+            segDamnificadoObjects1.setDamDatosMadre(objPUE.getDamDatosMadre());
+            segDamnificadoObjects1.setDamCelular(objPUE.getDamCelular());
+            segDamnificadoObjects1.setDamEmail(objPUE.getDamEmail());
+            segDamnificadoObjects1.setAlbDiscapacidad(objDiscapacidad);
+            segDamnificadoObjects1.setDamEmbarazo(objPUE.getDamEmbarazo());
+            segDamnificadoObjects1.setAlbFamilia(objFamilia);
+            segDamnificadoObjects1.setDamObservaciones(objPUE.getDamObservaciones());
+            segDamnificadoObjects1.setDamEstado(1);
         } catch (Exception ex) {
             LOG.error("Error: " + ex.getMessage());
             mensajeEAS.error();
@@ -341,52 +427,25 @@ public class Damnificado implements Serializable {
         }
 
     }
+    AlbDamnificado damnificadoAlbergue = new AlbDamnificado();
 
     public void actualizarDamnificadoAlbergue() {
         try {
-            AlbAlbergue objAlbergue = new AlbAlbergue();
-            AlbDamnificado objDamnificado = new AlbDamnificado();
-            DamnificadoAlbergue damnificadoAlbergue;            
-            Long var=this.IdSeleccionAlbergue;
-            Long varDam=IdEditar;
-            objAlbergue.setAlbId(var);
-            objDamnificado.setDamId(varDam);
-         //  damnificadoAlbergue= new DamnificadoAlbergue(2, objAlbergue, objDamnificado);
+            damnificadoAlbergue.setDamnificadoAlbergues((Set) segDamnificadoObjects1);
+            
+//          damnificadoAlbergue= new DamnificadoAlbergue(2, objAlbergue, objDamnificado);
             listaTempDamnificadoAlbergue.clear();
-           // listaTempDamnificadoAlbergue.add(damnificadoAlbergue);
+            listaTempDamnificadoAlbergue.add(damnificadoAlbergue);
             getAlbDamnificadoServicio().guardarDamnificadoAlbergue(listaTempDamnificadoAlbergue);
-            damnificadoAlbergue = new DamnificadoAlbergue();
+//            damnificadoAlbergue = new DamnificadoAlbergue();
             guardadoCabecera = true;
             init();
-            
+
         } catch (Exception ex) {
             LOG.error("Error: " + ex.getMessage());
             mensajeEAS.error();
         }
-
     }
-    
-//     public void actualizarDamnificadoAlbergue() {
-//        try {
-//            AlbAlbergue objAlbergue = new AlbAlbergue();
-//            AlbDamnificado objDamnificado = new AlbDamnificado();
-//            DamnificadoAlbergue damnificadoAlbergue = new DamnificadoAlbergue();
-//            damnificadoAlbergue.getAlbDamnificado().getDamId();
-//            damnificadoAlbergue.setAlbDamnificado(albDamnificado);
-//            listaTempDamnificadoAlbergue.clear();
-//            listaTempDamnificadoAlbergue.add(damnificadoAlbergue);
-//            getAlbDamnificadoServicio().guardarDamnificadoAlbergue(listaTempDamnificadoAlbergue);
-//            damnificadoAlbergue = new DamnificadoAlbergue();
-//            guardadoCabecera = true;
-//            init();
-//            
-//        } catch (Exception ex) {
-//            LOG.error("Error: " + ex.getMessage());
-//            mensajeEAS.error();
-//        }
-//
-//    }
-
 
     public AlbDamnificadoServicio getAlbDamnificadoServicio() {
         return albDamnificadoServicio;
@@ -567,13 +626,13 @@ public class Damnificado implements Serializable {
 
     }
 
-    public DamnificadoAlbergue getSelectedDamnificadoAlbergue() {
-        return selectedDamnificadoAlbergue;
+    public AlbDamnificado getSelectedAlbergueDamnificado() {
+        return selectedAlbergueDamnificado;
     }
 
-    public void setSelectedDamnificadoAlbergue(DamnificadoAlbergue selectedDamnificadoAlbergue) {
-        this.selectedDamnificadoAlbergue = selectedDamnificadoAlbergue;
-        asignarDamnificadoAlbergueSistema(selectedDamnificadoAlbergue);
+    public void setSelectedAlbergueDamnificado(AlbDamnificado selectedDamnificadoEditar) {
+        this.selectedAlbergueDamnificado = selectedDamnificadoEditar;
+        albergueDamnificadoSistema(selectedDamnificadoEditar);
     }
 
     public AlbDamnificado getSegDamnificadoObjects() {
@@ -618,6 +677,22 @@ public class Damnificado implements Serializable {
         return listaAsignarAlbergue;
     }
 
+    public void getListaCanton() {
+        AlbAlbergue obj1 = new AlbAlbergue();
+        if (IdSeleccionAlbergue != null) {
+            for (AlbAlbergue obj : listaAlbergue) {
+                if (IdSeleccionAlbergue == obj.getAlbId()) {
+                    obj.getAlbId();
+                    obj.getAlbNombre();
+                    obj.getAlbDireccion();
+                    damnificadoAlbergue.setDamnificadoAlbergues((Set) obj);
+                }
+            }
+
+        }
+
+    }
+
     public void setListaAsignarAlbergue(List<SelectItem> listaAsignarAlbergue) {
         this.listaAsignarAlbergue = listaAsignarAlbergue;
     }
@@ -628,6 +703,15 @@ public class Damnificado implements Serializable {
 
     public void setIdSeleccionAlbergue(Long IdSeleccionAlbergue) {
         this.IdSeleccionAlbergue = IdSeleccionAlbergue;
+        this.getListaCanton();
+    }
+
+    public AlbDamnificado getSegDamnificadoObjects1() {
+        return segDamnificadoObjects1;
+    }
+
+    public void setSegDamnificadoObjects1(AlbDamnificado segDamnificadoObjects1) {
+        this.segDamnificadoObjects1 = segDamnificadoObjects1;
     }
 
 }

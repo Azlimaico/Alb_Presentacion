@@ -205,19 +205,19 @@
 
                         <h:outputLabel value="Provincia : *" ></h:outputLabel>
                         <p:selectOneMenu  id="txtProv_edit"  value="#{albergue.idSeleccionCO}" style="width:150px" >
-                            <f:selectItem  itemValue="" itemLabel="#{albergue.segAlbergueObjects.albProvincia.proNombre} " noSelectionOption="false"  />
+                            <f:selectItem  itemValue="" itemLabel="Seleccione Provincia " noSelectionOption="false"  />
                             <f:selectItems value="#{albergue.listaProvincia1}"  
                                            /> </p:selectOneMenu>
 
                         <h:outputLabel value="Cantón : *" ></h:outputLabel>
                         <p:selectOneMenu  id="txtCan_edit"  value="#{albergue.idSeleccionCanton}" style="width:150px" >
-                            <f:selectItem  itemValue="" itemLabel="#{albergue.segAlbergueObjects.albCanton.canNombre} " noSelectionOption="false"  />
+                            <f:selectItem  itemValue="" itemLabel="Seleccione Canton" noSelectionOption="false"  />
                             <f:selectItems value="#{albergue.listaCanton}" /> 
                         </p:selectOneMenu>
 
                         <h:outputLabel value="Parroquia: *" ></h:outputLabel>
                         <p:selectOneMenu  id="txtParr_edit"  value="#{albergue.idSeleccionParroquia}" style="width:150px" >
-                            <f:selectItem  itemValue="" itemLabel="#{albergue.segAlbergueObjects.albParroquia.parNombre} " noSelectionOption="false"  />
+                            <f:selectItem  itemValue="" itemLabel="Seleccione Parroquia " noSelectionOption="false"  />
                             <f:selectItems value="#{albergue.listaParroquia}" /> 
                         </p:selectOneMenu>
 
