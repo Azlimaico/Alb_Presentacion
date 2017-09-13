@@ -1,25 +1,86 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
-    <h:head>
-        <script name="jquery/jquery.js" library="primefaces"></script>
-    </h:head>
-    <body>
-        <p:growl id="msgs" showDetail="true" />
+<?xml version='1.0' encoding='iso-8859-1' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-        <p:fieldset legend="Servicios" style="margin-bottom:20px">
-            <h:panelGrid columns="2" cellpadding="5">
-                <h:outputText value=Servicios />
-            </h:panelGrid>
-        </p:fieldset>
-    </body>
-</html>
+<ui:composition template="/Layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+    <ui:define name="content">
+        <h:head><title>SERVICIOS DEL ALBERGUE</title>
+
+            <link href="estilos/jsfcrud.css" type="text/css" rel="stylesheet" />
+            <link href="estilos/estilo.css" type="text/css" rel="stylesheet" />
+            <script type="text/javascript" src="estilos/validaciones.js"></script>
+            <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+
+        </h:head>
+        <h:body>
+            <p:growl id="msgs" showSummary="false" showDetail="true" life="4000"/>
+            <h:form style="width:500px;">   
+                <h:panelGrid columns="2" cellpadding="10">
+                    <p:panel  header="SERVICIOS DEL ALBERGUE"
+                              style="width: 1300px;" >
+
+                        <p:tabView >
+                            <p:tab title="AGUA">
+                                <p:outputLabel value="Profesión  "></p:outputLabel>
+                            </p:tab>
+                            
+
+                        </p:tabView>
+                        <p:dataTable id="tprincipal" 
+                                     var="object" value="#{albergue.listaAlbergue}"
+                                     emptyMessage="No se encontraron datos"
+                                     rows="9" paginator="true" 
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} 
+                                     {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"    
+                                     >    
+
+                            <p:column   filterBy="#{object.albNombre}" headerText="ALBERGUE"  width="100"
+                                        filterMatchMode="contains">
+                                <h:outputText value="#{object.albNombre}" />
+                            </p:column>
+
+                            <p:column   filterBy="#{object.albProvincia.proNombre}" headerText="PROVINCIA"  width="100"
+                                        filterMatchMode="contains">
+                                <h:outputText value="#{object.albProvincia.proNombre}" />
+                            </p:column>
+
+                            <p:column   filterBy="#{object.albCanton.canNombre}" headerText="CANTÓN"  width="100"
+                                        filterMatchMode="contains">
+                                <h:outputText value="#{object.albCanton.canNombre}" />
+                            </p:column>
+
+                            <p:column   filterBy="#{object.albParroquia.parNombre}" headerText="PARROQUIA"  width="100"
+                                        filterMatchMode="contains">
+                                <h:outputText value="#{object.albParroquia.parNombre}" />
+                            </p:column>
+
+                            <p:column    headerText="DIRECCIÓN"  width="100"
+                                         filterMatchMode="contains">
+                                <h:outputText value="#{object.albDireccion}" />
+                            </p:column>
+
+                            <p:column    headerText="TIPO DE ALBERGUE"  width="60"
+                                         filterMatchMode="contains">
+                                <h:outputText value="#{object.albTipoAlbergue}" />
+                            </p:column>
+
+                            <p:column    headerText="ÁREA"  width="30"
+                                         filterMatchMode="contains">
+                                <h:outputText value="#{object.albArea}" />
+                            </p:column>
+                            <p:column    headerText="AVANCE IMPLEMENTACIÓN"  width="120"
+                                         filterMatchMode="contains">
+                                <h:outputText value="#{object.albAvanceImplementacion.avaNombre}" />
+                            </p:column> 
+
+                        </p:dataTable>
+                    </p:panel>
+                </h:panelGrid>
+            </h:form>
+        </h:body>
+    </ui:define>
+</ui:composition>
