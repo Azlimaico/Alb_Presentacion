@@ -25,12 +25,75 @@
 
                         <p:tabView >
                             <p:tab title="AGUA">
-                                <p:outputLabel value="Profesión  "></p:outputLabel>
+                                <h:panelGrid columns="2" cellpadding="10">               
+                                    <p:dataTable id="tprincipal" 
+                                                 var="object1" value="#{servicios.listaServicio}"
+                                                 emptyMessage="No se encontraron datos"
+                                                 rows="9" paginator="true" 
+                                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} 
+                                                 {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"    
+                                                 >   
+                                        <p:column   headerText="SERVICIO"  width="100"
+                                                    filterMatchMode="contains">
+                                            <h:outputText value="#{object1.serNombre}" />
+                                        </p:column>
+                                        <p:column   headerText="EMPRESA"  width="100"
+                                                    filterMatchMode="contains">
+                                            <h:outputText value="#{object1.albEmpresa.empNombre}" />
+                                        </p:column>
+                                        <p:column   headerText="TIPO DE EMPRESA"  width="100"
+                                                    filterMatchMode="contains">
+                                            <h:outputText value="#{object1.albEmpresa.albTipoEmpresa.tieNombre}" />
+                                        </p:column>
+                                    </p:dataTable>
+                                </h:panelGrid>
+                            </p:tab>
+
+                            <p:tab title="ELECTRICIDAD">
+                                <h:panelGrid columns="2" cellpadding="10">               
+                                    <p:dataTable id="tprincipal1" 
+                                                 var="object2" value="#{servicios.listaServicioSituacionAlbergue}"
+                                                 emptyMessage="No se encontraron datos"
+                                                 rows="9" paginator="true" 
+                                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} 
+                                                 {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"    
+                                                 >   
+                                        <p:column   headerText="ALBERGUE"  width="100"
+                                                    filterMatchMode="contains">
+                                            <h:outputText value="#{object2.albAlbergue.albNombre}" />
+                                        </p:column>
+                                        <p:column   headerText="SERVICIO"  width="100"
+                                                    filterMatchMode="contains">
+                                            <h:outputText value="#{object2.albServicio.serNombre}" />
+                                        </p:column>
+                                        <p:column   headerText="EMPRESA"  width="100"
+                                                    filterMatchMode="contains">
+                                            <h:outputText value="#{object2.albServicio.albEmpresa.empNombre}" />
+                                        </p:column>
+                                    </p:dataTable>
+                                </h:panelGrid>
                             </p:tab>
                             
+                            <p:tab title="TELECOMUNICACIONES Y CONECTIVIDAD A INTERNET">
+                                <h:panelGrid columns="2" cellpadding="10">               
+                                    <p:dataTable id="tprincipal3" 
+                                                 var="object3" value="#{servicios.listaAlbSituacion}"
+                                                 emptyMessage="No se encontraron datos"
+                                                 rows="9" paginator="true" 
+                                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} 
+                                                 {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"    
+                                                 >   
+                                        <p:column   headerText="ALBERGUE"  width="100"
+                                                    filterMatchMode="contains">
+                                            <h:outputText value="#{object3.sitAlmacenamiento}" />
+                                        </p:column>
+                                        
+                                    </p:dataTable>
+                                </h:panelGrid>
+                            </p:tab>
 
                         </p:tabView>
-                        <p:dataTable id="tprincipal" 
+                        <p:dataTable id="tprincipal2" 
                                      var="object" value="#{albergue.listaAlbergue}"
                                      emptyMessage="No se encontraron datos"
                                      rows="9" paginator="true" 
