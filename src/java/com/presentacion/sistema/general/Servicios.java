@@ -44,6 +44,8 @@ public class Servicios implements Serializable {
     @ManagedProperty(value = "#{AlbSituacionServicioImpl}")
     AlbSituacionServicio albSituacionServicio;
     private List<AlbSituacion> listaAlbSituacion = new ArrayList<>();
+    private List<AlbSituacion> listaElectricidad= new ArrayList<>();
+    private List<AlbSituacion> listaAgua = new ArrayList<>();
 
     @PostConstruct
     public void init() {
@@ -56,6 +58,25 @@ public class Servicios implements Serializable {
         this.listaServicioSituacionAlbergue.addAll(getServicioSituacionAlbergueServicio().listarServicioSituacionAlbergue());
         listaAlbSituacion.clear();
         this.listaAlbSituacion.addAll(getAlbSituacionServicio().listarAlbSituacion());
+    }
+    
+    public void electricidad (List<AlbSituacion> listaAux){
+        for (AlbSituacion obje : listaAux) {
+            if(obje.getServicioSituacionAlbergue().getSerAlbId() == 2){
+                listaElectricidad.clear();
+                this.listaElectricidad.add(obje);
+            }
+        }
+    }
+    
+     public void agua (List<AlbSituacion> lista){
+        for (AlbSituacion obj : lista) {
+            if(obj.getServicioSituacionAlbergue().getSerAlbId() == 1){
+                listaAgua.clear();
+                this.listaAgua.add(obj);
+                break;
+            }
+        }
     }
 
     public AlbServicioServicio getAlbServicioServicio() {
@@ -106,5 +127,26 @@ public class Servicios implements Serializable {
         this.listaAlbSituacion = listaAlbSituacion;
     }
 
+    public List<AlbSituacion> getListaElectricidad() {
+        this.electricidad(listaAlbSituacion);
+        return listaElectricidad;
+    }
+
+    public void setListaElectricidad(List<AlbSituacion> listaElectricidad) {
+        this.listaElectricidad = listaElectricidad;
+    }
+
+      public List<AlbSituacion> getListaAgua() {
+        this.agua(listaAlbSituacion);
+        return listaAgua;
+    }
+
+    public void setListaAgua(List<AlbSituacion> listaAgua) {
+        this.listaAgua = listaAgua;
+    }
+
+  
+
+    
     
 }
