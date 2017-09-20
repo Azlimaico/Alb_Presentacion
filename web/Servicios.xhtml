@@ -23,7 +23,59 @@
                     <p:panel  header="SERVICIOS DEL ALBERGUE"
                               style="width: 1300px;" >
 
-                        <p:tabView >
+
+                        <p:dataTable id="tprincipal2" 
+                                     var="object" value="#{albergue.listaAlbergue}"
+                                     emptyMessage="No se encontraron datos"
+                                     rows="9" paginator="true" 
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} 
+                                     {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"    
+                                     >    
+
+                            <p:column   filterBy="#{object.albNombre}" headerText="ALBERGUE"  width="100"
+                                        filterMatchMode="contains">
+                                <h:outputText value="#{object.albNombre}" />
+                            </p:column>
+
+                            <p:column   headerText="VER ESTADO DE SERVICIOS" width="50"  style="text-align: center" >
+                                <p:commandButton id="btn_AsigServicios" icon="ui-icon-pencil" onclick="PF('dlgEditar').show();" update="formEditarUsuario" >
+                                    <f:setPropertyActionListener value="#{object}" target="#{servicios.selectedAlbergueAsignar}" />
+                                    <p:resetInput target=":formEditarUsuario" />
+                                </p:commandButton>
+                            </p:column>
+
+
+                        </p:dataTable>
+                    </p:panel>
+                </h:panelGrid>
+            </h:form>
+
+            <h:form id="Agua" >      
+                <p:dialog header="NUEVO" widgetVar="pNuevoAgua" id="dlgNuevoJ" 
+                          closable="false">
+                    <h:panelGrid columns="2" cellpadding="2">
+                        <h:outputLabel value="Empresa: " />
+                        <p:inputText id="nombreEmpresa" style="text-transform: uppercase; font-weight:bold; color: black " 
+                                     value="#{servicios.albSituacion.servicioSituacionAlbergue.albServicio.albEmpresa.empNombre}" 
+                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
+                                     />
+                        <p:outputLabel value="Tipo Empresa:" />
+                        <p:selectOneMenu  id="tipoEmpresa" value="#{servicios.idSeleccionAgua}" style="width:150px">
+                            <f:selectItem  itemValue="" itemLabel="Seleccione Tipo: " noSelectionOption="false" />
+                            <f:selectItems value="#{servicios.listaAgua1}" />
+                        </p:selectOneMenu>
+
+
+                    </h:panelGrid>
+                </p:dialog>
+            </h:form>
+
+
+
+            <p:dialog header="SERVICIOS DEL ALBERGUE" widgetVar="dlgEditar" minHeight="40" closable="true" draggable="true">
+                <h:form id="formEditarUsuario">
+                    <h:panelGrid columns="2" cellpadding="3">
+                        <p:tabView>
                             <p:tab title="AGUA">
                                 <h:panelGrid columns="2" cellpadding="10">               
                                     <p:dataTable id="tprincipal" 
@@ -32,14 +84,14 @@
                                                  rows="9" paginator="true" 
                                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} 
                                                  {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"    
-                                                 >   
+                                                 >
                                         <p:column   headerText="EMPRESA PROVEEDORA"  width="100"
                                                     filterMatchMode="contains">
                                             <h:outputText value="#{object1.servicioSituacionAlbergue.albServicio.albEmpresa.empNombre}" />
                                         </p:column>
                                         <p:column   headerText="TIPO PROVEEDOR DEL SERVICIO"  width="100"
                                                     filterMatchMode="contains">
-                                            <h:outputText value="#{object1.sitProveedorServicio}" />
+                                            <h:outputText value="#{object1.servicioSituacionAlbergue.albServicio.albEmpresa.albTipoEmpresa.tieNombre}" />
                                         </p:column>
                                         <p:column   headerText="MÉTODO DE PROVISION"  width="100"
                                                     filterMatchMode="contains">
@@ -53,7 +105,7 @@
                                                     filterMatchMode="contains">
                                             <h:outputText value="#{object1.sitAguaBebible}" />
                                         </p:column>
-                                        
+
                                     </p:dataTable>
                                 </h:panelGrid>
                             </p:tab>
@@ -73,7 +125,7 @@
                                         </p:column>
                                         <p:column   headerText="TIPO PROVEEDOR DEL SERVICIO"  width="100"
                                                     filterMatchMode="contains">
-                                            <h:outputText value="#{object2.sitProveedorServicio}" />
+                                            <h:outputText value="#{object2.servicioSituacionAlbergue.albServicio.albEmpresa.albTipoEmpresa.tieNombre}" />
                                         </p:column>
                                         <p:column   headerText="MÉTODO DE PROVISION"  width="100"
                                                     filterMatchMode="contains">
@@ -83,101 +135,62 @@
                                                     filterMatchMode="contains">
                                             <h:outputText value="#{object2.sitAlcanceServicio}" />
                                         </p:column>
-                                        
-                                        
+
+
                                     </p:dataTable>
                                 </h:panelGrid>
                             </p:tab>
-                            
+
                             <p:tab title="TELECOMUNICACIONES Y CONECTIVIDAD A INTERNET">
                                 <h:panelGrid columns="2" cellpadding="10">               
                                     <p:dataTable id="tprincipal3" 
-                                                 var="object3" value="#{servicios.listaAlbSituacion}"
+                                                 var="object3" value="#{servicios.listaInternet}"
                                                  emptyMessage="No se encontraron datos"
                                                  rows="9" paginator="true" 
                                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} 
                                                  {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"    
-                                                 >   
-                                        <p:column   headerText="MÉTODO DE PROVISION"  width="100"
+                                                 >
+                                        <p:column   headerText="EMPRESA PROVEEDORA"  width="100"
+                                                    filterMatchMode="contains">
+                                            <h:outputText value="#{object3.servicioSituacionAlbergue.albServicio.albEmpresa.empNombre}" />
+                                        </p:column>
+                                        <p:column   headerText="TIPO PROVEEDOR DEL SERVICIO TELEFONÍA"  width="100"
+                                                    filterMatchMode="contains">
+                                            <h:outputText value="#{object3.servicioSituacionAlbergue.albServicio.albEmpresa.albTipoEmpresa.tieNombre}" />
+                                        </p:column>
+                                        <p:column   headerText="MÉTODO DE PROVISION TELEFONÍA"  width="100"
                                                     filterMatchMode="contains">
                                             <h:outputText value="#{object3.sitMetProvision}" />
                                         </p:column>
-                                        
+
                                         <p:column   headerText="ALCANCE DE TELEFONÍA"  width="100"
                                                     filterMatchMode="contains">
                                             <h:outputText value="#{object3.sitAlcanceServicio}" />
-                                        </p:column>
-                                        
-                                        <p:column   headerText="MÉTODO DE PROVISION"  width="100"
+                                        </p:column>                                        
+
+                                        <p:column   headerText="MÉTODO DE PROVISION INTERNET"  width="100"
                                                     filterMatchMode="contains">
-                                            <h:outputText value="#{object3.sitProveedorServicio}" />
+                                            <h:outputText value="#{object3.sitMetProvisionInternet}" />
                                         </p:column>
-                                        <p:column   headerText="PROVISION DE INTERNET"  width="100"
+                                        <p:column   headerText="ALCANCE DE INTERNET"  width="100"
                                                     filterMatchMode="contains">
-                                            <h:outputText value="#{object3.sitMetProvision}" />
+                                            <h:outputText value="#{object3.sitAlcanceInternet}" />
                                         </p:column>
                                     </p:dataTable>
                                 </h:panelGrid>
                             </p:tab>
 
+
+
+
                         </p:tabView>
-                        <p:dataTable id="tprincipal2" 
-                                     var="object" value="#{albergue.listaAlbergue}"
-                                     emptyMessage="No se encontraron datos"
-                                     rows="9" paginator="true" 
-                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} 
-                                     {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"    
-                                     >    
 
-                            <p:column   filterBy="#{object.albNombre}" headerText="ALBERGUE"  width="100"
-                                        filterMatchMode="contains">
-                                <h:outputText value="#{object.albNombre}" />
-                            </p:column>
+                    </h:panelGrid>
 
-                            <p:column   filterBy="#{object.albProvincia.proNombre}" headerText="PROVINCIA"  width="100"
-                                        filterMatchMode="contains">
-                                <h:outputText value="#{object.albProvincia.proNombre}" />
-                            </p:column>
+                </h:form>
+            </p:dialog>
 
-                            <p:column   filterBy="#{object.albCanton.canNombre}" headerText="CANTÓN"  width="100"
-                                        filterMatchMode="contains">
-                                <h:outputText value="#{object.albCanton.canNombre}" />
-                            </p:column>
 
-                            <p:column   filterBy="#{object.albParroquia.parNombre}" headerText="PARROQUIA"  width="100"
-                                        filterMatchMode="contains">
-                                <h:outputText value="#{object.albParroquia.parNombre}" />
-                            </p:column>
-
-                            <p:column    headerText="DIRECCIÓN"  width="100"
-                                         filterMatchMode="contains">
-                                <h:outputText value="#{object.albDireccion}" />
-                            </p:column>
-
-                            <p:column    headerText="TIPO DE ALBERGUE"  width="60"
-                                         filterMatchMode="contains">
-                                <h:outputText value="#{object.albTipoAlbergue}" />
-                            </p:column>
-
-                            <p:column    headerText="ÁREA"  width="30"
-                                         filterMatchMode="contains">
-                                <h:outputText value="#{object.albArea}" />
-                            </p:column>
-                            <p:column    headerText="AVANCE IMPLEMENTACIÓN"  width="120"
-                                         filterMatchMode="contains">
-                                <h:outputText value="#{object.albAvanceImplementacion.avaNombre}" />
-                            </p:column> 
-                            
-                            <p:column   headerText="ASIGNAR SERVICIOS" width="50"  style="text-align: center" >
-                                <p:commandButton id="btn_AsigServicios" icon="ui-icon-pencil" >
-                                    
-                                </p:commandButton>
-
-                            </p:column>
-                        </p:dataTable>
-                    </p:panel>
-                </h:panelGrid>
-            </h:form>
         </h:body>
     </ui:define>
 </ui:composition>
