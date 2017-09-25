@@ -18,7 +18,7 @@
         </h:head>
         <h:body>
             <p:growl id="msgs" showSummary="false" showDetail="true" life="4000"/>
-            <h:form style="width:500px;">   
+            <h:form id="formh" style="width:500px;">   
                 <h:panelGrid columns="2" cellpadding="10">
                     <p:panel  header="SERVICIOS DEL ALBERGUE"
                               style="width: 1300px;" >
@@ -63,8 +63,25 @@
                             <f:selectItem  itemValue="" itemLabel="Seleccione Tipo: " noSelectionOption="false" />
                             <f:selectItems value="#{servicios.listaAgua1}" />
                         </p:selectOneMenu>
+
+                        <h:outputLabel value="Método de Provisión: " />
+                        <p:inputText id="metProv" style="text-transform: uppercase; font-weight:bold; color: black " 
+                                     value="#{servicios.albSituacion.sitMetProvision}" 
+                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
+                                     />
+                        <h:outputLabel value="Almacenamiento: " />
+                        <p:inputText id="almacAgua" style="text-transform: uppercase; font-weight:bold; color: black " 
+                                     value="#{servicios.albSituacion.sitAlmacenamiento}" 
+                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
+                                     />
+                        <h:outputLabel value="Tratamiento del agua bebible: " />
+                        <p:inputText id="tratamAgua" style="text-transform: uppercase; font-weight:bold; color: black " 
+                                     value="#{servicios.albSituacion.sitAguaBebible}" 
+                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
+                                     />
+                        
                         <h:panelGrid columns="2" cellpadding="1">
-                            <p:commandButton id="btn_guardar" value="GUARDAR"  icon="fa fa-save"
+                            <p:commandButton id="btn_guardar" value="GUARDAR" update="msgs,:formh:,:Agua,:formEditarUsuario" icon="fa fa-save"
                                              action="#{servicios.guardarServicio()}" onclick="PF('pNuevoAgua').hide()" >
                                 <p:confirm header="Confirmación" message="¿Está seguro de guardar?" />
                             </p:commandButton>

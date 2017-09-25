@@ -47,6 +47,7 @@ public class Servicios implements Serializable {
     private Boolean guardadoCabecera = false;
     //NUEVO AGUA
     private AlbSituacion albSituacion = new AlbSituacion();
+    private List<AlbSituacion> listaTempAlbSituacion = new ArrayList<>();
     private Long IdSeleccionAgua;
     private List<AlbTipoEmpresa> listaTipoEmpresa = new ArrayList<>();
     List<SelectItem> genListaSelected = new ArrayList<SelectItem>();
@@ -74,27 +75,28 @@ public class Servicios implements Serializable {
     private Long estado, IdEditar;
     private AlbServicio albServicio = new AlbServicio();
     private List<AlbServicio> listaTempAlbServicio = new ArrayList<>();
-    private AlbEmpresa albEmpresa= new AlbEmpresa();
+    private AlbEmpresa albEmpresa = new AlbEmpresa();
     private List<AlbEmpresa> listaTempAlbEmpresa = new ArrayList<>();
-    private ServicioSituacionAlbergue servicioSituacionAlbergue= new ServicioSituacionAlbergue();
+    private ServicioSituacionAlbergue servicioSituacionAlbergue = new ServicioSituacionAlbergue();
     private List<ServicioSituacionAlbergue> listaTempServicioSituacionAlbergue = new ArrayList<>();
     @ManagedProperty(value = "#{AlbAlbergueServicioImpl}")
     AlbAlbergueServicio albAlbergueServicio;
-    private AlbAlbergue albAlbergue= new AlbAlbergue();
+    private AlbAlbergue albAlbergue = new AlbAlbergue();
     private List<AlbAlbergue> listaTempAlbAlbergue = new ArrayList<>();
 
     @PostConstruct
     public void init() {
         if (!guardadoCabecera) {
             albServicio = new AlbServicio();
-            albEmpresa= new AlbEmpresa();
-            servicioSituacionAlbergue= new ServicioSituacionAlbergue();
-            albAlbergue= new AlbAlbergue();
+            albEmpresa = new AlbEmpresa();
+            servicioSituacionAlbergue = new ServicioSituacionAlbergue();
+            albAlbergue = new AlbAlbergue();
             listaTempAlbServicio.clear();
             listaTempAlbEmpresa.clear();
             listaTempServicioSituacionAlbergue.clear();
             listaTempAlbAlbergue.clear();
             albSituacion = new AlbSituacion();
+            listaTempAlbSituacion.clear();
             listaTipoEmpresa.clear();
             this.listaTipoEmpresa.addAll(getAlbSituacionServicio().listarTipoEmpresa());
         }
@@ -112,7 +114,7 @@ public class Servicios implements Serializable {
             SelectItem selectItem = new SelectItem(obj.getTieId(), obj.getTieNombre());
             this.genListaSelected.add(selectItem);
         }
-             return genListaSelected;
+        return genListaSelected;
 
     }
 
@@ -198,12 +200,12 @@ public class Servicios implements Serializable {
 
     public Long getIdSeleccionAgua() {
         return IdSeleccionAgua;
-        
+
     }
 
     public void setIdSeleccionAgua(Long IdSeleccionAgua) {
         this.IdSeleccionAgua = IdSeleccionAgua;
-        }
+    }
 
     public AlbAlbergue getSelectedAlbergueAsignar() {
         return selectedAlbergueAsignar;
@@ -214,7 +216,8 @@ public class Servicios implements Serializable {
         this.obtenerAlbergue(selectedAlbergueAsignar);
 
     }
-Long aux;
+    Long aux;
+
     public void obtenerAlbergue(AlbAlbergue objPUE) {
         try {
             listaAgua.clear();
@@ -229,9 +232,8 @@ Long aux;
             IdEditar = objPUE.getAlbId();
             for (AlbSituacion obj : listaAlbSituacion) {
                 aux = obj.getServicioSituacionAlbergue().getAlbAlbergue().getAlbId();
-               if (aux == IdEditar) {
-                    if (obj.getServicioSituacionAlbergue().getAlbServicio().getSerId() == 1) {
-                        listaAgua.clear();
+                if (aux == IdEditar) {
+                    if (obj.getServicioSituacionAlbergue().getAlbServicio().getSerNombre().equals("AGUA")) {
                         listaAgua.add(obj);
                     }
                     if (obj.getServicioSituacionAlbergue().getAlbServicio().getSerId() == 2) {
@@ -279,9 +281,8 @@ Long aux;
     }
 
     public void guardarServicio() {
-       String nombre=albEmpresa.getEmpNombre();
-
-        if ("".equals(nombre)) {
+        String nombre = albEmpresa.getEmpNombre();
+        if ("".equals(nombre) || "".equals(albSituacion.getSitMetProvision()) || "".equals(albSituacion.getSitAlmacenamiento()) || "".equals(albSituacion.getSitAguaBebible())) {
             mensajeEAS.errorLlenarDatos();
         } else {
             try {
@@ -301,16 +302,32 @@ Long aux;
                         listaTempAlbServicio.add(albServicio);
                         getAlbServicioServicio().guardarServicio(listaTempAlbServicio);
                         break;
-                         }
-                    
+                    }
                 }
                 servicioSituacionAlbergue.setAlbServicio(albServicio);
                 servicioSituacionAlbergue.setAlbAlbergue(selectedAlbergueAsignar);
                 servicioSituacionAlbergue.setSerAlbEstado(1);
                 listaTempServicioSituacionAlbergue.clear();
                 listaTempServicioSituacionAlbergue.add(servicioSituacionAlbergue);
-                getAlbServicioServicio().guardarServicioSituacionAlbergue(listaTempServicioSituacionAlbergue);                
-                
+                getAlbServicioServicio().guardarServicioSituacionAlbergue(listaTempServicioSituacionAlbergue);
+                albSituacion.getSitMetProvision();
+                albSituacion.getSitAlmacenamiento();
+                albSituacion.getSitAguaBebible();
+                albSituacion.setSitMetProvision(albSituacion.getSitMetProvision());
+                albSituacion.setSitAlmacenamiento(albSituacion.getSitAlmacenamiento());
+                albSituacion.setSitAguaBebible(albSituacion.getSitAguaBebible());
+                albSituacion.setSitEstado(1);
+                albSituacion.setServicioSituacionAlbergue(servicioSituacionAlbergue);
+                listaTempAlbSituacion.clear();
+                listaAlbSituacion.add(albSituacion);
+                listaTempAlbSituacion.add(albSituacion);
+                getAlbServicioServicio().guardarSituacion(listaTempAlbSituacion);
+                albSituacion = new AlbSituacion();
+                guardadoCabecera = true;
+                mensajeEAS.info(true);
+                init();
+                this.obtenerAlbergue(selectedAlbergueAsignar);
+
             } catch (Exception ex) {
                 guardadoCabecera = false;
                 LOG.error("Error: " + ex.getMessage());
@@ -391,8 +408,5 @@ Long aux;
     public void setListaAlimentos(List<AlbSituacion> listaAlimentos) {
         this.listaAlimentos = listaAlimentos;
     }
-    
-    
-    
-    
+
 }
