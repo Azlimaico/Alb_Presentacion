@@ -300,16 +300,16 @@ Long aux;
                         listaTempAlbServicio.clear();
                         listaTempAlbServicio.add(albServicio);
                         getAlbServicioServicio().guardarServicio(listaTempAlbServicio);
+                        break;
                          }
-                    break;
+                    
                 }
                 servicioSituacionAlbergue.setAlbServicio(albServicio);
                 servicioSituacionAlbergue.setAlbAlbergue(selectedAlbergueAsignar);
                 servicioSituacionAlbergue.setSerAlbEstado(1);
                 listaTempServicioSituacionAlbergue.clear();
                 listaTempServicioSituacionAlbergue.add(servicioSituacionAlbergue);
-                getAlbServicioServicio().guardarServicioSituacionAlbergue(listaServicioSituacionAlbergue);
-                
+                getAlbServicioServicio().guardarServicioSituacionAlbergue(listaTempServicioSituacionAlbergue);                
                 
             } catch (Exception ex) {
                 guardadoCabecera = false;
