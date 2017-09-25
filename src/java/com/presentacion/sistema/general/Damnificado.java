@@ -27,6 +27,7 @@ import com.persistencia.parametros.sistema.ParametrosObjetos;
 import com.presentacion.mensajes.MensajeEAS;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import javax.annotation.PostConstruct;
@@ -35,6 +36,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.model.SelectItem;
 import org.jboss.logging.Logger;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -46,6 +48,8 @@ public class Damnificado implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private static Logger LOG = Logger.getLogger(Damnificado.class);
+    private int console;
+    private Date date1;
     @ManagedProperty(value = "#{AlbDamnificadoServicioImpl}")
     AlbDamnificadoServicio albDamnificadoServicio;
     private MensajeEAS mensajeEAS = new MensajeEAS();
@@ -134,7 +138,14 @@ public class Damnificado implements Serializable {
         this.listaDamnificado.addAll(getAlbDamnificadoServicio().listarDamnificado());
 
     }
-
+    
+    public void click() {
+        RequestContext requestContext = RequestContext.getCurrentInstance();
+         
+        requestContext.update("form:display");
+        requestContext.execute("PF('dlg').show()");
+    }
+    
     public void editarDamnificadoSistema(AlbDamnificado objPUE) {
         try {
             segDamnificadoObjects = new AlbDamnificado();
@@ -270,12 +281,14 @@ public class Damnificado implements Serializable {
 
     public void guardarDamnificado() {
         if ("".equals(albDamnificado.getDamNombres()) || "".equals(albDamnificado.getDamApellidos()) || "".equals(albDamnificado.getDamCedula())
-                || "".equals(albDamnificado.getDamSexo()) || "".equals(albDamnificado.getDamLugarNacimiento()) || "".equals(albDamnificado.getDamFechaNacimiento())
+                 || "".equals(albDamnificado.getDamLugarNacimiento()) || "".equals(albDamnificado.getDamFechaNacimiento())
                 || "".equals(albDamnificado.getDamDireccionDomicilio()) || "".equals(albDamnificado.getDamDatosPadre()) || "".equals(albDamnificado.getDamDatosMadre()) || "".equals(albDamnificado.getDamCelular()) || "".equals(albDamnificado.getDamEmail()) || "".equals(albDamnificado.getDamEmbarazo()) || "".equals(albDamnificado.getDamObservaciones())) {
             mensajeEAS.errorLlenarDatos();
         } else {
 
             try {
+                
+                albDamnificado.getDamSexo();
                 AlbEstadoCivil objEstCivil = new AlbEstadoCivil();
                 AlbInstruccion objInstruccion = new AlbInstruccion();
                 AlbProfesion objProfesion = new AlbProfesion();
@@ -290,7 +303,7 @@ public class Damnificado implements Serializable {
                 albDamnificado.setAlbInstruccion(objInstruccion);
                 albDamnificado.setAlbProfesion(objProfesion);
                 albDamnificado.setAlbDiscapacidad(objDiscapacidad);
-                albDamnificado.setAlbDiscapacidad(objDiscapacidad);
+                albDamnificado.setAlbFamilia(objFamilia);
                 albDamnificado.setDamEstado(1);
                 listaTempAlbDamnificado.clear();
                 listaTempAlbDamnificado.add(albDamnificado);
@@ -574,6 +587,15 @@ public class Damnificado implements Serializable {
         }
         return listaEditarDiscapacida;
     }
+    
+      public List<SelectItem> getListaEditarNumFlia() {
+        this.listaEditarNumFlia = new ArrayList<SelectItem>();
+        for (AlbFamilia obj : listaNumFlia) {
+            SelectItem selectItem = new SelectItem(obj.getFamId(), String.valueOf(obj.getFamNumIntegrantes()));
+            this.listaEditarNumFlia.add(selectItem);
+        }
+        return listaEditarNumFlia;
+    }
 
     public void setListaEditarDiscapacida(List<SelectItem> listaEditarDiscapacida) {
         this.listaEditarDiscapacida = listaEditarDiscapacida;
@@ -595,14 +617,7 @@ public class Damnificado implements Serializable {
         this.IdSeleccionNumFlia = IdSeleccionNumFlia;
     }
 
-    public List<SelectItem> getListaEditarNumFlia() {
-        this.listaEditarNumFlia = new ArrayList<SelectItem>();
-        for (AlbFamilia obj : listaNumFlia) {
-            SelectItem selectItem = new SelectItem(obj.getFamId(), String.valueOf(obj.getFamNumIntegrantes()));
-            this.listaEditarNumFlia.add(selectItem);
-        }
-        return listaEditarNumFlia;
-    }
+  
 
     public void setListaEditarNumFlia(List<SelectItem> listaEditarNumFlia) {
         this.listaEditarNumFlia = listaEditarNumFlia;
@@ -713,4 +728,23 @@ public class Damnificado implements Serializable {
         this.segDamnificadoObjects1 = segDamnificadoObjects1;
     }
 
-}
+    public int getConsole() {
+        return console;
+    }
+
+    public void setConsole(int console) {
+        this.console = console;
+    }
+
+    public Date getDate1() {
+        return date1;
+    }
+
+    public void setDate1(Date date1) {
+        this.date1 = date1;
+    }
+    
+    
+   
+
+    }

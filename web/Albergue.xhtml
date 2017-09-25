@@ -206,11 +206,13 @@
                         <h:outputLabel value="Provincia : *" ></h:outputLabel>
                         <p:selectOneMenu  id="txtProv_edit"  value="#{albergue.idSeleccionCO}" style="width:150px" >
                             <f:selectItem  itemValue="" itemLabel="Seleccione Provincia " noSelectionOption="false"  />
-                            <f:selectItems value="#{albergue.listaProvincia1}"  
-                                           /> </p:selectOneMenu>
-
+                            <p:ajax update="txtCan_edit" />  
+                            <f:selectItems value="#{albergue.listaProvincia1}" /> 
+                        </p:selectOneMenu>
+                        
                         <h:outputLabel value="Cantón : *" ></h:outputLabel>
                         <p:selectOneMenu  id="txtCan_edit"  value="#{albergue.idSeleccionCanton}" style="width:150px" >
+                            <p:ajax update="txtParr_edit"  />
                             <f:selectItem  itemValue="" itemLabel="Seleccione Canton" noSelectionOption="false"  />
                             <f:selectItems value="#{albergue.listaCanton}" /> 
                         </p:selectOneMenu>

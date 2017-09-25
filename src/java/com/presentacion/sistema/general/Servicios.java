@@ -5,6 +5,7 @@
  */
 package com.presentacion.sistema.general;
 
+import com.negocio.servicio.albergue.AlbAlbergueServicio;
 import com.negocio.servicio.albergue.ServicioSituacionAlbergueServicio;
 import com.negocio.servicio.albergue.servicio.basico.AlbServicioServicio;
 import com.negocio.servicio.albergue.servicio.basico.AlbSituacionServicio;
@@ -14,6 +15,7 @@ import com.persistencia.albergue.servicio.AlbServicio;
 import com.persistencia.albergue.servicio.AlbSituacion;
 import com.persistencia.general.sistema.AlbAvanceImplementacion;
 import com.persistencia.general.sistema.AlbCanton;
+import com.persistencia.general.sistema.AlbEmpresa;
 import com.persistencia.general.sistema.AlbParroquia;
 import com.persistencia.general.sistema.AlbProvincia;
 import com.persistencia.general.sistema.AlbTipoEmpresa;
@@ -60,15 +62,38 @@ public class Servicios implements Serializable {
     private List<AlbSituacion> listaElectricidad = new ArrayList<>();
     private List<AlbSituacion> listaAgua = new ArrayList<>();
     private List<AlbSituacion> listaInternet = new ArrayList<>();
-
+    private List<AlbSituacion> listaBateriasSanitarias = new ArrayList<>();
+    private List<AlbSituacion> listaServicioSalud = new ArrayList<>();
+    private List<AlbSituacion> listaDesechosSolidos = new ArrayList<>();
+    private List<AlbSituacion> listaEducacion = new ArrayList<>();
+    private List<AlbSituacion> listaCombustibleFosil = new ArrayList<>();
+    private List<AlbSituacion> listaAlimentos = new ArrayList<>();
     //AÑADIR SERVICIO A ALBERGUE
     private AlbAlbergue selectedAlbergueAsignar = new AlbAlbergue();
     private MensajeEAS mensajeEAS = new MensajeEAS();
     private Long estado, IdEditar;
+    private AlbServicio albServicio = new AlbServicio();
+    private List<AlbServicio> listaTempAlbServicio = new ArrayList<>();
+    private AlbEmpresa albEmpresa= new AlbEmpresa();
+    private List<AlbEmpresa> listaTempAlbEmpresa = new ArrayList<>();
+    private ServicioSituacionAlbergue servicioSituacionAlbergue= new ServicioSituacionAlbergue();
+    private List<ServicioSituacionAlbergue> listaTempServicioSituacionAlbergue = new ArrayList<>();
+    @ManagedProperty(value = "#{AlbAlbergueServicioImpl}")
+    AlbAlbergueServicio albAlbergueServicio;
+    private AlbAlbergue albAlbergue= new AlbAlbergue();
+    private List<AlbAlbergue> listaTempAlbAlbergue = new ArrayList<>();
 
     @PostConstruct
     public void init() {
         if (!guardadoCabecera) {
+            albServicio = new AlbServicio();
+            albEmpresa= new AlbEmpresa();
+            servicioSituacionAlbergue= new ServicioSituacionAlbergue();
+            albAlbergue= new AlbAlbergue();
+            listaTempAlbServicio.clear();
+            listaTempAlbEmpresa.clear();
+            listaTempServicioSituacionAlbergue.clear();
+            listaTempAlbAlbergue.clear();
             albSituacion = new AlbSituacion();
             listaTipoEmpresa.clear();
             this.listaTipoEmpresa.addAll(getAlbSituacionServicio().listarTipoEmpresa());
@@ -87,7 +112,7 @@ public class Servicios implements Serializable {
             SelectItem selectItem = new SelectItem(obj.getTieId(), obj.getTieNombre());
             this.genListaSelected.add(selectItem);
         }
-        return genListaSelected;
+             return genListaSelected;
 
     }
 
@@ -173,11 +198,12 @@ public class Servicios implements Serializable {
 
     public Long getIdSeleccionAgua() {
         return IdSeleccionAgua;
+        
     }
 
     public void setIdSeleccionAgua(Long IdSeleccionAgua) {
         this.IdSeleccionAgua = IdSeleccionAgua;
-    }
+        }
 
     public AlbAlbergue getSelectedAlbergueAsignar() {
         return selectedAlbergueAsignar;
@@ -186,18 +212,24 @@ public class Servicios implements Serializable {
     public void setSelectedAlbergueAsignar(AlbAlbergue selectedAlbergueAsignar) {
         this.selectedAlbergueAsignar = selectedAlbergueAsignar;
         this.obtenerAlbergue(selectedAlbergueAsignar);
-       
-    }
 
+    }
+Long aux;
     public void obtenerAlbergue(AlbAlbergue objPUE) {
         try {
             listaAgua.clear();
             listaElectricidad.clear();
-            listaInternet.clear();            
+            listaInternet.clear();
+            listaBateriasSanitarias.clear();
+            listaServicioSalud.clear();
+            listaDesechosSolidos.clear();
+            listaEducacion.clear();
+            listaCombustibleFosil.clear();
+            listaAlimentos.clear();
             IdEditar = objPUE.getAlbId();
             for (AlbSituacion obj : listaAlbSituacion) {
-                Long aux = obj.getServicioSituacionAlbergue().getAlbAlbergue().getAlbId();
-                if (aux == IdEditar) {
+                aux = obj.getServicioSituacionAlbergue().getAlbAlbergue().getAlbId();
+               if (aux == IdEditar) {
                     if (obj.getServicioSituacionAlbergue().getAlbServicio().getSerId() == 1) {
                         listaAgua.clear();
                         listaAgua.add(obj);
@@ -210,10 +242,34 @@ public class Servicios implements Serializable {
                         listaInternet.clear();
                         listaInternet.add(obj);
                     }
+                    if (obj.getServicioSituacionAlbergue().getAlbServicio().getSerId() == 4) {
+                        listaBateriasSanitarias.clear();
+                        listaBateriasSanitarias.add(obj);
+                    }
+                    if (obj.getServicioSituacionAlbergue().getAlbServicio().getSerId() == 5) {
+                        listaServicioSalud.clear();
+                        listaServicioSalud.add(obj);
+                    }
+                    if (obj.getServicioSituacionAlbergue().getAlbServicio().getSerId() == 14) {
+                        listaDesechosSolidos.clear();
+                        listaDesechosSolidos.add(obj);
+                    }
+                    if (obj.getServicioSituacionAlbergue().getAlbServicio().getSerId() == 15) {
+                        listaEducacion.clear();
+                        listaEducacion.add(obj);
+                    }
+                    if (obj.getServicioSituacionAlbergue().getAlbServicio().getSerId() == 16) {
+                        listaCombustibleFosil.clear();
+                        listaCombustibleFosil.add(obj);
+                    }
+                    if (obj.getServicioSituacionAlbergue().getAlbServicio().getSerId() == 17) {
+                        listaAlimentos.clear();
+                        listaAlimentos.add(obj);
+                    }
                 }
 
             }
-        
+
         } catch (Exception ex) {
 
             LOG.error("Error: " + ex.getMessage());
@@ -221,5 +277,122 @@ public class Servicios implements Serializable {
         }
 
     }
-//zulay
+
+    public void guardarServicio() {
+       String nombre=albEmpresa.getEmpNombre();
+
+        if ("".equals(nombre)) {
+            mensajeEAS.errorLlenarDatos();
+        } else {
+            try {
+                AlbTipoEmpresa objTipoEmpresa = new AlbTipoEmpresa();
+                objTipoEmpresa.setTieId(IdSeleccionAgua);
+                albEmpresa.setAlbTipoEmpresa(objTipoEmpresa);
+                albEmpresa.setEmpEstado(1);
+                listaTempAlbEmpresa.clear();
+                listaTempAlbEmpresa.add(albEmpresa);
+                getAlbServicioServicio().guardarEmpresa(listaTempAlbEmpresa);
+                albServicio.setAlbEmpresa(albEmpresa);
+                albServicio.setSerEstado(1);
+                for (AlbServicio obj : listaServicio) {
+                    if (obj.getSerId() == 1) {
+                        albServicio.setSerNombre(obj.getSerNombre());
+                        listaTempAlbServicio.clear();
+                        listaTempAlbServicio.add(albServicio);
+                        getAlbServicioServicio().guardarServicio(listaTempAlbServicio);
+                         }
+                    break;
+                }
+                servicioSituacionAlbergue.setAlbServicio(albServicio);
+                servicioSituacionAlbergue.setAlbAlbergue(selectedAlbergueAsignar);
+                servicioSituacionAlbergue.setSerAlbEstado(1);
+                listaTempServicioSituacionAlbergue.clear();
+                listaTempServicioSituacionAlbergue.add(servicioSituacionAlbergue);
+                getAlbServicioServicio().guardarServicioSituacionAlbergue(listaServicioSituacionAlbergue);
+                
+                
+            } catch (Exception ex) {
+                guardadoCabecera = false;
+                LOG.error("Error: " + ex.getMessage());
+                mensajeEAS.error();
+            }
+        }
+
+    }
+
+    public List<AlbSituacion> getListaBateriasSanitarias() {
+        return listaBateriasSanitarias;
+    }
+
+    public void setListaBateriasSanitarias(List<AlbSituacion> listaBateriasSanitarias) {
+        this.listaBateriasSanitarias = listaBateriasSanitarias;
+    }
+
+    public List<AlbSituacion> getListaServicioSalud() {
+        return listaServicioSalud;
+    }
+
+    public void setListaServicioSalud(List<AlbSituacion> listaServicioSalud) {
+        this.listaServicioSalud = listaServicioSalud;
+    }
+
+    public AlbServicio getAlbServicio() {
+        return albServicio;
+    }
+
+    public void setAlbServicio(AlbServicio albServicio) {
+        this.albServicio = albServicio;
+    }
+
+    public AlbEmpresa getAlbEmpresa() {
+        return albEmpresa;
+    }
+
+    public void setAlbEmpresa(AlbEmpresa albEmpresa) {
+        this.albEmpresa = albEmpresa;
+    }
+
+    public AlbAlbergueServicio getAlbAlbergueServicio() {
+        return albAlbergueServicio;
+    }
+
+    public void setAlbAlbergueServicio(AlbAlbergueServicio albAlbergueServicio) {
+        this.albAlbergueServicio = albAlbergueServicio;
+    }
+
+    public List<AlbSituacion> getListaDesechosSolidos() {
+        return listaDesechosSolidos;
+    }
+
+    public void setListaDesechosSolidos(List<AlbSituacion> listaDesechosSolidos) {
+        this.listaDesechosSolidos = listaDesechosSolidos;
+    }
+
+    public List<AlbSituacion> getListaEducacion() {
+        return listaEducacion;
+    }
+
+    public void setListaEducacion(List<AlbSituacion> listaEducacion) {
+        this.listaEducacion = listaEducacion;
+    }
+
+    public List<AlbSituacion> getListaCombustibleFosil() {
+        return listaCombustibleFosil;
+    }
+
+    public void setListaCombustibleFosil(List<AlbSituacion> listaCombustibleFosil) {
+        this.listaCombustibleFosil = listaCombustibleFosil;
+    }
+
+    public List<AlbSituacion> getListaAlimentos() {
+        return listaAlimentos;
+    }
+
+    public void setListaAlimentos(List<AlbSituacion> listaAlimentos) {
+        this.listaAlimentos = listaAlimentos;
+    }
+    
+    
+    
+    
 }
