@@ -290,7 +290,6 @@ public class Albergue implements Serializable {
                     || "".equals(albAlbergue.getAlbArea()) || "".equals(albAlbergue.getAlbCoordx()) || "".equals(albAlbergue.getAlbCoordy()) || "".equals(albAlbergue.getAlbObservaciones())) {
                 mensajeEAS.errorLlenarDatos();
             } else {
-
                 listaTempAlbAlbergue.clear();
                 listaTempAlbAlbergue.add(objAlb);
                 getAlbAlbergueServicio().guardarJuego(listaTempAlbAlbergue);
