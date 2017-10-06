@@ -98,14 +98,59 @@
                 </p:dialog>
             </h:form>
 
+            <h:form id="Electricidad"> 
+                <p:dialog header="NUEVO" widgetVar="pNuevoElectri" id="dlgNuevoElectr" 
+                          closable="false">
+                    <h:panelGrid columns="2" cellpadding="2">
+                        <h:outputLabel value="Empresa: " />
+                        <p:inputText id="nombreEmpresa" style="text-transform: uppercase; font-weight:bold; color: black " 
+                                     value="#{servicios.albEmpresa.empNombre}" 
+                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
+                                     />                     
+                        <p:outputLabel value="Tipo Empresa:" />
+                        <p:selectOneMenu  id="tipoEmpresa" value="#{servicios.idSeleccionAgua}" style="width:150px">
+                            <f:selectItem  itemValue="" itemLabel="Seleccione Tipo: " noSelectionOption="false" />
+                            <f:selectItems value="#{servicios.listaAgua1}" />
+                        </p:selectOneMenu>
+
+                        <h:outputLabel value="Método de Provisión: " />
+                        <p:inputText id="metProv" style="text-transform: uppercase; font-weight:bold; color: black " 
+                                     value="#{servicios.albSituacion.sitMetProvision}" 
+                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
+                                     />
+                        <h:outputLabel value="Alcance del servicio: " />
+                        <p:inputText id="almacAgua" style="text-transform: uppercase; font-weight:bold; color: black " 
+                                     value="#{servicios.albSituacion.sitAlcanceServicio}" 
+                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
+                                     />
+
+                        <h:panelGrid columns="2" cellpadding="1">
+                            <p:commandButton id="btn_guardar" value="GUARDAR" update="msgs,:formh,:Electricidad,:formServicio" icon="fa fa-save"
+                                             action="#{servicios.guardarServicio()}" onclick="PF('pNuevoElectri').hide()" >
+                                <p:confirm header="Confirmación" message="¿Está seguro de guardar?" />
+                            </p:commandButton>
+                            <p:commandButton value="SALIR" icon="fa fa-close" onclick="PF('pNuevoElectri').hide()"
+                                             action="#{servicios.cancelarCargaDatos()}"/>
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" severity="alert">
+                                <p:commandButton   value="Si" type="button" styleClass="ui-confirmdialog-yes" 
+                                                   icon="ui-icon-check" />
+                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog>
+                        </h:panelGrid>
+
+                    </h:panelGrid>
+                </p:dialog>
+            </h:form>
+
 
 
             <p:dialog header="SERVICIOS DEL ALBERGUE" widgetVar="dlgServicios" minHeight="40" closable="true" draggable="true" resizable="true">
                 <h:form id="formServicio">
                     <h:panelGrid columns="2" cellpadding="3">
-                        <p:tabView >
+                        <p:tabView>
                             <p:tab title="AGUA">
-                                <h:panelGrid columns="2" cellpadding="10">               
+                                <h:panelGrid columns="2" cellpadding="10">  
+
                                     <p:dataTable id="tprincipal" 
                                                  var="object1" value="#{servicios.listaAgua}"
                                                  emptyMessage="No se encontraron datos"
@@ -152,8 +197,8 @@
                                         </p:column>
 
                                         <p:column   headerText="ELIMINAR" width="50" style="text-align: center" >
-                                            <p:commandButton id="btn_Eliminar"  update="msgs,:formh:" icon="ui-icon-trash"  >
-                                                <f:setPropertyActionListener value="#{object}" target="#{albergue.selectedSegUsuarioEliminar}" />
+                                            <p:commandButton id="btn_Eliminar"  update="msgs,:formh,:formServicio" icon="ui-icon-trash"  >
+                                                <f:setPropertyActionListener value="#{object1}" target="#{servicios.selectedServicioAguaEliminar}" />
                                                 <p:confirm header="Confirmación" message="Está seguro de Eliminar?" />
                                             </p:commandButton>
 
@@ -177,6 +222,15 @@
                                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} 
                                                  {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"    
                                                  >
+                                        <f:facet name="header">
+                                            <p:outputPanel>
+                                                <p:commandButton   id="nuevoElectr" type="button" value=" NUEVO " style="float: right"
+                                                                   onclick="PF('pNuevoElectri').show()" icon="fa fa fa-plus"
+                                                                   update=":#{p:component('Electricidad')}" >
+                                                </p:commandButton>
+                                            </p:outputPanel>
+                                        </f:facet>
+
                                         <p:column   headerText="EMPRESA"  width="100"
                                                     filterMatchMode="contains">
                                             <h:outputText value="#{object2.servicioSituacionAlbergue.albServicio.albEmpresa.empNombre}" />

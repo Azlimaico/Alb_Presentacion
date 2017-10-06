@@ -19,6 +19,7 @@ import com.persistencia.general.sistema.AlbEmpresa;
 import com.persistencia.general.sistema.AlbParroquia;
 import com.persistencia.general.sistema.AlbProvincia;
 import com.persistencia.general.sistema.AlbTipoEmpresa;
+import com.persistencia.parametros.sistema.ParametrosObjetos;
 import com.presentacion.mensajes.MensajeEAS;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -30,6 +31,8 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.model.SelectItem;
 import javax.swing.JOptionPane;
 import org.jboss.logging.Logger;
+import org.primefaces.component.tabview.TabView;
+import org.primefaces.event.TabChangeEvent;
 
 /**
  *
@@ -88,7 +91,9 @@ public class Servicios implements Serializable {
     private AlbSituacion selectedServicioEditar = new AlbSituacion();
     private AlbSituacion segSituacionObjects = new AlbSituacion();
     private Long estado, IdEditar;
-    
+
+    //ELIMINAR SERVICIO
+    private AlbSituacion selectedServicioAguaEliminar = new AlbSituacion();
 
     @PostConstruct
     public void init() {
@@ -242,36 +247,28 @@ public class Servicios implements Serializable {
                     if (obj.getServicioSituacionAlbergue().getAlbServicio().getSerNombre().equals("AGUA")) {
                         listaAgua.add(obj);
                     }
-                    if (obj.getServicioSituacionAlbergue().getAlbServicio().getSerId() == 2) {
-                        listaElectricidad.clear();
+                    if (obj.getServicioSituacionAlbergue().getAlbServicio().getSerNombre().equals("ELECTRICIDAD")) {
                         listaElectricidad.add(obj);
                     }
                     if (obj.getServicioSituacionAlbergue().getAlbServicio().getSerId() == 3) {
-                        listaInternet.clear();
                         listaInternet.add(obj);
                     }
                     if (obj.getServicioSituacionAlbergue().getAlbServicio().getSerId() == 4) {
-                        listaBateriasSanitarias.clear();
                         listaBateriasSanitarias.add(obj);
                     }
                     if (obj.getServicioSituacionAlbergue().getAlbServicio().getSerId() == 5) {
-                        listaServicioSalud.clear();
                         listaServicioSalud.add(obj);
                     }
                     if (obj.getServicioSituacionAlbergue().getAlbServicio().getSerId() == 14) {
-                        listaDesechosSolidos.clear();
                         listaDesechosSolidos.add(obj);
                     }
                     if (obj.getServicioSituacionAlbergue().getAlbServicio().getSerId() == 15) {
-                        listaEducacion.clear();
                         listaEducacion.add(obj);
                     }
                     if (obj.getServicioSituacionAlbergue().getAlbServicio().getSerId() == 16) {
-                        listaCombustibleFosil.clear();
                         listaCombustibleFosil.add(obj);
                     }
                     if (obj.getServicioSituacionAlbergue().getAlbServicio().getSerId() == 17) {
-                        listaAlimentos.clear();
                         listaAlimentos.add(obj);
                     }
                 }
@@ -311,33 +308,61 @@ public class Servicios implements Serializable {
                         listaTempAlbServicio.clear();
                         listaTempAlbServicio.add(albServicio);
                         getAlbServicioServicio().guardarServicio(listaTempAlbServicio);
+                        servicioSituacionAlbergue.setAlbServicio(albServicio);
+                        servicioSituacionAlbergue.setAlbAlbergue(selectedAlbergueAsignar);
+                        servicioSituacionAlbergue.setSerAlbEstado(1);
+                        listaTempServicioSituacionAlbergue.clear();
+                        listaTempServicioSituacionAlbergue.add(servicioSituacionAlbergue);
+                        getAlbServicioServicio().guardarServicioSituacionAlbergue(listaTempServicioSituacionAlbergue);
+                        albSituacion.getSitMetProvision();
+                        albSituacion.getSitAlmacenamiento();
+                        albSituacion.getSitAguaBebible();
+                        albSituacion.setSitMetProvision(albSituacion.getSitMetProvision());
+                        albSituacion.setSitAlmacenamiento(albSituacion.getSitAlmacenamiento());
+                        albSituacion.setSitAguaBebible(albSituacion.getSitAguaBebible());
+                        albSituacion.setSitEstado(1);
+                        albSituacion.setServicioSituacionAlbergue(servicioSituacionAlbergue);
+                        listaTempAlbSituacion.clear();
+                        listaAlbSituacion.add(albSituacion);
+                        listaTempAlbSituacion.add(albSituacion);
+                        getAlbServicioServicio().guardarSituacion(listaTempAlbSituacion);
+                        albSituacion = new AlbSituacion();
+                        guardadoCabecera = true;
+                        mensajeEAS.info(true);
+                        init();
+                        this.obtenerAlbergue(selectedAlbergueAsignar);
+                        break;
+                    }
+                    if (obj.getSerId() == 2) {
+                        albServicio.setSerNombre(obj.getSerNombre());
+                        listaTempAlbServicio.clear();
+                        listaTempAlbServicio.add(albServicio);
+                        getAlbServicioServicio().guardarServicio(listaTempAlbServicio);
+                        //
+                        servicioSituacionAlbergue.setAlbServicio(albServicio);
+                        servicioSituacionAlbergue.setAlbAlbergue(selectedAlbergueAsignar);
+                        servicioSituacionAlbergue.setSerAlbEstado(1);
+                        listaTempServicioSituacionAlbergue.clear();
+                        listaTempServicioSituacionAlbergue.add(servicioSituacionAlbergue);
+                        getAlbServicioServicio().guardarServicioSituacionAlbergue(listaTempServicioSituacionAlbergue);
+                        albSituacion.getSitMetProvision();
+                        albSituacion.getSitAlcanceServicio();
+                        albSituacion.setSitMetProvision(albSituacion.getSitMetProvision());
+                        albSituacion.setSitAlcanceServicio(albSituacion.getSitAlcanceServicio());
+                        albSituacion.setSitEstado(1);
+                        albSituacion.setServicioSituacionAlbergue(servicioSituacionAlbergue);
+                        listaTempAlbSituacion.clear();
+                        listaAlbSituacion.add(albSituacion);
+                        listaTempAlbSituacion.add(albSituacion);
+                        getAlbServicioServicio().guardarSituacion(listaTempAlbSituacion);
+                        albSituacion = new AlbSituacion();
+                        guardadoCabecera = true;
+                        mensajeEAS.info(true);
+                        init();
+                        this.obtenerAlbergue(selectedAlbergueAsignar);
                         break;
                     }
                 }
-                servicioSituacionAlbergue.setAlbServicio(albServicio);
-                servicioSituacionAlbergue.setAlbAlbergue(selectedAlbergueAsignar);
-                servicioSituacionAlbergue.setSerAlbEstado(1);
-                listaTempServicioSituacionAlbergue.clear();
-                listaTempServicioSituacionAlbergue.add(servicioSituacionAlbergue);
-                getAlbServicioServicio().guardarServicioSituacionAlbergue(listaTempServicioSituacionAlbergue);
-                albSituacion.getSitMetProvision();
-                albSituacion.getSitAlmacenamiento();
-                albSituacion.getSitAguaBebible();
-                albSituacion.setSitMetProvision(albSituacion.getSitMetProvision());
-                albSituacion.setSitAlmacenamiento(albSituacion.getSitAlmacenamiento());
-                albSituacion.setSitAguaBebible(albSituacion.getSitAguaBebible());
-                albSituacion.setSitEstado(1);
-                albSituacion.setServicioSituacionAlbergue(servicioSituacionAlbergue);
-                listaTempAlbSituacion.clear();
-                listaAlbSituacion.add(albSituacion);
-                listaTempAlbSituacion.add(albSituacion);
-                getAlbServicioServicio().guardarSituacion(listaTempAlbSituacion);
-                albSituacion = new AlbSituacion();
-                guardadoCabecera = true;
-                mensajeEAS.info(true);
-                init();
-                this.obtenerAlbergue(selectedAlbergueAsignar);
-
             } catch (Exception ex) {
                 guardadoCabecera = false;
                 LOG.error("Error: " + ex.getMessage());
@@ -438,6 +463,28 @@ public class Servicios implements Serializable {
         }
     }
 
+    public void cargarTable() {
+        albSituacion = new AlbSituacion();
+        listaAlbSituacion.clear();
+        this.listaAlbSituacion.addAll(getAlbSituacionServicio().listarAlbSituacion());
+    }
+
+    public void eliminarServicioSistema(AlbSituacion objPU) {
+        try {
+
+            objPU.setSitEstado(ParametrosObjetos.INACTIVO);
+            getAlbServicioServicio().guardarServicioEliminar(objPU);
+            mensajeEAS.Eliminar();
+            this.cargarTable();
+            this.obtenerAlbergue(selectedAlbergueAsignar);
+        } catch (Exception ex) {
+
+            LOG.error("Error: " + ex.getMessage());
+            mensajeEAS.error();
+        }
+
+    }
+
     public List<AlbSituacion> getListaBateriasSanitarias() {
         return listaBateriasSanitarias;
     }
@@ -525,6 +572,15 @@ public class Servicios implements Serializable {
     public void setSelectedServicioEditar(AlbSituacion selectedServicioEditar) {
         this.selectedServicioEditar = selectedServicioEditar;
         this.editarServicioSistema(selectedServicioEditar);
+    }
+
+    public AlbSituacion getSelectedServicioAguaEliminar() {
+        return selectedServicioAguaEliminar;
+    }
+
+    public void setSelectedServicioAguaEliminar(AlbSituacion selectedServicioAguaEliminar) {
+        this.selectedServicioAguaEliminar = selectedServicioAguaEliminar;
+        eliminarServicioSistema(selectedServicioAguaEliminar);
     }
 
 }
