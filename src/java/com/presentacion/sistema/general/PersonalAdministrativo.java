@@ -14,6 +14,7 @@ import com.persistencia.general.sistema.AlbEstadoCivil;
 import com.persistencia.general.sistema.AlbFuerza;
 import com.persistencia.general.sistema.AlbProfesion;
 import com.persistencia.general.sistema.AlbRango;
+import com.persistencia.parametros.sistema.ParametrosObjetos;
 import com.persistencia.seguridad.sistema.AlbPersonalAdministrativo;
 import com.presentacion.mensajes.MensajeEAS;
 import java.io.Serializable;
@@ -70,18 +71,13 @@ public class PersonalAdministrativo implements Serializable {
     List<SelectItem> listarRango = new ArrayList<SelectItem>();
     private List<AlbRango> listaRango = new ArrayList<>();
 
-    
-    private Date date5;
+    //EDITAR PERSONAL ADMINISTRATIVO
+    private AlbPersonalAdministrativo selectedPerAdminEditar = new AlbPersonalAdministrativo();
+    private AlbPersonalAdministrativo segPerAdminObjects = new AlbPersonalAdministrativo();
+    private Long estado, IdEditar;
 
-    public Date getDate5() {
-        return date5;
-    }
-
-    public void setDate5(Date date5) {
-        this.date5 = date5;
-    }
-    
-    
+    // ELIMINAR PERSONAL ADMINISTRATIVO
+    private AlbPersonalAdministrativo selectedSegPerAdminEliminar = new AlbPersonalAdministrativo();
     @PostConstruct
     public void init() {
         if (!guardadoCabecera) {
@@ -240,25 +236,26 @@ public class PersonalAdministrativo implements Serializable {
     public void setListarRango(List<SelectItem> listarRango) {
         this.listarRango = listarRango;
     }
-public void cancelarCargaDatos() {
+
+    public void cancelarCargaDatos() {
         albPersonalAdministrativo = new AlbPersonalAdministrativo();
     }
-    
+
     public void guardarPerAdmin() {
         if ("".equals(albPersonalAdministrativo.getPeaNombres()) || "".equals(albPersonalAdministrativo.getPeaApellidos()) || "".equals(albPersonalAdministrativo.getPeaCedula())
-                 || "".equals(albPersonalAdministrativo.getPeaLugarNacimiento()) 
-                 | "".equals(albPersonalAdministrativo.getPeaCelular()) || "".equals(albPersonalAdministrativo.getPeaEmail()) || "".equals(albPersonalAdministrativo.getPeaObservaciones())) {
+                || "".equals(albPersonalAdministrativo.getPeaLugarNacimiento())
+                | "".equals(albPersonalAdministrativo.getPeaCelular()) || "".equals(albPersonalAdministrativo.getPeaEmail()) || "".equals(albPersonalAdministrativo.getPeaObservaciones())) {
             mensajeEAS.errorLlenarDatos();
         } else {
 
             try {
-                
+
                 albPersonalAdministrativo.getPeaSexo();
                 albPersonalAdministrativo.getPeaFechaNacimiento();
                 AlbEstadoCivil objEstCivil = new AlbEstadoCivil();
                 AlbProfesion objProfesion = new AlbProfesion();
-                AlbFuerza objFuerza= new AlbFuerza();
-                AlbRango objRango= new AlbRango();
+                AlbFuerza objFuerza = new AlbFuerza();
+                AlbRango objRango = new AlbRango();
                 objEstCivil.setEciId(IdSeleccionEstadoCivil);
                 objProfesion.setPrfId(IdSeleccionProfesion);
                 objFuerza.setFueId(IdSeleccionFuerza);
@@ -267,7 +264,7 @@ public void cancelarCargaDatos() {
                 albPersonalAdministrativo.setAlbProfesion(objProfesion);
                 albPersonalAdministrativo.setAlbFuerza(objFuerza);
                 albPersonalAdministrativo.setAlbRango(objRango);
-                albPersonalAdministrativo.setPeaEstado(1);                
+                albPersonalAdministrativo.setPeaEstado(1);
                 listaTempAlbPerAdmnin.clear();
                 listaTempAlbPerAdmnin.add(albPersonalAdministrativo);
                 getAlbPersonalAdministrativoServicio().guardarPersonalAdmin(listaTempAlbPerAdmnin);
@@ -283,4 +280,159 @@ public void cancelarCargaDatos() {
         }
 
     }
+
+    public AlbPersonalAdministrativo getSelectedPerAdminEditar() {
+        return selectedPerAdminEditar;
+    }
+
+    public void setSelectedPerAdminEditar(AlbPersonalAdministrativo selectedPerAdminEditar) {
+        this.selectedPerAdminEditar = selectedPerAdminEditar;
+        editarPerAdminSistema(selectedPerAdminEditar);
+    }
+
+    public void editarPerAdminSistema(AlbPersonalAdministrativo objPUE) {
+        try {
+            segPerAdminObjects = new AlbPersonalAdministrativo();
+            AlbProfesion objPro = new AlbProfesion();
+            objPro.setPrfId(objPUE.getAlbProfesion().getPrfId());
+            objPro.setPrfProfesion(objPUE.getAlbProfesion().getPrfProfesion());
+            AlbFuerza objFuerza = new AlbFuerza();
+            objFuerza.setFueId(objPUE.getAlbFuerza().getFueId());
+            objFuerza.setFueFuerza(objPUE.getAlbFuerza().getFueFuerza());
+            AlbRango objRango = new AlbRango();
+            objRango.setRanId(objPUE.getAlbRango().getRanId());
+            objRango.setRanRango(objPUE.getAlbRango().getRanRango());
+            AlbEstadoCivil objEsCiv = new AlbEstadoCivil();
+            objEsCiv.setEciId(objPUE.getAlbEstadoCivil().getEciId());
+            objEsCiv.setEciTipo(objPUE.getAlbEstadoCivil().getEciTipo());
+            IdEditar = objPUE.getPeaId();
+            objPUE.getPeaNombres();
+            objPUE.getPeaApellidos();
+            objPUE.getPeaCedula();
+            objPUE.getPeaSexo();
+            objPUE.getPeaLugarNacimiento();
+            objPUE.getPeaCelular();
+            objPUE.getPeaEmail();
+            objPUE.getPeaObservaciones();
+            segPerAdminObjects.setAlbProfesion(objPro);
+            segPerAdminObjects.setAlbFuerza(objFuerza);
+            segPerAdminObjects.setAlbRango(objRango);
+            segPerAdminObjects.setPeaNombres(objPUE.getPeaNombres());
+            segPerAdminObjects.setPeaApellidos(objPUE.getPeaApellidos());
+            segPerAdminObjects.setPeaCedula(objPUE.getPeaCedula());
+            segPerAdminObjects.setPeaSexo(objPUE.getPeaSexo());
+            segPerAdminObjects.setPeaLugarNacimiento(objPUE.getPeaLugarNacimiento());
+            segPerAdminObjects.setAlbEstadoCivil(objEsCiv);
+            segPerAdminObjects.setPeaCelular(objPUE.getPeaCelular());
+            segPerAdminObjects.setPeaEmail(objPUE.getPeaEmail());
+            segPerAdminObjects.setPeaObservaciones(objPUE.getPeaObservaciones());
+            segPerAdminObjects.setPeaEstado(1);
+        } catch (Exception ex) {
+
+            LOG.error("Error: " + ex.getMessage());
+            mensajeEAS.error();
+        }
+    }
+
+    public void actualizarPerAdminSistema() {
+        try {
+
+            AlbProfesion objPro = new AlbProfesion();
+            AlbFuerza objFuerza = new AlbFuerza();
+            AlbRango objRango = new AlbRango();
+            AlbEstadoCivil objEsCiv = new AlbEstadoCivil();
+            AlbPersonalAdministrativo objPerAdmin = new AlbPersonalAdministrativo();
+            if (IdSeleccionProfesion == null) {
+                objPro.setPrfId(segPerAdminObjects.getAlbProfesion().getPrfId());
+            } else {
+                objPro.setPrfId(IdSeleccionProfesion);
+            }
+            if (IdSeleccionFuerza == null) {
+                objFuerza.setFueId(segPerAdminObjects.getAlbFuerza().getFueId());
+            } else {
+                objFuerza.setFueId(IdSeleccionFuerza);
+            }
+            if (IdSeleccionRango == null) {
+                objRango.setRanId(segPerAdminObjects.getAlbRango().getRanId());
+            } else {
+                objRango.setRanId(IdSeleccionRango);
+            }
+            if (IdSeleccionEstadoCivil == null) {
+                objEsCiv.setEciId(segPerAdminObjects.getAlbEstadoCivil().getEciId());
+            } else {
+                objEsCiv.setEciId(IdSeleccionEstadoCivil);
+            }
+            objPerAdmin.setPeaId(IdEditar);
+            objPerAdmin.setAlbProfesion(objPro);
+            objPerAdmin.setAlbFuerza(objFuerza);
+            objPerAdmin.setAlbRango(objRango);
+            objPerAdmin.setAlbEstadoCivil(objEsCiv);
+            objPerAdmin.setPeaNombres(segPerAdminObjects.getPeaNombres());
+            objPerAdmin.setPeaApellidos(segPerAdminObjects.getPeaApellidos());
+            objPerAdmin.setPeaCedula(segPerAdminObjects.getPeaCedula());
+            objPerAdmin.setPeaSexo(segPerAdminObjects.getPeaSexo());
+            objPerAdmin.setPeaLugarNacimiento(segPerAdminObjects.getPeaLugarNacimiento());
+            objPerAdmin.setPeaCelular(segPerAdminObjects.getPeaCelular());
+            objPerAdmin.setPeaEmail(segPerAdminObjects.getPeaEmail());
+            objPerAdmin.setPeaObservaciones(segPerAdminObjects.getPeaObservaciones());
+            objPerAdmin.setPeaEstado(1);
+            if ("".equals(albPersonalAdministrativo.getPeaNombres()) || "".equals(albPersonalAdministrativo.getPeaApellidos()) || "".equals(albPersonalAdministrativo.getPeaCedula())
+                    || "".equals(albPersonalAdministrativo.getPeaLugarNacimiento())
+                    | "".equals(albPersonalAdministrativo.getPeaCelular()) || "".equals(albPersonalAdministrativo.getPeaEmail()) || "".equals(albPersonalAdministrativo.getPeaObservaciones())) {
+                mensajeEAS.errorLlenarDatos();
+            } else {
+                listaTempAlbPerAdmnin.clear();
+                listaTempAlbPerAdmnin.add(objPerAdmin);
+                getAlbPersonalAdministrativoServicio().guardarPersonalAdmin(listaTempAlbPerAdmnin);
+                albPersonalAdministrativo = new AlbPersonalAdministrativo();
+                guardadoCabecera = true;
+                init();
+                mensajeEAS.Modificar();
+            }
+        } catch (Exception ex) {
+            LOG.error("Error: " + ex.getMessage());
+            mensajeEAS.error();
+        }
+
+    }
+
+    public AlbPersonalAdministrativo getSegPerAdminObjects() {
+        return segPerAdminObjects;
+    }
+
+    public void setSegPerAdminObjects(AlbPersonalAdministrativo segPerAdminObjects) {
+        this.segPerAdminObjects = segPerAdminObjects;
+    }
+
+    public AlbPersonalAdministrativo getSelectedSegPerAdminEliminar() {
+        return selectedSegPerAdminEliminar;
+    }
+
+    public void setSelectedSegPerAdminEliminar(AlbPersonalAdministrativo selectedSegPerAdminEliminar) {
+        this.selectedSegPerAdminEliminar = selectedSegPerAdminEliminar;
+        eliminarPerAdminSistema(selectedSegPerAdminEliminar);
+    }
+    
+    public void eliminarPerAdminSistema(AlbPersonalAdministrativo objPU) {
+        try {
+
+            objPU.setPeaEstado(ParametrosObjetos.INACTIVO);
+            getAlbPersonalAdministrativoServicio().guardarPerAdmin(objPU);
+            mensajeEAS.Eliminar();
+            cargarTable();
+
+        } catch (Exception ex) {
+
+            LOG.error("Error: " + ex.getMessage());
+            mensajeEAS.error();
+        }
+
+    }
+     public void cargarTable() {
+        albPersonalAdministrativo = new AlbPersonalAdministrativo();
+        listaAlbPersonalAdministrativo.clear();
+        this.listaAlbPersonalAdministrativo.addAll(getAlbPersonalAdministrativoServicio().listarPersonalAdmin());
+
+    }
+    
 }

@@ -73,7 +73,7 @@ and open the template in the editor.
                                 <h:outputText value="#{object.peaEmail}" />
                             </p:column>
 
-                            <p:column    headerText="PROFESION"  width="90"
+                            <p:column    headerText="OCUPACIÓN"  width="90"
                                          filterMatchMode="contains">
                                 <h:outputText value="#{object.albProfesion.prfProfesion}" />
                             </p:column>
@@ -87,6 +87,27 @@ and open the template in the editor.
                                          filterMatchMode="contains">
                                 <h:outputText value="#{object.albRango.ranRango}" />
                             </p:column>
+                            <p:column   headerText="EDITAR" width="50"  style="text-align: center" >
+                                <p:commandButton id="btn_Editar" icon="ui-icon-pencil" onclick="PF('dlgEditar').show();" update="formEditarPerAdmin" >
+                                    <f:setPropertyActionListener value="#{object}" target="#{personalAdministrativo.selectedPerAdminEditar}" />
+                                    <p:resetInput target="formEditarPerAdmin" />
+                                </p:commandButton>
+                            </p:column>
+                            
+                            <p:column   headerText="ELIMINAR" width="50" style="text-align: center" >
+                                <p:commandButton id="btn_Eliminar"  update="msgs,:formPerAdm:" icon="ui-icon-trash"  >
+                                    <f:setPropertyActionListener value="#{object}" target="#{personalAdministrativo.selectedSegPerAdminEliminar}" />
+                                    <p:confirm header="Confirmación" message="Está seguro de Eliminar?" />
+                                </p:commandButton>
+
+                                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" severity="alert">
+                                    <p:commandButton   value="Si" type="button" styleClass="ui-confirmdialog-yes" 
+                                                       icon="ui-icon-check" />
+                                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                </p:confirmDialog>
+
+                            </p:column>
+                            
                         </p:dataTable>
                     </p:panel>
                 </h:panelGrid>
@@ -98,7 +119,7 @@ and open the template in the editor.
                     <h:panelGrid columns="2" cellpadding="2">
                         <h:outputLabel value="Fecha nacimiento: " />
                         <p:inputText type="date" value="#{personalAdministrativo.albPersonalAdministrativo.peaFechaNacimiento}">
-                            
+
                         </p:inputText> 
 
                         <h:outputLabel value="Nombres: " />
@@ -187,6 +208,95 @@ and open the template in the editor.
                     </h:panelGrid>
                 </p:dialog>
             </h:form>
+            <p:dialog header="EDITAR" widgetVar="dlgEditar" minHeight="40" closable="false" draggable="false">
+                <h:form id="formEditarPerAdmin">
+                    <p:growl id="msgsUsuario"  />
+
+                    <h:panelGrid columns="2" cellpadding="3">
+                        <h:outputLabel value="Nombre : *" ></h:outputLabel>
+                        <p:inputText id="txt_NombreEditar"  value="#{personalAdministrativo.segPerAdminObjects.peaNombres}" 
+                                     required="true" style="text-transform: uppercase; font-weight:bold; color: black " >
+                        </p:inputText>
+                        
+                        <h:outputLabel value="Apellido : *" ></h:outputLabel>
+                        <p:inputText id="txt_ApeEditar"  value="#{personalAdministrativo.segPerAdminObjects.peaApellidos}" 
+                                     required="true" style="text-transform: uppercase; font-weight:bold; color: black " >
+                        </p:inputText>
+                        
+                        <h:outputLabel value="Cédula : *" ></h:outputLabel>
+                        <p:inputText id="txt_CedulEditar"  value="#{personalAdministrativo.segPerAdminObjects.peaCedula}" 
+                                     required="true" style="text-transform: uppercase; font-weight:bold; color: black " >
+                        </p:inputText>
+                        
+                        <p:outputLabel for="consoleEditar" value="Sexo:" />
+                        <p:selectOneRadio id="consoleEditar" value="#{personalAdministrativo.segPerAdminObjects.peaSexo}">
+                            <f:selectItem itemLabel="M" itemValue="1" />
+                            <f:selectItem itemLabel="F" itemValue="0" />
+                        </p:selectOneRadio>
+                        
+                        <h:outputLabel value="Lugar de Nacimiento : *" ></h:outputLabel>
+                        <p:inputText id="txt_NaciEditar"  value="#{personalAdministrativo.segPerAdminObjects.peaLugarNacimiento}" 
+                                     required="true" style="text-transform: uppercase; font-weight:bold; color: black " >
+                        </p:inputText>
+                        
+                        <h:outputLabel value="Estado Civil: *" ></h:outputLabel>
+                        <p:selectOneMenu  id="txtEstaCivil_edit"  value="#{personalAdministrativo.idSeleccionEstadoCivil}" style="width:150px" >
+                            <f:selectItem  itemValue="" itemLabel="#{personalAdministrativo.segPerAdminObjects.albEstadoCivil.eciTipo} " noSelectionOption="false"  />
+                            <f:selectItems value="#{personalAdministrativo.listarEstadoCivil}" /> 
+                        </p:selectOneMenu>
+                        
+                        <h:outputLabel value="Celular : *" ></h:outputLabel>
+                        <p:inputText id="txt_celularEditar"  value="#{personalAdministrativo.segPerAdminObjects.peaCelular}" 
+                                     required="true" >
+                        </p:inputText>
+                        
+                        <h:outputLabel value="E-mail : *" ></h:outputLabel>
+                        <p:inputText id="txt_mailEditar"  value="#{personalAdministrativo.segPerAdminObjects.peaEmail}" 
+                                     required="true" >
+                        </p:inputText>
+                        
+                        <h:outputLabel value="Ocupación: *" ></h:outputLabel>
+                        <p:selectOneMenu  id="txtProf_edit"  value="#{personalAdministrativo.idSeleccionProfesion}" style="width:150px" >
+                            <f:selectItem  itemValue="" itemLabel="#{personalAdministrativo.segPerAdminObjects.albProfesion.prfProfesion} " noSelectionOption="false"  />
+                            <f:selectItems value="#{personalAdministrativo.listarProfesion}" /> 
+                        </p:selectOneMenu>
+                        
+                        <h:outputLabel value="Fuerza: *" ></h:outputLabel>
+                        <p:selectOneMenu  id="txtFuer_edit"  value="#{personalAdministrativo.idSeleccionFuerza}" style="width:150px" >
+                            <f:selectItem  itemValue="" itemLabel="#{personalAdministrativo.segPerAdminObjects.albFuerza.fueFuerza} " noSelectionOption="false"  />
+                            <f:selectItems value="#{personalAdministrativo.listarFuerza}" /> 
+                        </p:selectOneMenu>
+                        
+                        <h:outputLabel value="Rango: *" ></h:outputLabel>
+                        <p:selectOneMenu  id="txtRang_edit"  value="#{personalAdministrativo.idSeleccionRango}" style="width:150px" >
+                            <f:selectItem  itemValue="" itemLabel="#{personalAdministrativo.segPerAdminObjects.albRango.ranRango} " noSelectionOption="false"  />
+                            <f:selectItems value="#{personalAdministrativo.listarRango}" /> 
+                        </p:selectOneMenu>
+                        
+                        <h:outputLabel value="Observaciones : *" ></h:outputLabel>
+                        <p:inputText id="txt_ObsEditar"  value="#{personalAdministrativo.segPerAdminObjects.peaObservaciones}" 
+                                     required="true" style="text-transform: uppercase; font-weight:bold; color: black " >
+                        </p:inputText>
+                        
+                        <f:facet name="footer">
+                            <p:commandButton value="GUARDAR"  update="msgs,:formPerAdm:" icon="fa fa-save"
+                                             action="#{personalAdministrativo.actualizarPerAdminSistema()}" onclick="PF('dlgEditar').hide()"  >
+                                <p:confirm header="Confirmación" message="Está seguro de actualizar?" />
+                            </p:commandButton>
+                            <p:commandButton value="SALIR" type="reset" icon="fa fa-close"
+                                             onclick="PF('dlgEditar').hide()"/>
+
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" severity="alert">
+                                <p:commandButton   value="Si" type="button" styleClass="ui-confirmdialog-yes" 
+                                                   icon="ui-icon-check" />
+                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog>
+                        </f:facet>
+                    </h:panelGrid>
+
+                </h:form>
+            </p:dialog>
+
         </h:body>
     </ui:define>
 </ui:composition>

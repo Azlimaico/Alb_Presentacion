@@ -1,0 +1,331 @@
+<?xml version='1.0' encoding='iso-8859-1' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition template="/Layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+    <ui:define name="content">
+        <h:head><title>MANTENIMIENTO</title>
+            <link href="estilos/jsfcrud.css" type="text/css" rel="stylesheet" />
+            <link href="estilos/estilo.css" type="text/css" rel="stylesheet" />
+            <script type="text/javascript" src="estilos/validaciones.js"></script>
+            <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+        </h:head>
+        <h:body>
+            <p:growl id="msgs" showDetail="true" />
+            <h:form id="form">
+                <h3>MANTENIMIENTO</h3>
+                <p:tabView >
+                    <p:tab title="PROFESION">
+                        <h:panelGrid columns="2" cellpadding="5">
+                            <p:dataTable id="tprincipal9" 
+                                         value="#{mantenimiento.listaProfesion}" var="object"
+                                         emptyMessage="No se encontraron datos"
+                                         rows="11" paginator="true" 
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} 
+                                         {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"    
+                                         >
+                                <f:facet name="header">
+                                    <p:outputPanel>
+                                        <p:commandButton   id="id_boton1" type="button" value=" NUEVO " style="float: right"
+                                                           onclick="PF('pNuevoProfesion').show()" icon="fa fa fa-plus"
+                                                           update=":#{p:component('Profesion')}" >
+                                        </p:commandButton>
+                                    </p:outputPanel>
+                                </f:facet>
+                                <p:column headerText="PROFESION"  width="50"
+                                          filterMatchMode="contains">
+                                    <h:outputText value="#{object.prfProfesion}" />
+                                </p:column>
+
+                                <p:column headerText="ESTADO"  width="50"
+                                          filterMatchMode="contains">
+                                    <h:outputText value="#{object.prfEstado}" />
+                                </p:column>
+                                <p:column   headerText="EDITAR" width="50"  style="text-align: center" >
+                                    <p:commandButton id="btn_Editar" icon="ui-icon-pencil" onclick="PF('dlgEditarProfesion').show();" update="formEditarProfesion" >
+                                        <f:setPropertyActionListener value="#{object}" target="#{mantenimiento.selectedProfesionEditar}" />
+                                        <p:resetInput target=":formEditarProfesion" />
+                                    </p:commandButton>
+                                </p:column>
+                                <p:column   headerText="ELIMINAR" width="50" style="text-align: center" >
+                                    <p:commandButton id="btn_Eliminar"  update="msgs,:form" icon="ui-icon-trash"  >
+                                        <f:setPropertyActionListener value="#{object}" target="#{mantenimiento.selectedProfesionEliminar}" />
+                                        <p:confirm header="Confirmación" message="Está seguro de Eliminar?" />
+                                    </p:commandButton>
+
+                                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" severity="alert">
+                                        <p:commandButton   value="Si" type="button" styleClass="ui-confirmdialog-yes" 
+                                                           icon="ui-icon-check" />
+                                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                    </p:confirmDialog>
+
+                                </p:column>
+                            </p:dataTable>
+                        </h:panelGrid>
+                    </p:tab>
+
+                    <p:tab title="FUERZA">
+                        <h:panelGrid columns="2" cellpadding="5">
+                            <p:dataTable id="tprincipalFuer" 
+                                         value="#{mantenimiento.listaFuerza}" var="object1"
+                                         emptyMessage="No se encontraron datos"
+                                         rows="11" paginator="true" 
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} 
+                                         {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"    
+                                         >
+                                <f:facet name="header">
+                                    <p:outputPanel>
+                                        <p:commandButton   id="id_boton1" type="button" value=" NUEVO " style="float: right"
+                                                           onclick="PF('pNuevoFuerza').show()" icon="fa fa fa-plus"
+                                                           update=":#{p:component('Fuerza')}" >
+                                        </p:commandButton>
+                                    </p:outputPanel>
+                                </f:facet>
+                                <p:column headerText="FUERZA"  width="50"
+                                          filterMatchMode="contains">
+                                    <h:outputText value="#{object1.fueFuerza}" />
+                                </p:column>
+
+                                <p:column headerText="ESTADO"  width="50"
+                                          filterMatchMode="contains">
+                                    <h:outputText value="#{object1.fueEstado}" />
+                                </p:column>
+                                <p:column   headerText="EDITAR" width="50"  style="text-align: center" >
+                                    <p:commandButton id="btn_EditarFuerza" icon="ui-icon-pencil" onclick="PF('dlgEditarFuerza').show();" update="formEditarFuerza" >
+                                        <f:setPropertyActionListener value="#{object1}" target="#{mantenimiento.selectedFuerzaEditar}" />
+                                        <p:resetInput target=":formEditarFuerza" />
+                                    </p:commandButton>
+                                </p:column>
+                                <p:column   headerText="ELIMINAR" width="50" style="text-align: center" >
+                                    <p:commandButton id="btn_EliminarFuerza"  update="msgs,:form" icon="ui-icon-trash"  >
+                                        <f:setPropertyActionListener value="#{object1}" target="#{mantenimiento.selectedFuerzaEliminar}" />
+                                        <p:confirm header="Confirmación" message="Está seguro de Eliminar?" />
+                                    </p:commandButton>
+
+                                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" severity="alert">
+                                        <p:commandButton   value="Si" type="button" styleClass="ui-confirmdialog-yes" 
+                                                           icon="ui-icon-check" />
+                                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                    </p:confirmDialog>
+                                </p:column>
+                            </p:dataTable>
+                        </h:panelGrid>
+                    </p:tab>
+
+                    <p:tab title="RANGO">
+                        <h:panelGrid columns="2" cellpadding="5">
+                            <p:dataTable id="tprincipalRango" 
+                                         value="#{mantenimiento.listaRango}" var="object2"
+                                         emptyMessage="No se encontraron datos"
+                                         rows="11" paginator="true" 
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} 
+                                         {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"    
+                                         >
+                                <f:facet name="header">
+                                    <p:outputPanel>
+                                        <p:commandButton   id="id_boton1" type="button" value=" NUEVO " style="float: right"
+                                                           onclick="PF('pNuevoRango').show()" icon="fa fa fa-plus"
+                                                           update=":#{p:component('Rango')}" >
+                                        </p:commandButton>
+                                    </p:outputPanel>
+                                </f:facet>
+                                <p:column headerText="RANGO"  width="50"
+                                          filterMatchMode="contains">
+                                    <h:outputText value="#{object2.ranRango}" />
+                                </p:column>
+
+                                <p:column headerText="ESTADO"  width="50"
+                                          filterMatchMode="contains">
+                                    <h:outputText value="#{object2.ranEstado}" />
+                                </p:column>
+                                <p:column   headerText="EDITAR" width="50"  style="text-align: center" >
+                                    <p:commandButton id="btn_EditarRngo" icon="ui-icon-pencil" onclick="PF('dlgEditarRango').show();" update="formEditarRango" >
+                                        <f:setPropertyActionListener value="#{object2}" target="#{mantenimiento.selectedRangoEditar}" />
+                                        <p:resetInput target=":formEditarRango" />
+                                    </p:commandButton>
+                                </p:column>
+                                <p:column   headerText="ELIMINAR" width="50" style="text-align: center" >
+                                    <p:commandButton id="btn_EliminarRango"  update="msgs,:form" icon="ui-icon-trash"  >
+                                        <f:setPropertyActionListener value="#{object2}" target="#{mantenimiento.selectedRangoEliminar}" />
+                                        <p:confirm header="Confirmación" message="Está seguro de Eliminar?" />
+                                    </p:commandButton>
+
+                                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" severity="alert">
+                                        <p:commandButton   value="Si" type="button" styleClass="ui-confirmdialog-yes" 
+                                                           icon="ui-icon-check" />
+                                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                    </p:confirmDialog>
+                                </p:column>
+                            </p:dataTable>
+                        </h:panelGrid>
+                    </p:tab>
+
+                </p:tabView>
+            </h:form>
+
+            <h:form id="Profesion" >      
+                <p:dialog header="NUEVA PROFESION" widgetVar="pNuevoProfesion" id="dlgNuevoProfesion" 
+                          closable="false">
+                    <h:panelGrid columns="2" cellpadding="2">
+                        <h:outputLabel value="Profesion: " />
+                        <p:inputText id="nombre" style="text-transform: uppercase; font-weight:bold; color: black " 
+                                     value="#{mantenimiento.albProfesion.prfProfesion}" 
+                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
+                                     /> 
+                        <h:panelGrid columns="2" cellpadding="1">
+                            <p:commandButton id="btn_guardar" value="GUARDAR"  update="msgs,:form,:Profesion" icon="fa fa-save"
+                                             action="#{mantenimiento.guardarProfesion()}"   >
+                                <p:confirm header="Confirmación" message="¿Está seguro de guardar?" />
+                            </p:commandButton>
+                            <p:commandButton value="SALIR" icon="fa fa-close" onclick="PF('pNuevoProfesion').hide()"
+                                             />
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" severity="alert">
+                                <p:commandButton   value="Si" type="button" styleClass="ui-confirmdialog-yes" 
+                                                   icon="ui-icon-check" />
+                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog>
+                        </h:panelGrid>
+                    </h:panelGrid>
+                </p:dialog>
+
+            </h:form>
+
+            <h:form id="Fuerza" >      
+                <p:dialog header="NUEVA FUERZA" widgetVar="pNuevoFuerza" id="dlgNuevoFuerza" 
+                          closable="false">
+                    <h:panelGrid columns="2" cellpadding="2">
+                        <h:outputLabel value="FUERZA: " />
+                        <p:inputText id="nombre" style="text-transform: uppercase; font-weight:bold; color: black " 
+                                     value="#{mantenimiento.albFuerza.fueFuerza}" 
+                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
+                                     /> 
+                        <h:panelGrid columns="2" cellpadding="1">
+                            <p:commandButton id="btn_guardar" value="GUARDAR"  update="msgs,:form,:Fuerza" icon="fa fa-save"
+                                             action="#{mantenimiento.guardarFuerza()}"   >
+                                <p:confirm header="Confirmación" message="¿Está seguro de guardar?" />
+                            </p:commandButton>
+                            <p:commandButton value="SALIR" icon="fa fa-close" onclick="PF('pNuevoFuerza').hide()"
+                                             />
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" severity="alert">
+                                <p:commandButton   value="Si" type="button" styleClass="ui-confirmdialog-yes" 
+                                                   icon="ui-icon-check" />
+                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog>
+                        </h:panelGrid>
+                    </h:panelGrid>
+                </p:dialog>
+            </h:form>
+
+            <h:form id="Rango" >      
+                <p:dialog header="NUEVO RANGO" widgetVar="pNuevoRango" id="dlgNuevoRango" 
+                          closable="false">
+                    <h:panelGrid columns="2" cellpadding="2">
+                        <h:outputLabel value="RANGO: " />
+                        <p:inputText id="nombre" style="text-transform: uppercase; font-weight:bold; color: black " 
+                                     value="#{mantenimiento.albRango.ranRango}" 
+                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
+                                     /> 
+                        <h:panelGrid columns="2" cellpadding="1">
+                            <p:commandButton id="btn_guardarRango" value="GUARDAR"  update="msgs,:form,:Rango" icon="fa fa-save"
+                                             action="#{mantenimiento.guardarRango()}"   >
+                                <p:confirm header="Confirmación" message="¿Está seguro de guardar?" />
+                            </p:commandButton>
+                            <p:commandButton value="SALIR" icon="fa fa-close" onclick="PF('pNuevoRango').hide()"
+                                             />
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" severity="alert">
+                                <p:commandButton   value="Si" type="button" styleClass="ui-confirmdialog-yes" 
+                                                   icon="ui-icon-check" />
+                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog>
+                        </h:panelGrid>
+                    </h:panelGrid>
+                </p:dialog>
+            </h:form>
+
+            <p:dialog header="EDITAR" widgetVar="dlgEditarProfesion" minHeight="40" closable="false" draggable="false">
+                <h:form id="formEditarProfesion">
+                    <p:growl id="msgsUsuario"  />
+                    <h:panelGrid columns="2" cellpadding="3">
+                        <h:outputLabel value="Profesion : " ></h:outputLabel>
+                        <p:inputText id="txt_ProfEditar" style="text-transform: uppercase; font-weight:bold; color: black "
+                                     value="#{mantenimiento.segProfesionObjects.prfProfesion}" 
+                                     required="true" >
+                        </p:inputText> 
+                        <f:facet name="footer">
+                            <p:commandButton value="GUARDAR"  update="msgs,:form" icon="fa fa-save"
+                                             action="#{mantenimiento.actualizarUsuarioSistema()}" onclick="PF('dlgEditarProfesion').hide()"  >
+                                <p:confirm header="Confirmación" message="Está seguro de actualizar?" />
+                            </p:commandButton>
+                            <p:commandButton value="SALIR" type="reset" icon="fa fa-close"
+                                             onclick="PF('dlgEditarProfesion').hide()"/>
+
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" severity="alert">
+                                <p:commandButton   value="Si" type="button" styleClass="ui-confirmdialog-yes" 
+                                                   icon="ui-icon-check" />
+                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog>
+                        </f:facet>
+                    </h:panelGrid>
+                </h:form>
+            </p:dialog>
+
+            <p:dialog header="EDITAR" widgetVar="dlgEditarFuerza" minHeight="40" closable="false" draggable="false">
+                <h:form id="formEditarFuerza">
+                    <p:growl id="msgsFuerza"  />
+                    <h:panelGrid columns="2" cellpadding="3">
+                        <h:outputLabel value="Fuerza : " ></h:outputLabel>
+                        <p:inputText id="txt_FuerEditar" style="text-transform: uppercase; font-weight:bold; color: black "
+                                     value="#{mantenimiento.segFuerzaObjects.fueFuerza}" 
+                                     required="true" >
+                        </p:inputText> 
+                        <f:facet name="footer">
+                            <p:commandButton value="GUARDAR"  update="msgs,:form" icon="fa fa-save"
+                                             action="#{mantenimiento.actualizarFuerzaSistema()}" onclick="PF('dlgEditarFuerza').hide()"  >
+                                <p:confirm header="Confirmación" message="Está seguro de actualizar?" />
+                            </p:commandButton>
+                            <p:commandButton value="SALIR" type="reset" icon="fa fa-close"
+                                             onclick="PF('dlgEditarFuerza').hide()"/>
+
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" severity="alert">
+                                <p:commandButton   value="Si" type="button" styleClass="ui-confirmdialog-yes" 
+                                                   icon="ui-icon-check" />
+                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog>
+                        </f:facet>
+                    </h:panelGrid>
+                </h:form>
+            </p:dialog>
+            
+            <p:dialog header="EDITAR" widgetVar="dlgEditarRango" minHeight="40" closable="false" draggable="false">
+                <h:form id="formEditarRango">
+                    <p:growl id="msgsRango"  />
+                    <h:panelGrid columns="2" cellpadding="3">
+                        <h:outputLabel value="Rango : " ></h:outputLabel>
+                        <p:inputText id="txt_RangoEditar" style="text-transform: uppercase; font-weight:bold; color: black "
+                                     value="#{mantenimiento.segRangoObjects.ranRango}" 
+                                     required="true" >
+                        </p:inputText> 
+                        <f:facet name="footer">
+                            <p:commandButton value="GUARDAR"  update="msgs,:form" icon="fa fa-save"
+                                             action="#{mantenimiento.actualizarRangoSistema()}" onclick="PF('dlgEditarRango').hide()"  >
+                                <p:confirm header="Confirmación" message="Está seguro de actualizar?" />
+                            </p:commandButton>
+                            <p:commandButton value="SALIR" type="reset" icon="fa fa-close"
+                                             onclick="PF('dlgEditarRango').hide()"/>
+
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" severity="alert">
+                                <p:commandButton   value="Si" type="button" styleClass="ui-confirmdialog-yes" 
+                                                   icon="ui-icon-check" />
+                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog>
+                        </f:facet>
+                    </h:panelGrid>
+                </h:form>
+            </p:dialog>
+        </h:body>
+    </ui:define>
+</ui:composition>
