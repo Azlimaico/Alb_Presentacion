@@ -1,0 +1,411 @@
+<?xml version='1.0' encoding='iso-8859-1' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition template="/Layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+    <ui:define name="content">
+        <h:head><title>PROVINCIAS</title>
+            <link href="estilos/jsfcrud.css" type="text/css" rel="stylesheet" />
+            <link href="estilos/estilo.css" type="text/css" rel="stylesheet" />
+            <script type="text/javascript" src="estilos/validaciones.js"></script>
+            <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+        </h:head>
+        <h:body>
+            <p:growl id="msgs" showDetail="true" />
+            <h:form id="form">
+                <p:tabView >
+                    <p:tab title="INF. GENERAL">
+                        <h:panelGrid columns="2" cellpadding="10">
+                            <p:dataTable id="tprincipal" 
+                                         var="object" value="#{mantenimiento_prov.listaParroquia}"                                         
+                                         emptyMessage="No se encontraron datos"
+                                         rows="24" paginator="true" 
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} 
+                                         {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"    
+                                         >
+
+
+                                <p:column  filterBy="#{object.albCanton.albProvincia.proNombre}" headerText="PROVINCIA"  width="100"
+                                           filterMatchMode="contains">
+                                    <h:outputText value="#{object.albCanton.albProvincia.proNombre}" />
+                                </p:column>
+
+                                <p:column  filterBy="#{object.albCanton.canNombre}" headerText="CANTÓN"  width="100"
+                                           filterMatchMode="contains">
+                                    <h:outputText value="#{object.albCanton.canNombre}" />
+                                </p:column>
+
+                                <p:column  filterBy="#{object.parNombre}" headerText="PARROQUIA"  width="100"
+                                           filterMatchMode="contains">
+                                    <h:outputText value="#{object.parNombre}" />
+                                </p:column>
+
+
+                            </p:dataTable>
+                        </h:panelGrid>
+                    </p:tab>
+
+                    <p:tab title="PROVINCIA" >
+                        <h:panelGrid columns="2" cellpadding="10">
+                            <p:dataTable id="tprincipal1" 
+                                         var="object1" value="#{mantenimiento_prov.listaProvincia}"                                         
+                                         emptyMessage="No se encontraron datos"
+                                         rows="20" paginator="true" 
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} 
+                                         {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"    
+                                         >
+
+                                <f:facet name="header">
+                                    <p:outputPanel>
+                                        <p:commandButton   id="id_boton1" type="button" value=" NUEVO " style="float: right"
+                                                           onclick="PF('pNuevoPr').show()" icon="fa fa fa-plus"
+                                                           update=":#{p:component('Pr')}" >
+                                        </p:commandButton>
+                                    </p:outputPanel>
+                                </f:facet>
+
+                                <p:column  filterBy="#{object1.proNombre}" headerText="PROVINCIA"  width="100"
+                                           filterMatchMode="contains">
+                                    <h:outputText value="#{object1.proNombre}" />
+                                </p:column>
+
+                                <p:column  headerText="ESTADO"  width="100"
+                                           filterMatchMode="contains">
+                                    <h:outputText value="#{object1.proEstado}" />
+                                </p:column>
+
+                                <p:column   headerText="EDITAR" width="50"  style="text-align: center" >
+                                    <p:commandButton id="btn_Editar" icon="ui-icon-pencil" onclick="PF('dlgEditarPr').show();" update="formEditarPr" >
+                                        <f:setPropertyActionListener value="#{object1}" target="#{mantenimiento_prov.selectedProvinciaEditar}" />
+                                        <p:resetInput target=":formEditarPr" />
+                                    </p:commandButton>
+                                </p:column>
+
+                                <p:column   headerText="ELIMINAR" width="50" style="text-align: center" >
+                                    <p:commandButton id="btn_Eliminar"  update="msgs,:form" icon="ui-icon-trash"  >
+                                        <f:setPropertyActionListener value="#{object1}" target="#{mantenimiento_prov.selectedProvinciaEliminar}" />
+                                        <p:confirm header="Confirmación" message="Está seguro de Eliminar?" />
+                                    </p:commandButton>
+
+                                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" severity="alert">
+                                        <p:commandButton   value="Si" type="button" styleClass="ui-confirmdialog-yes" 
+                                                           icon="ui-icon-check" />
+                                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                    </p:confirmDialog>
+                                </p:column>
+
+                            </p:dataTable>
+                        </h:panelGrid>
+                    </p:tab>
+                    <p:tab title="CANTON" id="can">
+                        <h:panelGrid columns="2" cellpadding="10">
+                            <p:dataTable id="tprincipal2" 
+                                         var="object2" value="#{mantenimiento_prov.listaCanton}"                                         
+                                         emptyMessage="No se encontraron datos"
+                                         rows="20" paginator="true" 
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} 
+                                         {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"    
+                                         >
+                                <f:facet name="header">
+                                    <p:outputPanel>
+                                        <p:commandButton   id="id_boton1" type="button" value=" NUEVO " style="float: right"
+                                                           onclick="PF('pNuevoCn').show()" icon="fa fa fa-plus"
+                                                           update=":#{p:component('Cn')}" >
+                                        </p:commandButton>
+                                    </p:outputPanel>
+                                </f:facet>
+
+                                <p:column  filterBy="#{object2.canNombre}" headerText="CANTÓN"  width="100"
+                                           filterMatchMode="contains">
+                                    <h:outputText value="#{object2.canNombre}" />
+                                </p:column>
+
+                                <p:column  headerText="CANTÓN"  width="100"
+                                           filterMatchMode="contains">
+                                    <h:outputText value="#{object2.canEstado}" />
+                                </p:column>
+
+                                <p:column   headerText="EDITAR" width="50"  style="text-align: center" >
+                                    <p:commandButton id="btn_EditarCn" icon="ui-icon-pencil" onclick="PF('dlgEditarCn').show();" update=":formEditarCn" >
+                                        <f:setPropertyActionListener value="#{object2}" target="#{mantenimiento_prov.selectedCantonEditar}" />
+                                        <p:resetInput target=":formEditarCn" />
+                                    </p:commandButton>
+                                </p:column>
+
+                                <p:column   headerText="ELIMINAR" width="50" style="text-align: center" >
+                                    <p:commandButton id="btn_EliminarCn"  update="msgs,:form" icon="ui-icon-trash"  >
+                                        <f:setPropertyActionListener value="#{object2}" target="#{mantenimiento_prov.selectedCantonEliminar}" />
+                                        <p:confirm header="Confirmación" message="Está seguro de Eliminar?" />
+                                    </p:commandButton>
+
+                                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" severity="alert">
+                                        <p:commandButton   value="Si" type="button" styleClass="ui-confirmdialog-yes" 
+                                                           icon="ui-icon-check" />
+                                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                    </p:confirmDialog>
+                                </p:column>
+
+                            </p:dataTable>
+                        </h:panelGrid>
+                    </p:tab>
+                    <p:tab title="PARROQUIA">
+                        <h:panelGrid columns="2" cellpadding="10">
+                            <p:dataTable id="tprincipal3" 
+                                         var="object3" value="#{mantenimiento_prov.listaParroquia}"                                         
+                                         emptyMessage="No se encontraron datos"
+                                         rows="20" paginator="true" 
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} 
+                                         {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"    
+                                         >
+                                <f:facet name="header">
+                                    <p:outputPanel>
+                                        <p:commandButton   id="id_boton1" type="button" value=" NUEVO " style="float: right"
+                                                           onclick="PF('pNuevoPa').show()" icon="fa fa fa-plus"
+                                                           update=":#{p:component('Pa')}" >
+                                        </p:commandButton>
+                                    </p:outputPanel>
+                                </f:facet>
+                                
+                                <p:column  filterBy="#{object3.parNombre}" headerText="PARROQUIA"  width="100"
+                                           filterMatchMode="contains">
+                                    <h:outputText value="#{object3.parNombre}" />
+                                </p:column>
+                                
+                                <p:column  headerText="ESTADO"  width="100"
+                                           filterMatchMode="contains">
+                                    <h:outputText value="#{object3.parEstado}" />
+                                </p:column>
+                                
+                                <p:column   headerText="EDITAR" width="50"  style="text-align: center" >
+                                    <p:commandButton id="btn_EditarPa" icon="ui-icon-pencil" onclick="PF('dlgEditarPa').show();" update=":formEditarPa" >
+                                        <f:setPropertyActionListener value="#{object3}" target="#{mantenimiento_prov.selectedParroqEditar}" />
+                                        <p:resetInput target=":formEditarPa" />
+                                    </p:commandButton>
+                                </p:column>
+                                
+                                <p:column   headerText="ELIMINAR" width="50" style="text-align: center" >
+                                    <p:commandButton id="btn_EliminarPa"  update="msgs,:form" icon="ui-icon-trash"  >
+                                        <f:setPropertyActionListener value="#{object3}" target="#{mantenimiento_prov.selectedParroqEliminar}" />
+                                        <p:confirm header="Confirmación" message="Está seguro de Eliminar?" />
+                                    </p:commandButton>
+
+                                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" severity="alert">
+                                        <p:commandButton   value="Si" type="button" styleClass="ui-confirmdialog-yes" 
+                                                           icon="ui-icon-check" />
+                                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                    </p:confirmDialog>
+                                </p:column>
+                            </p:dataTable>
+                        </h:panelGrid>
+                    </p:tab>
+
+                </p:tabView>
+            </h:form>
+
+            <h:form id="Pr" >      
+                <p:dialog header="NUEVA PROVINCIA" widgetVar="pNuevoPr" id="dlgNuevoPr" 
+                          closable="false">
+                    <h:panelGrid columns="2" cellpadding="2">
+
+                        <p:outputLabel value="Provincia" />
+                        <p:inputText id="provincia" value="#{mantenimiento_prov.albProvincia.proNombre}" 
+                                     style="text-transform: uppercase; font-weight:bold; color: black" 
+                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
+                                     />
+                        <h:panelGrid columns="2" cellpadding="1">
+                            <p:commandButton id="btn_guardar" value="GUARDAR"  update="msgs,:form:,:Pr" icon="fa fa-save"
+                                             action="#{mantenimiento_prov.guardarProvincia()}"   >
+                                <p:confirm header="Confirmación" message="¿Está seguro de guardar?" />
+                            </p:commandButton>
+                            <p:commandButton value="SALIR" icon="fa fa-close" onclick="PF('pNuevoJ').hide()"
+                                             />
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" severity="alert">
+                                <p:commandButton   value="Si" type="button" styleClass="ui-confirmdialog-yes" 
+                                                   icon="ui-icon-check" />
+                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog>
+                        </h:panelGrid>
+
+                    </h:panelGrid>
+                </p:dialog>
+            </h:form>
+
+            <h:form id="Cn" >      
+                <p:dialog header="NUEVO CANTÓN" widgetVar="pNuevoCn" id="dlgNuevoCn" 
+                          closable="false">
+                    <h:panelGrid columns="2" cellpadding="2">
+
+                        <p:outputLabel value="Provincia:" />
+                        <p:selectOneMenu id="provincia" value="#{mantenimiento_prov.idEditarProvincia}" style="width:150px">
+                            <f:selectItem  itemValue="" itemLabel="Seleccione Provincia: " noSelectionOption="false" />
+                            <f:selectItems value="#{mantenimiento_prov.listaProvincia1}" />
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="Cantón" />
+                        <p:inputText id="canton" value="#{mantenimiento_prov.albCanton.canNombre}" 
+                                     style="text-transform: uppercase; font-weight:bold; color: black" 
+                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
+                                     />
+                        <h:panelGrid columns="2" cellpadding="1">
+                            <p:commandButton id="btn_guardar" value="GUARDAR"  update="msgs,:form,:Cn" icon="fa fa-save"
+                                             action="#{mantenimiento_prov.guardarCanton()}"   >
+                                <p:confirm header="Confirmación" message="¿Está seguro de guardar?" />
+                            </p:commandButton>
+                            <p:commandButton value="SALIR" icon="fa fa-close" onclick="PF('pNuevoCn').hide()"
+                                             />
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" severity="alert">
+                                <p:commandButton   value="Si" type="button" styleClass="ui-confirmdialog-yes" 
+                                                   icon="ui-icon-check" />
+                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog>
+                        </h:panelGrid>
+
+                    </h:panelGrid>
+                </p:dialog>
+            </h:form>
+            
+             <h:form id="Pa" >      
+                <p:dialog header="NUEVA PARROQUIA" widgetVar="pNuevoPa" id="dlgNuevoPa" 
+                          closable="false">
+                    <h:panelGrid columns="2" cellpadding="2">
+
+                        <p:outputLabel value="Provincia:" />
+                        <p:selectOneMenu id="provincia" value="#{mantenimiento_prov.idEditarProvincia}" style="width:150px">
+                            <p:ajax update="canton" />  
+                            <f:selectItem  itemValue="" itemLabel="Seleccione Provincia: " noSelectionOption="false" />
+                            <f:selectItems value="#{mantenimiento_prov.listaProvincia1}" />
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="Cantón:" />
+                        <p:selectOneMenu  id="canton" value="#{mantenimiento_prov.idEditarCanton}"  style="width:150px">
+                            <f:selectItem  itemValue="" itemLabel="Seleccione Cantón: " noSelectionOption="false" />
+                            <f:selectItems value="#{mantenimiento_prov.listaCanton1}" />                            
+                        </p:selectOneMenu>
+                        
+                        <p:outputLabel value="Parroquia" />
+                        <p:inputText id="parro" value="#{mantenimiento_prov.albParroquia.parNombre}" 
+                                     style="text-transform: uppercase; font-weight:bold; color: black" 
+                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
+                                     />
+                        
+                        <h:panelGrid columns="2" cellpadding="1">
+                            <p:commandButton id="btn_guardar" value="GUARDAR"  update="msgs,:form,:Pa" icon="fa fa-save"
+                                             action="#{mantenimiento_prov.guardarParroquia()}"   >
+                                <p:confirm header="Confirmación" message="¿Está seguro de guardar?" />
+                            </p:commandButton>
+                            <p:commandButton value="SALIR" icon="fa fa-close" onclick="PF('pNuevoPa').hide()"
+                                             />
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" severity="alert">
+                                <p:commandButton   value="Si" type="button" styleClass="ui-confirmdialog-yes" 
+                                                   icon="ui-icon-check" />
+                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog>
+                        </h:panelGrid>
+
+                    </h:panelGrid>
+                </p:dialog>
+            </h:form>
+
+            <p:dialog header="EDITAR" widgetVar="dlgEditarPr" minHeight="40" closable="false" draggable="false">
+                <h:form id="formEditarPr" >
+                    <p:growl id="msgsPr"   />
+                    <h:panelGrid columns="2" cellpadding="3">
+                        <h:outputLabel value="Provincia : " ></h:outputLabel>
+                        <p:inputText id="txt_PrEditar" style="text-transform: uppercase; font-weight:bold; color: black "
+                                     value="#{mantenimiento_prov.segProvinciaObjects.proNombre}" 
+                                     required="true" >
+                        </p:inputText> 
+                        <f:facet name="footer">
+                            <p:commandButton value="GUARDAR"  update="msgs,:form" icon="fa fa-save"
+                                             action="#{mantenimiento_prov.actualizarProvinciaSistema()}" onclick="PF('dlgEditarPr').hide()"  >
+                                <p:confirm header="Confirmación" message="Está seguro de actualizar?" />
+                            </p:commandButton>
+                            <p:commandButton value="SALIR" type="reset" icon="fa fa-close"
+                                             onclick="PF('dlgEditarPr').hide()"/>
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" severity="alert">
+                                <p:commandButton   value="Si" type="button" styleClass="ui-confirmdialog-yes" 
+                                                   icon="ui-icon-check" />
+                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog>
+                        </f:facet>
+                    </h:panelGrid>
+                </h:form>
+            </p:dialog>
+
+            <p:dialog header="EDITAR" widgetVar="dlgEditarCn" minHeight="40" closable="false" draggable="false">
+                <h:form id="formEditarCn">
+                    <p:growl id="msgsCn"  />
+                    <h:panelGrid columns="2" cellpadding="3">
+                        <h:outputLabel value="Provincia : *" ></h:outputLabel>
+                        <p:selectOneMenu  id="txtProv_edit"  value="#{mantenimiento_prov.idEditarProvincia}" style="width:150px" >
+                            <f:selectItem  itemValue="" itemLabel="#{mantenimiento_prov.segCantonObjects.albProvincia.proNombre} " noSelectionOption="false"  />
+                            <f:selectItems value="#{mantenimiento_prov.listaProvincia1}" /> 
+                        </p:selectOneMenu>
+
+                        <h:outputLabel value="Cantón : " ></h:outputLabel>
+                        <p:inputText id="txt_CnEditar" style="text-transform: uppercase; font-weight:bold; color: black "
+                                     value="#{mantenimiento_prov.segCantonObjects.canNombre}" 
+                                     required="true" >
+                        </p:inputText> 
+                        <f:facet name="footer">
+                            <p:commandButton value="GUARDAR"  update="msgs,:form" icon="fa fa-save"
+                                             action="#{mantenimiento_prov.actualizarCantonSistema()}" onclick="PF('dlgEditarCn').hide()"  >
+                                <p:confirm header="Confirmación" message="Está seguro de actualizar?" />
+                            </p:commandButton>
+                            <p:commandButton value="SALIR" type="reset" icon="fa fa-close"
+                                             onclick="PF('dlgEditarCn').hide()"/>
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" severity="alert">
+                                <p:commandButton   value="Si" type="button" styleClass="ui-confirmdialog-yes" 
+                                                   icon="ui-icon-check" />
+                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog>
+                        </f:facet>
+                    </h:panelGrid>
+                </h:form>
+            </p:dialog>
+            
+            <p:dialog header="EDITAR" widgetVar="dlgEditarPa" minHeight="40" closable="false" draggable="false">
+                <h:form id="formEditarPa">
+                    <p:growl id="msgsPa"  />
+                    <h:panelGrid columns="2" cellpadding="3">
+                         <p:outputLabel value="Provincia:" />
+                        <p:selectOneMenu id="provincia" value="#{mantenimiento_prov.idEditarProvincia}" style="width:150px">
+                            <p:ajax update="canton" />  
+                            <f:selectItem  itemValue="" itemLabel="#{mantenimiento_prov.segParroqObjects.albCanton.albProvincia.proNombre}  " noSelectionOption="false" />
+                            <f:selectItems value="#{mantenimiento_prov.listaProvincia1}" />
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="Cantón:" />
+                        <p:selectOneMenu  id="canton" value="#{mantenimiento_prov.idEditarCanton}"  style="width:150px">
+                            <f:selectItem  itemValue="" itemLabel="#{mantenimiento_prov.segParroqObjects.albCanton.canNombre}  " noSelectionOption="false" />
+                            <f:selectItems value="#{mantenimiento_prov.listaCanton1}" />                            
+                        </p:selectOneMenu>
+                        <p:outputLabel value="Parroquia" />
+                        <p:inputText id="parr" value="#{mantenimiento_prov.segParroqObjects.parNombre}" 
+                                     style="text-transform: uppercase; font-weight:bold; color: black" 
+                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
+                                     />
+                        <f:facet name="footer">
+                            <p:commandButton value="GUARDAR"  update="msgs,:form" icon="fa fa-save"
+                                             action="#{mantenimiento_prov.actualizarParroquiaSistema()}" onclick="PF('dlgEditarPa').hide()"  >
+                                <p:confirm header="Confirmación" message="Está seguro de actualizar?" />
+                            </p:commandButton>
+                            <p:commandButton value="SALIR" type="reset" icon="fa fa-close"
+                                             onclick="PF('dlgEditarPa').hide()"/>
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" severity="alert">
+                                <p:commandButton   value="Si" type="button" styleClass="ui-confirmdialog-yes" 
+                                                   icon="ui-icon-check" />
+                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog>
+                        </f:facet>
+                    </h:panelGrid>
+                </h:form>
+            </p:dialog>
+
+        </h:body>
+    </ui:define>
+</ui:composition>

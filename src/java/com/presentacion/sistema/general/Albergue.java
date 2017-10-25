@@ -66,11 +66,7 @@ public class Albergue implements Serializable {
     private AlbAlbergue segAlbergueObjects = new AlbAlbergue();
     private Long estado, IdEditar;
 
-    //ASIGNAR CANTONES Y PARROQUIAS     
-//    private List<AlbCanton> listaTemCanton = new ArrayList<>();
-//    private List<AlbParroquia> listaTemParroquia = new ArrayList<>();
-//    List<SelectItem> listaCantonTem = new ArrayList<SelectItem>();
-//    List<SelectItem> genListaSelectedParroquiaTem = new ArrayList<SelectItem>();
+
     //ELIMINAR ALBERGUE
     private AlbAlbergue selectedSegUsuarioEliminar = new AlbAlbergue();
 
