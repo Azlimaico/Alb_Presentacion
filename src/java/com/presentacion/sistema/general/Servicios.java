@@ -100,7 +100,7 @@ public class Servicios implements Serializable {
     private Long IdEditarElectri;
     //ELIMINAR SERVICIO ELECTRICIDAD
     private AlbSituacion selectedServicioElectriEliminar = new AlbSituacion();
-    
+
     //EDITAR SERVICIO TELEFONÍA E INTERNET
     private AlbSituacion selectedInterEditar = new AlbSituacion();
     private AlbSituacion segInterObjects = new AlbSituacion();
@@ -108,6 +108,20 @@ public class Servicios implements Serializable {
     //ELIMINAR SERVICIO ELECTRICIDAD
     private AlbSituacion selectedServicioInterEliminar = new AlbSituacion();
 
+    //EDITAR SERVICIO BATERIAS SANITARIAS
+    private AlbSituacion selectedSaniEditar = new AlbSituacion();
+    private AlbSituacion segSaniObjects = new AlbSituacion();
+    private Long IdEditarSani;
+    //ELIMINAR SERVICIO ELECTRICIDAD
+    private AlbSituacion selectedServicioSaniEliminar = new AlbSituacion();
+
+    //EDITAR SERVICIO SALUD
+    private AlbSituacion selectedSaludEditar = new AlbSituacion();
+    private AlbSituacion segSaludObjects = new AlbSituacion();
+    private Long IdEditarSalud;
+    //ELIMINAR SERVICIO ELECTRICIDAD
+    private AlbSituacion selectedServicioSaludEliminar = new AlbSituacion();
+    
     @PostConstruct
     public void init() {
         if (!guardadoCabecera) {
@@ -123,7 +137,7 @@ public class Servicios implements Serializable {
             listaTempAlbSituacion.clear();
             listaTipoEmpresa.clear();
             this.listaTipoEmpresa.addAll(getAlbSituacionServicio().listarTipoEmpresa());
-            
+
         }
         listaServicio.clear();
         this.listaServicio.addAll(getAlbServicioServicio().listarServicio());
@@ -267,24 +281,13 @@ public class Servicios implements Serializable {
                     if (obj.getServicioSituacionAlbergue().getAlbServicio().getSerNombre().equals("TELECOMUNICACIONES Y SERVICIO A INTERNET")) {
                         listaInternet.add(obj);
                     }
-                    if (obj.getServicioSituacionAlbergue().getAlbServicio().getSerId() == 4) {
+                    if (obj.getServicioSituacionAlbergue().getAlbServicio().getSerNombre().equals("SANEAMIENTO AMBIENTAL, BATERIAS SANITARIAS, DUCHAS, LAVANDERIAS")) {
                         listaBateriasSanitarias.add(obj);
                     }
-                    if (obj.getServicioSituacionAlbergue().getAlbServicio().getSerId() == 5) {
+                    if (obj.getServicioSituacionAlbergue().getAlbServicio().getSerNombre().equals("SERVICIOS DE SALUD")) {
                         listaServicioSalud.add(obj);
                     }
-                    if (obj.getServicioSituacionAlbergue().getAlbServicio().getSerId() == 14) {
-                        listaDesechosSolidos.add(obj);
-                    }
-                    if (obj.getServicioSituacionAlbergue().getAlbServicio().getSerId() == 15) {
-                        listaEducacion.add(obj);
-                    }
-                    if (obj.getServicioSituacionAlbergue().getAlbServicio().getSerId() == 16) {
-                        listaCombustibleFosil.add(obj);
-                    }
-                    if (obj.getServicioSituacionAlbergue().getAlbServicio().getSerId() == 17) {
-                        listaAlimentos.add(obj);
-                    }
+                    
                 }
 
             }
@@ -816,7 +819,7 @@ public class Servicios implements Serializable {
         this.selectedInterEditar = selectedInterEditar;
         editarInternetSistema(selectedInterEditar);
     }
-    
+
     public void editarInternetSistema(AlbSituacion obj) {
         try {
             segInterObjects = new AlbSituacion();
@@ -834,8 +837,6 @@ public class Servicios implements Serializable {
             AlbAlbergue objAlbergue = new AlbAlbergue();
             objAlbergue.setAlbId(obj.getServicioSituacionAlbergue().getAlbAlbergue().getAlbId());
             IdEditarInter = obj.getSitId();
-            obj.getSitMetProvision();
-            obj.getSitAlcanceServicio();
             segInterObjects.setServicioSituacionAlbergue(objServSitAl);
             objEmpresa.setAlbTipoEmpresa(objTipoEmpresa);
             objServicio.setAlbEmpresa(objEmpresa);
@@ -861,7 +862,7 @@ public class Servicios implements Serializable {
     public void setSegInterObjects(AlbSituacion segInterObjects) {
         this.segInterObjects = segInterObjects;
     }
-    
+
     public void editarServicioInternet() {
 
         try {
@@ -900,8 +901,8 @@ public class Servicios implements Serializable {
             objSituacion.setSitEstado(1);
 
             if ("".equals(objEmpresa.getEmpNombre()) || "".equals(albSituacion.getSitMetProvision()) || "".equals(albSituacion.getSitMetProvisionInternet()) || "".equals(albSituacion.getSitAlcanceServicio()) || "".equals(albSituacion.getSitAlcanceInternet())) {
-            mensajeEAS.errorLlenarDatos();
-        } else {
+                mensajeEAS.errorLlenarDatos();
+            } else {
                 listaTempAlbSituacion.clear();
                 listaTempAlbSituacion.add(objSituacion);
                 getAlbServicioServicio().guardarSituacion(listaTempAlbSituacion);
@@ -927,8 +928,7 @@ public class Servicios implements Serializable {
         this.selectedServicioInterEliminar = selectedServicioInterEliminar;
         eliminarInternetSistema(selectedServicioInterEliminar);
     }
-    
-    
+
     public void eliminarInternetSistema(AlbSituacion obj) {
         try {
             obj.setSitEstado(ParametrosObjetos.INACTIVO);
@@ -941,5 +941,432 @@ public class Servicios implements Serializable {
             mensajeEAS.error();
         }
     }
+
+    public void guardarServicioSanitario() {
+        String nombre = albEmpresa.getEmpNombre();
+        if ("".equals(nombre) || "".equals(albSituacion.getSitServicioLavanderias()) || "".equals(albSituacion.getSitAlcantarillado())) {
+            mensajeEAS.errorLlenarDatos();
+        } else {
+            try {
+                AlbTipoEmpresa objTipoEmpresa = new AlbTipoEmpresa();
+                objTipoEmpresa.setTieId(IdSeleccionAgua);
+                albEmpresa.setAlbTipoEmpresa(objTipoEmpresa);
+                albEmpresa.setEmpEstado(1);
+                listaTempAlbEmpresa.clear();
+                listaTempAlbEmpresa.add(albEmpresa);
+                getAlbServicioServicio().guardarEmpresa(listaTempAlbEmpresa);
+                albServicio.setAlbEmpresa(albEmpresa);
+                albServicio.setSerEstado(1);
+                for (AlbServicio obj : listaServicio) {
+                    if (obj.getSerNombre().equals("SANEAMIENTO AMBIENTAL, BATERIAS SANITARIAS, DUCHAS, LAVANDERIAS")) {
+                        albServicio.setSerNombre(obj.getSerNombre());
+                        listaTempAlbServicio.clear();
+                        listaTempAlbServicio.add(albServicio);
+                        getAlbServicioServicio().guardarServicio(listaTempAlbServicio);
+                        servicioSituacionAlbergue.setAlbServicio(albServicio);
+                        servicioSituacionAlbergue.setAlbAlbergue(selectedAlbergueAsignar);
+                        servicioSituacionAlbergue.setSerAlbEstado(1);
+                        listaTempServicioSituacionAlbergue.clear();
+                        listaTempServicioSituacionAlbergue.add(servicioSituacionAlbergue);
+                        getAlbServicioServicio().guardarServicioSituacionAlbergue(listaTempServicioSituacionAlbergue);
+                        //SE MODIFICA DEPENDIENDO DE LAS ESPECIFICACIONES DEL SERVICIO
+                        albSituacion.getSitServicioLavanderias();
+                        albSituacion.getSitAlcantarillado();
+                        albSituacion.getSitSanitarioFijoHombres();
+                        albSituacion.getSitSanitarioFijoMujeres();
+                        albSituacion.getSitSanitarioMovilIndividualHombres();
+                        albSituacion.getSitSanitarioMovilIndividualMujeres();
+                        albSituacion.getSitSanitarioMovilContinerHombres();
+                        albSituacion.getSitSanitarioMovilConteinerMujeres();
+                        albSituacion.getSitLetrinaFijaHombres();
+                        albSituacion.getSitLetrinaFijaMujeres();
+                        albSituacion.getSitLetrinaMovilHombres();
+                        albSituacion.getSitLetrinaMovilMujeres();
+                        albSituacion.getSitSanitarioDiscapacitadoHom();
+                        albSituacion.getSitSanitarioDiscapacitadoMuj();
+                        albSituacion.getSitDuchasHombres();
+                        albSituacion.getSitDuchasMujeres();
+                        albSituacion.getSitDuchasDiscapacitadosHom();
+                        albSituacion.getSitDuchasDiscapacitadosMuj();
+                        albSituacion.setSitServicioLavanderias(albSituacion.getSitServicioLavanderias());
+                        albSituacion.setSitAlcantarillado(albSituacion.getSitAlcantarillado());
+                        albSituacion.setSitSanitarioFijoHombres(albSituacion.getSitSanitarioFijoHombres());
+                        albSituacion.setSitSanitarioFijoMujeres(albSituacion.getSitSanitarioFijoMujeres());
+                        albSituacion.setSitSanitarioMovilIndividualHombres(albSituacion.getSitSanitarioMovilIndividualHombres());
+                        albSituacion.setSitSanitarioMovilIndividualMujeres(albSituacion.getSitSanitarioMovilIndividualMujeres());
+                        albSituacion.setSitSanitarioMovilContinerHombres(albSituacion.getSitSanitarioMovilContinerHombres());
+                        albSituacion.setSitSanitarioMovilConteinerMujeres(albSituacion.getSitSanitarioMovilConteinerMujeres());
+                        albSituacion.setSitLetrinaFijaHombres(albSituacion.getSitLetrinaFijaHombres());
+                        albSituacion.setSitLetrinaFijaMujeres(albSituacion.getSitLetrinaFijaMujeres());
+                        albSituacion.setSitLetrinaMovilHombres(albSituacion.getSitLetrinaMovilHombres());
+                        albSituacion.setSitLetrinaMovilMujeres(albSituacion.getSitLetrinaMovilMujeres());
+                        albSituacion.setSitSanitarioDiscapacitadoHom(albSituacion.getSitSanitarioDiscapacitadoHom());
+                        albSituacion.setSitSanitarioDiscapacitadoMuj(albSituacion.getSitSanitarioDiscapacitadoMuj());
+                        albSituacion.setSitDuchasHombres(albSituacion.getSitDuchasHombres());
+                        albSituacion.setSitDuchasMujeres(albSituacion.getSitDuchasMujeres());
+                        albSituacion.setSitDuchasDiscapacitadosHom(albSituacion.getSitDuchasDiscapacitadosHom());
+                        albSituacion.setSitDuchasDiscapacitadosMuj(albSituacion.getSitDuchasDiscapacitadosMuj());
+                        albSituacion.setSitEstado(1);
+                        albSituacion.setServicioSituacionAlbergue(servicioSituacionAlbergue);
+                        listaTempAlbSituacion.clear();
+                        listaAlbSituacion.add(albSituacion);
+                        listaTempAlbSituacion.add(albSituacion);
+                        getAlbServicioServicio().guardarSituacion(listaTempAlbSituacion);
+                        albSituacion = new AlbSituacion();
+                        guardadoCabecera = true;
+                        mensajeEAS.info(true);
+                        init();
+                        this.obtenerAlbergue(selectedAlbergueAsignar);
+                        break;
+                    }
+                }
+            } catch (Exception ex) {
+                guardadoCabecera = false;
+                LOG.error("Error: " + ex.getMessage());
+                mensajeEAS.error();
+            }
+        }
+
+    }
+
+    public AlbSituacion getSelectedSaniEditar() {
+        return selectedSaniEditar;
+    }
+
+    public void setSelectedSaniEditar(AlbSituacion selectedSaniEditar) {
+        this.selectedSaniEditar = selectedSaniEditar;
+        editarSanitarioSistema(selectedSaniEditar);
+    }
+
+    public void editarSanitarioSistema(AlbSituacion obj) {
+        try {
+            segSaniObjects = new AlbSituacion();
+            ServicioSituacionAlbergue objServSitAl = new ServicioSituacionAlbergue();
+            objServSitAl.setSerAlbId(obj.getServicioSituacionAlbergue().getSerAlbId());
+            AlbTipoEmpresa objTipoEmpresa = new AlbTipoEmpresa();
+            objTipoEmpresa.setTieId(obj.getServicioSituacionAlbergue().getAlbServicio().getAlbEmpresa().getAlbTipoEmpresa().getTieId());
+            objTipoEmpresa.setTieNombre(obj.getServicioSituacionAlbergue().getAlbServicio().getAlbEmpresa().getAlbTipoEmpresa().getTieNombre());
+            AlbEmpresa objEmpresa = new AlbEmpresa();
+            objEmpresa.setEmpId(obj.getServicioSituacionAlbergue().getAlbServicio().getAlbEmpresa().getEmpId());
+            objEmpresa.setEmpNombre(obj.getServicioSituacionAlbergue().getAlbServicio().getAlbEmpresa().getEmpNombre());
+            AlbServicio objServicio = new AlbServicio();
+            objServicio.setSerId(obj.getServicioSituacionAlbergue().getAlbServicio().getSerId());
+            objServicio.setSerNombre(obj.getServicioSituacionAlbergue().getAlbServicio().getSerNombre());
+            AlbAlbergue objAlbergue = new AlbAlbergue();
+            objAlbergue.setAlbId(obj.getServicioSituacionAlbergue().getAlbAlbergue().getAlbId());
+            IdEditarSani = obj.getSitId();
+            segSaniObjects.setServicioSituacionAlbergue(objServSitAl);
+            objEmpresa.setAlbTipoEmpresa(objTipoEmpresa);
+            objServicio.setAlbEmpresa(objEmpresa);
+            segSaniObjects.getServicioSituacionAlbergue().setAlbServicio(objServicio);
+            segSaniObjects.getServicioSituacionAlbergue().setAlbAlbergue(objAlbergue);
+            //VARÍA DEPENDIENDO DEL SERVICIO
+            segSaniObjects.setSitServicioLavanderias(obj.getSitServicioLavanderias());
+            segSaniObjects.setSitAlcantarillado(obj.getSitAlcantarillado());
+            segSaniObjects.setSitSanitarioFijoHombres(obj.getSitSanitarioFijoHombres());
+            segSaniObjects.setSitSanitarioFijoMujeres(obj.getSitSanitarioFijoMujeres());
+            segSaniObjects.setSitSanitarioMovilIndividualHombres(obj.getSitSanitarioMovilIndividualHombres());
+            segSaniObjects.setSitSanitarioMovilIndividualMujeres(obj.getSitSanitarioMovilIndividualMujeres());
+            segSaniObjects.setSitSanitarioMovilContinerHombres(obj.getSitSanitarioMovilContinerHombres());
+            segSaniObjects.setSitSanitarioMovilConteinerMujeres(obj.getSitSanitarioMovilConteinerMujeres());
+            segSaniObjects.setSitLetrinaFijaHombres(obj.getSitLetrinaFijaHombres());
+            segSaniObjects.setSitLetrinaFijaMujeres(obj.getSitLetrinaFijaMujeres());
+            segSaniObjects.setSitLetrinaMovilHombres(obj.getSitLetrinaMovilHombres());
+            segSaniObjects.setSitLetrinaMovilMujeres(obj.getSitLetrinaMovilMujeres());
+            segSaniObjects.setSitSanitarioDiscapacitadoHom(obj.getSitSanitarioDiscapacitadoHom());
+            segSaniObjects.setSitSanitarioDiscapacitadoMuj(obj.getSitSanitarioDiscapacitadoMuj());
+            segSaniObjects.setSitDuchasHombres(obj.getSitDuchasHombres());
+            segSaniObjects.setSitDuchasMujeres(obj.getSitDuchasMujeres());
+            segSaniObjects.setSitDuchasDiscapacitadosHom(obj.getSitDuchasDiscapacitadosHom());
+            segSaniObjects.setSitDuchasDiscapacitadosMuj(obj.getSitDuchasDiscapacitadosMuj());
+            segSaniObjects.setSitEstado(1);
+        } catch (Exception ex) {
+
+            LOG.error("Error: " + ex.getMessage());
+            mensajeEAS.errorDublicado();
+        }
+    }
+
+    public AlbSituacion getSegSaniObjects() {
+        return segSaniObjects;
+    }
+
+    public void setSegSaniObjects(AlbSituacion segSaniObjects) {
+        this.segSaniObjects = segSaniObjects;
+    }
+
+     public void editarServicioSanitario() {
+
+        try {
+            AlbTipoEmpresa objTipoEmpresa = new AlbTipoEmpresa();
+            AlbSituacion objSituacion = new AlbSituacion();
+            AlbEmpresa objEmpresa = new AlbEmpresa();
+            AlbServicio objServicio = new AlbServicio();
+            ServicioSituacionAlbergue objServSitAl = new ServicioSituacionAlbergue();
+            AlbAlbergue objAlbergue = new AlbAlbergue();
+            if (IdSeleccionAgua == null) {
+                objTipoEmpresa.setTieId(segSaniObjects.getServicioSituacionAlbergue().getAlbServicio().getAlbEmpresa().getAlbTipoEmpresa().getTieId());
+            } else {
+                objTipoEmpresa.setTieId(IdSeleccionAgua);
+            }
+            objSituacion.setSitId(IdEditarSani);
+            objEmpresa.setAlbTipoEmpresa(objTipoEmpresa);
+            objEmpresa.setEmpEstado(1);
+            objEmpresa.setEmpId(segSaniObjects.getServicioSituacionAlbergue().getAlbServicio().getAlbEmpresa().getEmpId());
+            objEmpresa.setEmpNombre(segSaniObjects.getServicioSituacionAlbergue().getAlbServicio().getAlbEmpresa().getEmpNombre());
+            listaTempAlbEmpresa.clear();
+            listaTempAlbEmpresa.add(objEmpresa);
+            getAlbServicioServicio().guardarEmpresa(listaTempAlbEmpresa);
+            objServicio.setAlbEmpresa(objEmpresa);
+            objServicio.setSerNombre(segSaniObjects.getServicioSituacionAlbergue().getAlbServicio().getSerNombre());
+            objServicio.setSerId(segSaniObjects.getServicioSituacionAlbergue().getAlbServicio().getSerId());
+            objAlbergue.setAlbId(segSaniObjects.getServicioSituacionAlbergue().getAlbAlbergue().getAlbId());
+            objServSitAl.setAlbServicio(objServicio);
+            objServSitAl.setAlbAlbergue(objAlbergue);
+            objServSitAl.setSerAlbId(segSaniObjects.getServicioSituacionAlbergue().getSerAlbId());
+            objSituacion.setServicioSituacionAlbergue(objServSitAl);
+            //VARÍA DEPENDIENDO DEL SERVICIO
+            objSituacion.setSitServicioLavanderias(segSaniObjects.getSitServicioLavanderias());
+            objSituacion.setSitAlcantarillado(segSaniObjects.getSitAlcantarillado());
+            objSituacion.setSitSanitarioFijoHombres(segSaniObjects.getSitSanitarioFijoHombres());
+            objSituacion.setSitSanitarioFijoMujeres(segSaniObjects.getSitSanitarioFijoMujeres());
+            objSituacion.setSitSanitarioMovilIndividualHombres(segSaniObjects.getSitSanitarioMovilIndividualHombres());
+            objSituacion.setSitSanitarioMovilIndividualMujeres(segSaniObjects.getSitSanitarioMovilIndividualMujeres());
+            objSituacion.setSitSanitarioMovilContinerHombres(segSaniObjects.getSitSanitarioMovilContinerHombres());
+            objSituacion.setSitSanitarioMovilConteinerMujeres(segSaniObjects.getSitSanitarioMovilConteinerMujeres());
+            objSituacion.setSitLetrinaFijaHombres(segSaniObjects.getSitLetrinaFijaHombres());
+            objSituacion.setSitLetrinaFijaMujeres(segSaniObjects.getSitLetrinaFijaMujeres());
+            objSituacion.setSitLetrinaMovilHombres(segSaniObjects.getSitLetrinaMovilHombres());
+            objSituacion.setSitLetrinaMovilMujeres(segSaniObjects.getSitLetrinaMovilMujeres());
+            objSituacion.setSitSanitarioDiscapacitadoHom(segSaniObjects.getSitSanitarioDiscapacitadoHom());
+            objSituacion.setSitSanitarioDiscapacitadoMuj(segSaniObjects.getSitSanitarioDiscapacitadoMuj());
+            objSituacion.setSitDuchasHombres(segSaniObjects.getSitDuchasHombres());
+            objSituacion.setSitDuchasMujeres(segSaniObjects.getSitDuchasMujeres());
+            objSituacion.setSitDuchasDiscapacitadosHom(segSaniObjects.getSitDuchasDiscapacitadosHom());
+            objSituacion.setSitDuchasDiscapacitadosMuj(segSaniObjects.getSitDuchasDiscapacitadosMuj());
+            objSituacion.setSitEstado(1);
+
+            if ("".equals(objEmpresa.getEmpNombre()) || "".equals(albSituacion.getSitMetProvision()) || "".equals(albSituacion.getSitMetProvisionInternet()) || "".equals(albSituacion.getSitAlcanceServicio()) || "".equals(albSituacion.getSitAlcanceInternet())) {
+                mensajeEAS.errorLlenarDatos();
+            } else {
+                listaTempAlbSituacion.clear();
+                listaTempAlbSituacion.add(objSituacion);
+                getAlbServicioServicio().guardarSituacion(listaTempAlbSituacion);
+                albSituacion = new AlbSituacion();
+                guardadoCabecera = true;
+                init();
+                mensajeEAS.Modificar();
+                obtenerAlbergue(selectedAlbergueAsignar);
+            }
+
+        } catch (Exception ex) {
+            LOG.error("Error: " + ex.getMessage());
+            mensajeEAS.errorDublicado();
+
+        }
+    }
+
+    public AlbSituacion getSelectedServicioSaniEliminar() {
+        return selectedServicioSaniEliminar;
+    }
+
+    public void setSelectedServicioSaniEliminar(AlbSituacion selectedServicioSaniEliminar) {
+        this.selectedServicioSaniEliminar = selectedServicioSaniEliminar;
+        eliminarSanitarioSistema(selectedServicioSaniEliminar);
+    }
+     
+     public void eliminarSanitarioSistema(AlbSituacion obj) {
+        try {
+            obj.setSitEstado(ParametrosObjetos.INACTIVO);
+            getAlbServicioServicio().guardarServicioEliminar(obj);
+            mensajeEAS.Eliminar();
+            this.cargarTable();
+            this.obtenerAlbergue(selectedAlbergueAsignar);
+        } catch (Exception ex) {
+            LOG.error("Error: " + ex.getMessage());
+            mensajeEAS.error();
+        }
+    }
+     
+     public void guardarServicioSalud() {
+        String nombre = albEmpresa.getEmpNombre();
+        if ("".equals(nombre) || "".equals(albSituacion.getSitInstalacionDisponible()) || "".equals(albSituacion.getSitTipoInstalacion())) {
+            mensajeEAS.errorLlenarDatos();
+        } else {
+            try {
+                AlbTipoEmpresa objTipoEmpresa = new AlbTipoEmpresa();
+                objTipoEmpresa.setTieId(IdSeleccionAgua);
+                albEmpresa.setAlbTipoEmpresa(objTipoEmpresa);
+                albEmpresa.setEmpEstado(1);
+                listaTempAlbEmpresa.clear();
+                listaTempAlbEmpresa.add(albEmpresa);
+                getAlbServicioServicio().guardarEmpresa(listaTempAlbEmpresa);
+                albServicio.setAlbEmpresa(albEmpresa);
+                albServicio.setSerEstado(1);
+                for (AlbServicio obj : listaServicio) {
+                    if (obj.getSerNombre().equals("SERVICIOS DE SALUD")) {
+                        albServicio.setSerNombre(obj.getSerNombre());
+                        listaTempAlbServicio.clear();
+                        listaTempAlbServicio.add(albServicio);
+                        getAlbServicioServicio().guardarServicio(listaTempAlbServicio);
+                        servicioSituacionAlbergue.setAlbServicio(albServicio);
+                        servicioSituacionAlbergue.setAlbAlbergue(selectedAlbergueAsignar);
+                        servicioSituacionAlbergue.setSerAlbEstado(1);
+                        listaTempServicioSituacionAlbergue.clear();
+                        listaTempServicioSituacionAlbergue.add(servicioSituacionAlbergue);
+                        getAlbServicioServicio().guardarServicioSituacionAlbergue(listaTempServicioSituacionAlbergue);
+                        //SE MODIFICA DEPENDIENDO DE LAS ESPECIFICACIONES DEL SERVICIO
+                        albSituacion.getSitInstalacionDisponible();
+                        albSituacion.getSitTipoInstalacion();
+                        albSituacion.setSitInstalacionDisponible(albSituacion.getSitInstalacionDisponible());
+                        albSituacion.setSitTipoInstalacion(albSituacion.getSitTipoInstalacion());
+                        albSituacion.setSitEstado(1);
+                        albSituacion.setServicioSituacionAlbergue(servicioSituacionAlbergue);
+                        listaTempAlbSituacion.clear();
+                        listaAlbSituacion.add(albSituacion);
+                        listaTempAlbSituacion.add(albSituacion);
+                        getAlbServicioServicio().guardarSituacion(listaTempAlbSituacion);
+                        albSituacion = new AlbSituacion();
+                        guardadoCabecera = true;
+                        mensajeEAS.info(true);
+                        init();
+                        this.obtenerAlbergue(selectedAlbergueAsignar);
+                        break;
+                    }
+                }
+            } catch (Exception ex) {
+                guardadoCabecera = false;
+                LOG.error("Error: " + ex.getMessage());
+                mensajeEAS.error();
+            }
+        }
+}
+
+    public AlbSituacion getSelectedSaludEditar() {
+        return selectedSaludEditar;
+    }
+
+    public void setSelectedSaludEditar(AlbSituacion selectedSaludEditar) {
+        this.selectedSaludEditar = selectedSaludEditar;
+        editarSaludSistema(selectedSaludEditar);
+    }
+     public void editarSaludSistema(AlbSituacion obj) {
+        try {
+            segSaludObjects = new AlbSituacion();
+            ServicioSituacionAlbergue objServSitAl = new ServicioSituacionAlbergue();
+            objServSitAl.setSerAlbId(obj.getServicioSituacionAlbergue().getSerAlbId());
+            AlbTipoEmpresa objTipoEmpresa = new AlbTipoEmpresa();
+            objTipoEmpresa.setTieId(obj.getServicioSituacionAlbergue().getAlbServicio().getAlbEmpresa().getAlbTipoEmpresa().getTieId());
+            objTipoEmpresa.setTieNombre(obj.getServicioSituacionAlbergue().getAlbServicio().getAlbEmpresa().getAlbTipoEmpresa().getTieNombre());
+            AlbEmpresa objEmpresa = new AlbEmpresa();
+            objEmpresa.setEmpId(obj.getServicioSituacionAlbergue().getAlbServicio().getAlbEmpresa().getEmpId());
+            objEmpresa.setEmpNombre(obj.getServicioSituacionAlbergue().getAlbServicio().getAlbEmpresa().getEmpNombre());
+            AlbServicio objServicio = new AlbServicio();
+            objServicio.setSerId(obj.getServicioSituacionAlbergue().getAlbServicio().getSerId());
+            objServicio.setSerNombre(obj.getServicioSituacionAlbergue().getAlbServicio().getSerNombre());
+            AlbAlbergue objAlbergue = new AlbAlbergue();
+            objAlbergue.setAlbId(obj.getServicioSituacionAlbergue().getAlbAlbergue().getAlbId());
+            IdEditarSalud = obj.getSitId();
+            segSaludObjects.setServicioSituacionAlbergue(objServSitAl);
+            objEmpresa.setAlbTipoEmpresa(objTipoEmpresa);
+            objServicio.setAlbEmpresa(objEmpresa);
+            segSaludObjects.getServicioSituacionAlbergue().setAlbServicio(objServicio);
+            segSaludObjects.getServicioSituacionAlbergue().setAlbAlbergue(objAlbergue);
+            //VARÍA DEPENDIENDO DEL SERVICIO
+            segSaludObjects.setSitInstalacionDisponible(obj.getSitInstalacionDisponible());
+            segSaludObjects.setSitTipoInstalacion(obj.getSitTipoInstalacion());
+            segSaludObjects.setSitEstado(1);
+        } catch (Exception ex) {
+
+            LOG.error("Error: " + ex.getMessage());
+            mensajeEAS.errorDublicado();
+        }
+    }
+
+    public AlbSituacion getSegSaludObjects() {
+        return segSaludObjects;
+    }
+
+    public void setSegSaludObjects(AlbSituacion segSaludObjects) {
+        this.segSaludObjects = segSaludObjects;
+        
+    }
     
+    public void editarServicioSalud() {
+
+        try {
+            AlbTipoEmpresa objTipoEmpresa = new AlbTipoEmpresa();
+            AlbSituacion objSituacion = new AlbSituacion();
+            AlbEmpresa objEmpresa = new AlbEmpresa();
+            AlbServicio objServicio = new AlbServicio();
+            ServicioSituacionAlbergue objServSitAl = new ServicioSituacionAlbergue();
+            AlbAlbergue objAlbergue = new AlbAlbergue();
+            if (IdSeleccionAgua == null) {
+                objTipoEmpresa.setTieId(segSaludObjects.getServicioSituacionAlbergue().getAlbServicio().getAlbEmpresa().getAlbTipoEmpresa().getTieId());
+            } else {
+                objTipoEmpresa.setTieId(IdSeleccionAgua);
+            }
+            objSituacion.setSitId(IdEditarSalud);
+            objEmpresa.setAlbTipoEmpresa(objTipoEmpresa);
+            objEmpresa.setEmpEstado(1);
+            objEmpresa.setEmpId(segSaludObjects.getServicioSituacionAlbergue().getAlbServicio().getAlbEmpresa().getEmpId());
+            objEmpresa.setEmpNombre(segSaludObjects.getServicioSituacionAlbergue().getAlbServicio().getAlbEmpresa().getEmpNombre());
+            listaTempAlbEmpresa.clear();
+            listaTempAlbEmpresa.add(objEmpresa);
+            getAlbServicioServicio().guardarEmpresa(listaTempAlbEmpresa);
+            objServicio.setAlbEmpresa(objEmpresa);
+            objServicio.setSerNombre(segSaludObjects.getServicioSituacionAlbergue().getAlbServicio().getSerNombre());
+            objServicio.setSerId(segSaludObjects.getServicioSituacionAlbergue().getAlbServicio().getSerId());
+            objAlbergue.setAlbId(segSaludObjects.getServicioSituacionAlbergue().getAlbAlbergue().getAlbId());
+            objServSitAl.setAlbServicio(objServicio);
+            objServSitAl.setAlbAlbergue(objAlbergue);
+            objServSitAl.setSerAlbId(segSaludObjects.getServicioSituacionAlbergue().getSerAlbId());
+            objSituacion.setServicioSituacionAlbergue(objServSitAl);
+            //VARÍA DEPENDIENDO DEL SERVICIO
+            objSituacion.setSitInstalacionDisponible(segSaludObjects.getSitInstalacionDisponible());
+            objSituacion.setSitTipoInstalacion(segSaludObjects.getSitTipoInstalacion());
+            objSituacion.setSitEstado(1);
+
+            if ("".equals(objEmpresa.getEmpNombre()) || "".equals(albSituacion.getSitInstalacionDisponible()) || "".equals(albSituacion.getSitTipoInstalacion()) ) {
+                mensajeEAS.errorLlenarDatos();
+            } else {
+                listaTempAlbSituacion.clear();
+                listaTempAlbSituacion.add(objSituacion);
+                getAlbServicioServicio().guardarSituacion(listaTempAlbSituacion);
+                albSituacion = new AlbSituacion();
+                guardadoCabecera = true;
+                init();
+                mensajeEAS.Modificar();
+                obtenerAlbergue(selectedAlbergueAsignar);
+            }
+
+        } catch (Exception ex) {
+            LOG.error("Error: " + ex.getMessage());
+            mensajeEAS.errorDublicado();
+
+        }
+    }
+
+    public AlbSituacion getSelectedServicioSaludEliminar() {
+        return selectedServicioSaludEliminar;
+    }
+
+    public void setSelectedServicioSaludEliminar(AlbSituacion selectedServicioSaludEliminar) {
+        this.selectedServicioSaludEliminar = selectedServicioSaludEliminar;
+        eliminarSaludSistema(selectedServicioSaludEliminar);
+    }
+     
+     public void eliminarSaludSistema(AlbSituacion obj) {
+        try {
+            obj.setSitEstado(ParametrosObjetos.INACTIVO);
+            getAlbServicioServicio().guardarServicioEliminar(obj);
+            mensajeEAS.Eliminar();
+            this.cargarTable();
+            this.obtenerAlbergue(selectedAlbergueAsignar);
+        } catch (Exception ex) {
+            LOG.error("Error: " + ex.getMessage());
+            mensajeEAS.error();
+        }
+    }
+     
 }
