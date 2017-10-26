@@ -136,7 +136,21 @@ public class Servicios implements Serializable {
     //ELIMINAR SERVICIO EDUCACION
     private AlbSituacion selectedServicioEducacionEliminar = new AlbSituacion();
 
+    //EDITAR SERVICIO COMBUSTIBLES FÓSILES
+    private AlbSituacion selectedFosilEditar = new AlbSituacion();
+    private AlbSituacion segFosilObjects = new AlbSituacion();
+    private Long IdEditarFosil;
+    //ELIMINAR SERVICIO COMBUSTIBLES FÓSILES
+    private AlbSituacion selectedServicioFosilEliminar = new AlbSituacion();
     
+    //EDITAR SERVICIO PROCESAMIENTO ALIMENTOS
+    private AlbSituacion selectedAlimentosEditar = new AlbSituacion();
+    private AlbSituacion segAlimentosObjects = new AlbSituacion();
+    private Long IdEditarAlimentos;
+    //ELIMINAR SERVICIO COMBUSTIBLES FÓSILES
+    private AlbSituacion selectedServicioAlimentosEliminar = new AlbSituacion();
+
+
     @PostConstruct
     public void init() {
         if (!guardadoCabecera) {
@@ -308,7 +322,12 @@ public class Servicios implements Serializable {
                     if (obj.getServicioSituacionAlbergue().getAlbServicio().getSerNombre().equals("EDUCACION")) {
                         listaEducacion.add(obj);
                     }
-
+                    if (obj.getServicioSituacionAlbergue().getAlbServicio().getSerNombre().equals("CONSUMO DE COMBUSTIBLES FOSILES")) {
+                        listaCombustibleFosil.add(obj);
+                    }
+                    if (obj.getServicioSituacionAlbergue().getAlbServicio().getSerNombre().equals("PROCESAMIENTO DE ALIMENTOS")) {
+                        listaAlimentos.add(obj);
+                    }
                 }
 
             }
@@ -1454,7 +1473,7 @@ public class Servicios implements Serializable {
         this.selectedDesechoEditar = selectedDesechoEditar;
         editarDesechoSistema(selectedDesechoEditar);
     }
-    
+
     public void editarDesechoSistema(AlbSituacion obj) {
         try {
             segDesechoObjects = new AlbSituacion();
@@ -1495,7 +1514,7 @@ public class Servicios implements Serializable {
     public void setSegDesechoObjects(AlbSituacion segDesechoObjects) {
         this.segDesechoObjects = segDesechoObjects;
     }
-    
+
     public void editarServicioDesecho() {
 
         try {
@@ -1559,7 +1578,7 @@ public class Servicios implements Serializable {
         this.selectedServicioDesechoEliminar = selectedServicioDesechoEliminar;
         eliminarDesechoSistema(selectedServicioDesechoEliminar);
     }
-    
+
     public void eliminarDesechoSistema(AlbSituacion obj) {
         try {
             obj.setSitEstado(ParametrosObjetos.INACTIVO);
@@ -1572,7 +1591,7 @@ public class Servicios implements Serializable {
             mensajeEAS.error();
         }
     }
-    
+
     public void guardarServicioEducacion() {
         String nombre = albEmpresa.getEmpNombre();
         if ("".equals(nombre) || "".equals(albSituacion.getSitInstalacionDisponible()) || "".equals(albSituacion.getSitTipoInstalacion()) || "".equals(albSituacion.getSitMetodoServicio())) {
@@ -1638,7 +1657,7 @@ public class Servicios implements Serializable {
         this.selectedEducacionEditar = selectedEducacionEditar;
         editarEducacionSistema(selectedEducacionEditar);
     }
-    
+
     public void editarEducacionSistema(AlbSituacion obj) {
         try {
             segEducacionObjects = new AlbSituacion();
@@ -1680,7 +1699,7 @@ public class Servicios implements Serializable {
     public void setSegEducacionObjects(AlbSituacion segEducacionObjects) {
         this.segEducacionObjects = segEducacionObjects;
     }
-    
+
     public void editarServicioEducacion() {
 
         try {
@@ -1745,7 +1764,7 @@ public class Servicios implements Serializable {
         this.selectedServicioEducacionEliminar = selectedServicioEducacionEliminar;
         eliminarEducacionSistema(selectedServicioEducacionEliminar);
     }
-    
+
     public void eliminarEducacionSistema(AlbSituacion obj) {
         try {
             obj.setSitEstado(ParametrosObjetos.INACTIVO);
@@ -1758,4 +1777,295 @@ public class Servicios implements Serializable {
             mensajeEAS.error();
         }
     }
+
+    public void guardarServicioFosil() {
+        String nombre = albEmpresa.getEmpNombre();
+        if ("".equals(nombre) || "".equals(albSituacion.getSitCombustibleEmpleado()) || "".equals(albSituacion.getSitMediosEmpleados())) {
+            mensajeEAS.errorLlenarDatos();
+        } else {
+            try {
+                AlbTipoEmpresa objTipoEmpresa = new AlbTipoEmpresa();
+                objTipoEmpresa.setTieId(IdSeleccionAgua);
+                albEmpresa.setAlbTipoEmpresa(objTipoEmpresa);
+                albEmpresa.setEmpEstado(1);
+                listaTempAlbEmpresa.clear();
+                listaTempAlbEmpresa.add(albEmpresa);
+                getAlbServicioServicio().guardarEmpresa(listaTempAlbEmpresa);
+                albServicio.setAlbEmpresa(albEmpresa);
+                albServicio.setSerEstado(1);
+                for (AlbServicio obj : listaServicio) {
+                    if (obj.getSerNombre().equals("CONSUMO DE COMBUSTIBLES FOSILES")) {
+                        albServicio.setSerNombre(obj.getSerNombre());
+                        listaTempAlbServicio.clear();
+                        listaTempAlbServicio.add(albServicio);
+                        getAlbServicioServicio().guardarServicio(listaTempAlbServicio);
+                        servicioSituacionAlbergue.setAlbServicio(albServicio);
+                        servicioSituacionAlbergue.setAlbAlbergue(selectedAlbergueAsignar);
+                        servicioSituacionAlbergue.setSerAlbEstado(1);
+                        listaTempServicioSituacionAlbergue.clear();
+                        listaTempServicioSituacionAlbergue.add(servicioSituacionAlbergue);
+                        getAlbServicioServicio().guardarServicioSituacionAlbergue(listaTempServicioSituacionAlbergue);
+                        //SE MODIFICA DEPENDIENDO DE LAS ESPECIFICACIONES DEL SERVICIO
+                        albSituacion.getSitCombustibleEmpleado();
+                        albSituacion.getSitMediosEmpleados();
+                        albSituacion.setSitCombustibleEmpleado(albSituacion.getSitCombustibleEmpleado());
+                        albSituacion.setSitMediosEmpleados(albSituacion.getSitMediosEmpleados());
+                        albSituacion.setSitEstado(1);
+                        albSituacion.setServicioSituacionAlbergue(servicioSituacionAlbergue);
+                        listaTempAlbSituacion.clear();
+                        listaAlbSituacion.add(albSituacion);
+                        listaTempAlbSituacion.add(albSituacion);
+                        getAlbServicioServicio().guardarSituacion(listaTempAlbSituacion);
+                        albSituacion = new AlbSituacion();
+                        guardadoCabecera = true;
+                        mensajeEAS.info(true);
+                        init();
+                        this.obtenerAlbergue(selectedAlbergueAsignar);
+                        break;
+                    }
+                }
+            } catch (Exception ex) {
+                guardadoCabecera = false;
+                LOG.error("Error: " + ex.getMessage());
+                mensajeEAS.error();
+            }
+        }
+    }
+
+    public AlbSituacion getSelectedFosilEditar() {
+        return selectedFosilEditar;
+    }
+
+    public void setSelectedFosilEditar(AlbSituacion selectedFosilEditar) {
+        this.selectedFosilEditar = selectedFosilEditar;
+        editarFosilSistema(selectedFosilEditar);
+    }
+    
+    public void editarFosilSistema(AlbSituacion obj) {
+        try {
+            segFosilObjects = new AlbSituacion();
+            ServicioSituacionAlbergue objServSitAl = new ServicioSituacionAlbergue();
+            objServSitAl.setSerAlbId(obj.getServicioSituacionAlbergue().getSerAlbId());
+            AlbTipoEmpresa objTipoEmpresa = new AlbTipoEmpresa();
+            objTipoEmpresa.setTieId(obj.getServicioSituacionAlbergue().getAlbServicio().getAlbEmpresa().getAlbTipoEmpresa().getTieId());
+            objTipoEmpresa.setTieNombre(obj.getServicioSituacionAlbergue().getAlbServicio().getAlbEmpresa().getAlbTipoEmpresa().getTieNombre());
+            AlbEmpresa objEmpresa = new AlbEmpresa();
+            objEmpresa.setEmpId(obj.getServicioSituacionAlbergue().getAlbServicio().getAlbEmpresa().getEmpId());
+            objEmpresa.setEmpNombre(obj.getServicioSituacionAlbergue().getAlbServicio().getAlbEmpresa().getEmpNombre());
+            AlbServicio objServicio = new AlbServicio();
+            objServicio.setSerId(obj.getServicioSituacionAlbergue().getAlbServicio().getSerId());
+            objServicio.setSerNombre(obj.getServicioSituacionAlbergue().getAlbServicio().getSerNombre());
+            AlbAlbergue objAlbergue = new AlbAlbergue();
+            objAlbergue.setAlbId(obj.getServicioSituacionAlbergue().getAlbAlbergue().getAlbId());
+            IdEditarFosil = obj.getSitId();
+            segFosilObjects.setServicioSituacionAlbergue(objServSitAl);
+            objEmpresa.setAlbTipoEmpresa(objTipoEmpresa);
+            objServicio.setAlbEmpresa(objEmpresa);
+            segFosilObjects.getServicioSituacionAlbergue().setAlbServicio(objServicio);
+            segFosilObjects.getServicioSituacionAlbergue().setAlbAlbergue(objAlbergue);
+            //VARÍA DEPENDIENDO DEL SERVICIO
+            segFosilObjects.setSitCombustibleEmpleado(obj.getSitCombustibleEmpleado());
+            segFosilObjects.setSitMediosEmpleados(obj.getSitMediosEmpleados());
+            segFosilObjects.setSitEstado(1);
+        } catch (Exception ex) {
+
+            LOG.error("Error: " + ex.getMessage());
+            mensajeEAS.errorDublicado();
+        }
+    }
+
+    public AlbSituacion getSegFosilObjects() {
+        return segFosilObjects;
+    }
+
+    public void setSegFosilObjects(AlbSituacion segFosilObjects) {
+        this.segFosilObjects = segFosilObjects;
+    }
+    
+    public void editarServicioFosil() {
+
+        try {
+            AlbTipoEmpresa objTipoEmpresa = new AlbTipoEmpresa();
+            AlbSituacion objSituacion = new AlbSituacion();
+            AlbEmpresa objEmpresa = new AlbEmpresa();
+            AlbServicio objServicio = new AlbServicio();
+            ServicioSituacionAlbergue objServSitAl = new ServicioSituacionAlbergue();
+            AlbAlbergue objAlbergue = new AlbAlbergue();
+            if (IdSeleccionAgua == null) {
+                objTipoEmpresa.setTieId(segFosilObjects.getServicioSituacionAlbergue().getAlbServicio().getAlbEmpresa().getAlbTipoEmpresa().getTieId());
+            } else {
+                objTipoEmpresa.setTieId(IdSeleccionAgua);
+            }
+            objSituacion.setSitId(IdEditarFosil);
+            objEmpresa.setAlbTipoEmpresa(objTipoEmpresa);
+            objEmpresa.setEmpEstado(1);
+            objEmpresa.setEmpId(segFosilObjects.getServicioSituacionAlbergue().getAlbServicio().getAlbEmpresa().getEmpId());
+            objEmpresa.setEmpNombre(segFosilObjects.getServicioSituacionAlbergue().getAlbServicio().getAlbEmpresa().getEmpNombre());
+            listaTempAlbEmpresa.clear();
+            listaTempAlbEmpresa.add(objEmpresa);
+            getAlbServicioServicio().guardarEmpresa(listaTempAlbEmpresa);
+            objServicio.setAlbEmpresa(objEmpresa);
+            objServicio.setSerNombre(segFosilObjects.getServicioSituacionAlbergue().getAlbServicio().getSerNombre());
+            objServicio.setSerId(segFosilObjects.getServicioSituacionAlbergue().getAlbServicio().getSerId());
+            objAlbergue.setAlbId(segFosilObjects.getServicioSituacionAlbergue().getAlbAlbergue().getAlbId());
+            objServSitAl.setAlbServicio(objServicio);
+            objServSitAl.setAlbAlbergue(objAlbergue);
+            objServSitAl.setSerAlbId(segFosilObjects.getServicioSituacionAlbergue().getSerAlbId());
+            objSituacion.setServicioSituacionAlbergue(objServSitAl);
+            //VARÍA DEPENDIENDO DEL SERVICIO
+            objSituacion.setSitCombustibleEmpleado(segFosilObjects.getSitCombustibleEmpleado());
+            objSituacion.setSitMediosEmpleados(segFosilObjects.getSitMediosEmpleados());
+            objSituacion.setSitEstado(1);
+
+            if ("".equals(objEmpresa.getEmpNombre()) || "".equals(albSituacion.getSitCombustibleEmpleado()) || "".equals(albSituacion.getSitMediosEmpleados())) {
+                mensajeEAS.errorLlenarDatos();
+            } else {
+                listaTempAlbSituacion.clear();
+                listaTempAlbSituacion.add(objSituacion);
+                getAlbServicioServicio().guardarSituacion(listaTempAlbSituacion);
+                albSituacion = new AlbSituacion();
+                guardadoCabecera = true;
+                init();
+                mensajeEAS.Modificar();
+                obtenerAlbergue(selectedAlbergueAsignar);
+            }
+
+        } catch (Exception ex) {
+            LOG.error("Error: " + ex.getMessage());
+            mensajeEAS.errorDublicado();
+
+        }
+    }
+
+    public AlbSituacion getSelectedServicioFosilEliminar() {
+        return selectedServicioFosilEliminar;
+    }
+
+    public void setSelectedServicioFosilEliminar(AlbSituacion selectedServicioFosilEliminar) {
+        this.selectedServicioFosilEliminar = selectedServicioFosilEliminar;
+        eliminarFosilSistema(selectedServicioFosilEliminar);
+    }
+
+    public void eliminarFosilSistema(AlbSituacion obj) {
+        try {
+            obj.setSitEstado(ParametrosObjetos.INACTIVO);
+            getAlbServicioServicio().guardarServicioEliminar(obj);
+            mensajeEAS.Eliminar();
+            this.cargarTable();
+            this.obtenerAlbergue(selectedAlbergueAsignar);
+        } catch (Exception ex) {
+            LOG.error("Error: " + ex.getMessage());
+            mensajeEAS.error();
+        }
+    }
+    
+    public void guardarServicioAlimentos() {
+        String nombre = albEmpresa.getEmpNombre();
+        if ("".equals(nombre) || "".equals(albSituacion.getSitInstalacionDisponible()) || "".equals(albSituacion.getSitTipoInstalacion()) || "".equals(albSituacion.getSitDescripcion())) {
+            mensajeEAS.errorLlenarDatos();
+        } else {
+            try {
+                AlbTipoEmpresa objTipoEmpresa = new AlbTipoEmpresa();
+                objTipoEmpresa.setTieId(IdSeleccionAgua);
+                albEmpresa.setAlbTipoEmpresa(objTipoEmpresa);
+                albEmpresa.setEmpEstado(1);
+                listaTempAlbEmpresa.clear();
+                listaTempAlbEmpresa.add(albEmpresa);
+                getAlbServicioServicio().guardarEmpresa(listaTempAlbEmpresa);
+                albServicio.setAlbEmpresa(albEmpresa);
+                albServicio.setSerEstado(1);
+                for (AlbServicio obj : listaServicio) {
+                    if (obj.getSerNombre().equals("PROCESAMIENTO DE ALIMENTOS")) {
+                        albServicio.setSerNombre(obj.getSerNombre());
+                        listaTempAlbServicio.clear();
+                        listaTempAlbServicio.add(albServicio);
+                        getAlbServicioServicio().guardarServicio(listaTempAlbServicio);
+                        servicioSituacionAlbergue.setAlbServicio(albServicio);
+                        servicioSituacionAlbergue.setAlbAlbergue(selectedAlbergueAsignar);
+                        servicioSituacionAlbergue.setSerAlbEstado(1);
+                        listaTempServicioSituacionAlbergue.clear();
+                        listaTempServicioSituacionAlbergue.add(servicioSituacionAlbergue);
+                        getAlbServicioServicio().guardarServicioSituacionAlbergue(listaTempServicioSituacionAlbergue);
+                        //SE MODIFICA DEPENDIENDO DE LAS ESPECIFICACIONES DEL SERVICIO
+                        albSituacion.getSitInstalacionDisponible();
+                        albSituacion.getSitTipoInstalacion();
+                        albSituacion.getSitDescripcion();
+                        albSituacion.setSitInstalacionDisponible(albSituacion.getSitInstalacionDisponible());
+                        albSituacion.setSitTipoInstalacion(albSituacion.getSitTipoInstalacion());
+                        albSituacion.setSitDescripcion(albSituacion.getSitDescripcion());
+                        albSituacion.setSitEstado(1);
+                        albSituacion.setServicioSituacionAlbergue(servicioSituacionAlbergue);
+                        listaTempAlbSituacion.clear();
+                        listaAlbSituacion.add(albSituacion);
+                        listaTempAlbSituacion.add(albSituacion);
+                        getAlbServicioServicio().guardarSituacion(listaTempAlbSituacion);
+                        albSituacion = new AlbSituacion();
+                        guardadoCabecera = true;
+                        mensajeEAS.info(true);
+                        init();
+                        this.obtenerAlbergue(selectedAlbergueAsignar);
+                        break;
+                    }
+                }
+            } catch (Exception ex) {
+                guardadoCabecera = false;
+                LOG.error("Error: " + ex.getMessage());
+                mensajeEAS.error();
+            }
+        }
+    }
+
+    public AlbSituacion getSelectedAlimentosEditar() {
+        return selectedAlimentosEditar;
+    }
+
+    public void setSelectedAlimentosEditar(AlbSituacion selectedAlimentosEditar) {
+        this.selectedAlimentosEditar = selectedAlimentosEditar;
+        editarAlimentosSistema(selectedAlimentosEditar);
+    }
+    
+    public void editarAlimentosSistema(AlbSituacion obj) {
+        try {
+            segAlimentosObjects = new AlbSituacion();
+            ServicioSituacionAlbergue objServSitAl = new ServicioSituacionAlbergue();
+            objServSitAl.setSerAlbId(obj.getServicioSituacionAlbergue().getSerAlbId());
+            AlbTipoEmpresa objTipoEmpresa = new AlbTipoEmpresa();
+            objTipoEmpresa.setTieId(obj.getServicioSituacionAlbergue().getAlbServicio().getAlbEmpresa().getAlbTipoEmpresa().getTieId());
+            objTipoEmpresa.setTieNombre(obj.getServicioSituacionAlbergue().getAlbServicio().getAlbEmpresa().getAlbTipoEmpresa().getTieNombre());
+            AlbEmpresa objEmpresa = new AlbEmpresa();
+            objEmpresa.setEmpId(obj.getServicioSituacionAlbergue().getAlbServicio().getAlbEmpresa().getEmpId());
+            objEmpresa.setEmpNombre(obj.getServicioSituacionAlbergue().getAlbServicio().getAlbEmpresa().getEmpNombre());
+            AlbServicio objServicio = new AlbServicio();
+            objServicio.setSerId(obj.getServicioSituacionAlbergue().getAlbServicio().getSerId());
+            objServicio.setSerNombre(obj.getServicioSituacionAlbergue().getAlbServicio().getSerNombre());
+            AlbAlbergue objAlbergue = new AlbAlbergue();
+            objAlbergue.setAlbId(obj.getServicioSituacionAlbergue().getAlbAlbergue().getAlbId());
+            IdEditarAlimentos = obj.getSitId();
+            segAlimentosObjects.setServicioSituacionAlbergue(objServSitAl);
+            objEmpresa.setAlbTipoEmpresa(objTipoEmpresa);
+            objServicio.setAlbEmpresa(objEmpresa);
+            segAlimentosObjects.getServicioSituacionAlbergue().setAlbServicio(objServicio);
+            segAlimentosObjects.getServicioSituacionAlbergue().setAlbAlbergue(objAlbergue);
+            //VARÍA DEPENDIENDO DEL SERVICIO
+            segAlimentosObjects.setSitInstalacionDisponible(obj.getSitInstalacionDisponible());
+            segAlimentosObjects.setSitTipoInstalacion(obj.getSitTipoInstalacion());
+            segAlimentosObjects.setSitDescripcion(obj.getSitDescripcion());
+            segAlimentosObjects.setSitEstado(1);
+        } catch (Exception ex) {
+
+            LOG.error("Error: " + ex.getMessage());
+            mensajeEAS.errorDublicado();
+        }
+    }
+
+    public AlbSituacion getSegAlimentosObjects() {
+        return segAlimentosObjects;
+    }
+
+    public void setSegAlimentosObjects(AlbSituacion segAlimentosObjects) {
+        this.segAlimentosObjects = segAlimentosObjects;
+    }
+    
+    
+    
 }

@@ -395,7 +395,7 @@
                     </h:panelGrid>
                 </p:dialog>
             </h:form>
-            
+
             <h:form id="Educacion"> 
                 <p:dialog header="NUEVO" widgetVar="pNuevoEducacion" id="dlgNuevoEducacion" 
                           closable="false">
@@ -441,7 +441,97 @@
                                 <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
                             </p:confirmDialog>
                         </h:panelGrid>
+                    </h:panelGrid>
+                </p:dialog>
+            </h:form>
 
+            <h:form id="Fosil"> 
+                <p:dialog header="NUEVO" widgetVar="pNuevoFosil" id="dlgNuevoFosil" 
+                          closable="false">
+                    <h:panelGrid columns="2" cellpadding="2">
+
+                        <h:outputLabel value="Empresa: " />
+                        <p:inputText id="nombreEmpresaFosil" style="text-transform: uppercase; font-weight:bold; color: black " 
+                                     value="#{servicios.albEmpresa.empNombre}" 
+                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
+                                     />                     
+                        <p:outputLabel value="Tipo Empresa:" />
+                        <p:selectOneMenu  id="tipoEmpresaFosil" value="#{servicios.idSeleccionAgua}" style="width:150px">
+                            <f:selectItem  itemValue="" itemLabel="Seleccione Tipo: " noSelectionOption="false" />
+                            <f:selectItems value="#{servicios.listaAgua1}" />
+                        </p:selectOneMenu>
+
+                        <h:outputLabel value="Combustible Empleado: " />
+                        <p:inputText id="combustible" style="text-transform: uppercase; font-weight:bold; color: black " 
+                                     value="#{servicios.albSituacion.sitCombustibleEmpleado}" 
+                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
+                                     />
+                        <h:outputLabel value="Medios en los que se emplea: " />
+                        <p:inputText id="medios" style="text-transform: uppercase; font-weight:bold; color: black " 
+                                     value="#{servicios.albSituacion.sitMediosEmpleados}" 
+                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
+                                     />
+                        <h:panelGrid columns="2" cellpadding="1">
+                            <p:commandButton id="btn_guardarFosil" value="GUARDAR" update="msgs,:formh,:Fosil,:formServicio" icon="fa fa-save"
+                                             action="#{servicios.guardarServicioFosil()}" onclick="PF('pNuevoFosil').hide()" >
+                                <p:confirm header="Confirmación" message="¿Está seguro de guardar?" />
+                            </p:commandButton>
+                            <p:commandButton value="SALIR" icon="fa fa-close" onclick="PF('pNuevoFosil').hide()"
+                                             action="#{servicios.cancelarCargaDatos()}"/>
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" severity="alert">
+                                <p:commandButton   value="Si" type="button" styleClass="ui-confirmdialog-yes" 
+                                                   icon="ui-icon-check" />
+                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog>
+                        </h:panelGrid>
+                    </h:panelGrid>
+                </p:dialog>
+            </h:form>
+            
+            <h:form id="Alimentos"> 
+                <p:dialog header="NUEVO" widgetVar="pNuevoAlimentos" id="dlgNuevoAlimentos" 
+                          closable="false">
+                    <h:panelGrid columns="2" cellpadding="2">
+
+                        <h:outputLabel value="Empresa: " />
+                        <p:inputText id="nombreEmpresaAlimentos" style="text-transform: uppercase; font-weight:bold; color: black " 
+                                     value="#{servicios.albEmpresa.empNombre}" 
+                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
+                                     />                     
+                        <p:outputLabel value="Tipo Empresa:" />
+                        <p:selectOneMenu  id="tipoEmpresaAlimentos" value="#{servicios.idSeleccionAgua}" style="width:150px">
+                            <f:selectItem  itemValue="" itemLabel="Seleccione Tipo: " noSelectionOption="false" />
+                            <f:selectItems value="#{servicios.listaAgua1}" />
+                        </p:selectOneMenu>
+
+                        <h:outputLabel value="Instalaciones Disponibles: " />
+                        <p:inputText id="instalacion" style="text-transform: uppercase; font-weight:bold; color: black " 
+                                     value="#{servicios.albSituacion.sitInstalacionDisponible}" 
+                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
+                                     />
+                        <h:outputLabel value="Tipo de instalación: " />
+                        <p:inputText id="tipoInst" style="text-transform: uppercase; font-weight:bold; color: black " 
+                                     value="#{servicios.albSituacion.sitTipoInstalacion}" 
+                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
+                                     />
+                        <h:outputLabel value="Responsabilidad de la Institucion a cargo del servicio: " />
+                        <p:inputText id="responsab" style="text-transform: uppercase; font-weight:bold; color: black " 
+                                     value="#{servicios.albSituacion.sitDescripcion}" 
+                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
+                                     />
+                        <h:panelGrid columns="2" cellpadding="1">
+                            <p:commandButton id="btn_guardarAlimentos" value="GUARDAR" update="msgs,:formh,:Alimentos,:formServicio" icon="fa fa-save"
+                                             action="#{servicios.guardarServicioAlimentos()}" onclick="PF('pNuevoAlimentos').hide()" >
+                                <p:confirm header="Confirmación" message="¿Está seguro de guardar?" />
+                            </p:commandButton>
+                            <p:commandButton value="SALIR" icon="fa fa-close" onclick="PF('pNuevoAlimentos').hide()"
+                                             action="#{servicios.cancelarCargaDatos()}"/>
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" severity="alert">
+                                <p:commandButton   value="Si" type="button" styleClass="ui-confirmdialog-yes" 
+                                                   icon="ui-icon-check" />
+                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog>
+                        </h:panelGrid>
                     </h:panelGrid>
                 </p:dialog>
             </h:form>
@@ -867,7 +957,7 @@
                                                 <p:resetInput target=":formEditarDesecho" />
                                             </p:commandButton>
                                         </p:column>
-                                        
+
                                         <p:column   headerText="ELIMINAR" width="70" style="text-align: center" >
                                             <p:commandButton id="btn_EliminarDesecho"  update="msgs,:formh,:formServicio" icon="ui-icon-trash"  >
                                                 <f:setPropertyActionListener value="#{object6}" target="#{servicios.selectedServicioDesechoEliminar}" />
@@ -884,8 +974,8 @@
                                     </p:dataTable>
                                 </h:panelGrid>
                             </p:tab>
-                            
-                             <p:tab title="EDUCACIÓN">
+
+                            <p:tab title="EDUCACIÓN">
                                 <h:panelGrid columns="2" cellpadding="10">               
                                     <p:dataTable id="tprincipal7" 
                                                  var="object7" value="#{servicios.listaEducacion}"
@@ -922,14 +1012,14 @@
                                                     filterMatchMode="contains">
                                             <h:outputText value="#{object7.sitMetodoServicio}" />
                                         </p:column>
-                                        
+
                                         <p:column   headerText="EDITAR" width="50"  style="text-align: center" >
                                             <p:commandButton id="btn_EditarEducacion" icon="ui-icon-pencil" onclick="PF('dlgEditarEducacion').show();" update="formEditarEducacion" >
                                                 <f:setPropertyActionListener value="#{object7}" target="#{servicios.selectedEducacionEditar}" />
                                                 <p:resetInput target=":formEditarEducacion" />
                                             </p:commandButton>
                                         </p:column>
-                                        
+
                                         <p:column   headerText="ELIMINAR" width="70" style="text-align: center" >
                                             <p:commandButton id="btn_EliminarEducacion"  update="msgs,:formh,:formServicio" icon="ui-icon-trash"  >
                                                 <f:setPropertyActionListener value="#{object7}" target="#{servicios.selectedServicioEducacionEliminar}" />
@@ -942,9 +1032,116 @@
                                                 <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
                                             </p:confirmDialog>
                                         </p:column>
-
-
                                     </p:dataTable>
+                                </h:panelGrid>
+                            </p:tab>
+
+                           <p:tab title="CONSUMO DE COMBUSTIBLES FOSILES">
+                                <h:panelGrid columns="2" cellpadding="10">               
+                                    <p:dataTable id="tprincipal8" 
+                                                 var="object8" value="#{servicios.listaCombustibleFosil}"
+                                                 emptyMessage="No se encontraron datos"
+                                                 rows="9" paginator="true" 
+                                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} 
+                                                 {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"    
+                                                 >
+                                        <f:facet name="header">
+                                            <p:outputPanel>
+                                                <p:commandButton   id="nuevoFosil" type="button" value=" NUEVO " style="float: right"
+                                                                   onclick="PF('pNuevoFosil').show()" icon="fa fa fa-plus"
+                                                                   update=":#{p:component('Fosil')}" >
+                                                </p:commandButton>
+                                            </p:outputPanel>
+                                        </f:facet>
+
+                                        <p:column   headerText="EMPRESA PROVEEDORA"  width="100"
+                                                    filterMatchMode="contains">
+                                            <h:outputText value="#{object8.servicioSituacionAlbergue.albServicio.albEmpresa.empNombre}" />
+                                        </p:column>
+                                        <p:column   headerText="TIPO PROVEEDOR DEL SERVICIO"  width="100"
+                                                    filterMatchMode="contains">
+                                            <h:outputText value="#{object8.servicioSituacionAlbergue.albServicio.albEmpresa.albTipoEmpresa.tieNombre}" />
+                                        </p:column>
+                                        <p:column   headerText="COMBUSTIBLE EMPLEADO"  width="100"
+                                                    filterMatchMode="contains">
+                                            <h:outputText value="#{object8.sitCombustibleEmpleado}" />
+                                        </p:column>
+                                        <p:column   headerText="MEDIOS EN LOS QUE SE EMPLEA"  width="100"
+                                                    filterMatchMode="contains">
+                                            <h:outputText value="#{object8.sitMediosEmpleados}" />
+                                        </p:column>
+                                        
+                                        <p:column   headerText="EDITAR" width="50"  style="text-align: center" >
+                                            <p:commandButton id="btn_EditarFosil" icon="ui-icon-pencil" onclick="PF('dlgEditarFosil').show();" update="formEditarFosil" >
+                                                <f:setPropertyActionListener value="#{object8}" target="#{servicios.selectedFosilEditar}" />
+                                                <p:resetInput target=":formEditarFosil" />
+                                            </p:commandButton>
+                                        </p:column>
+                                        
+                                        <p:column   headerText="ELIMINAR" width="70" style="text-align: center" >
+                                            <p:commandButton id="btn_EliminarFosil"  update="msgs,:formh,:formServicio" icon="ui-icon-trash"  >
+                                                <f:setPropertyActionListener value="#{object8}" target="#{servicios.selectedServicioFosilEliminar}" />
+                                                <p:confirm header="Confirmación" message="Está seguro de Eliminar?" />
+                                            </p:commandButton>
+
+                                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" severity="alert">
+                                                <p:commandButton   value="Si" type="button" styleClass="ui-confirmdialog-yes" 
+                                                                   icon="ui-icon-check" />
+                                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                            </p:confirmDialog>
+                                        </p:column>
+                                    </p:dataTable>
+                                </h:panelGrid>
+                            </p:tab>
+                            
+                            <p:tab title="PROCESAMIENTO DE ALIMENTOS">
+                                <h:panelGrid columns="2" cellpadding="10">               
+                                    <p:dataTable id="tprincipal9" 
+                                                 var="object9" value="#{servicios.listaAlimentos}"
+                                                 emptyMessage="No se encontraron datos"
+                                                 rows="9" paginator="true" 
+                                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} 
+                                                 {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"    
+                                                 >
+                                        <f:facet name="header">
+                                            <p:outputPanel>
+                                                <p:commandButton   id="nuevoAlimentos" type="button" value=" NUEVO " style="float: right"
+                                                                   onclick="PF('pNuevoAlimentos').show()" icon="fa fa fa-plus"
+                                                                   update=":#{p:component('Alimentos')}" >
+                                                </p:commandButton>
+                                            </p:outputPanel>
+                                        </f:facet>
+                                        
+                                        <p:column   headerText="EMPRESA PROVEEDORA"  width="100"
+                                                    filterMatchMode="contains">
+                                            <h:outputText value="#{object9.servicioSituacionAlbergue.albServicio.albEmpresa.empNombre}" />
+                                        </p:column>
+                                        <p:column   headerText="TIPO PROVEEDOR DEL SERVICIO"  width="100"
+                                                    filterMatchMode="contains">
+                                            <h:outputText value="#{object9.servicioSituacionAlbergue.albServicio.albEmpresa.albTipoEmpresa.tieNombre}" />
+                                        </p:column>
+                                        <p:column   headerText="INSTALACIONES DISPONIBLES"  width="100"
+                                                    filterMatchMode="contains">
+                                            <h:outputText value="#{object9.sitInstalacionDisponible}" />
+                                        </p:column>
+                                        <p:column   headerText="TIPO DE INSTALACIÓN"  width="100"
+                                                    filterMatchMode="contains">
+                                            <h:outputText value="#{object9.sitTipoInstalacion}" />
+                                        </p:column>
+                                        <p:column   headerText="INSTITUCIÓN A CARGO DEL SERVICIO"  width="100"
+                                                    filterMatchMode="contains">
+                                            <h:outputText value="#{object9.sitDescripcion}" />
+                                        </p:column>
+                                        <p:column headerText="EDITAR" width="50"  style="text-align: center">
+                                            
+                                        </p:column>
+                                       <p:column       >
+                                            <p:commandButton id="btn_EditarAlimentos" icon="ui-icon-pencil" onclick="PF('dlgEditarAlimentos').show();" update="formEditarAlimentos" >
+                                                <f:setPropertyActionListener value="#{object9}" target="#{servicios.selectedAlimentosEditar}" />
+                                                <p:resetInput target=":formEditarAlimentos" />
+                                            </p:commandButton>
+                                        </p:column>
+                                      </p:dataTable>
                                 </h:panelGrid>
                             </p:tab>
 
@@ -1301,7 +1498,7 @@
                                      value="#{servicios.segDesechoObjects.sitMetodoEvacuacion}" 
                                      size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
                                      />
-                        
+
                         <f:facet name="footer">
                             <p:commandButton value="GUARDAR"  update="msgs,:formh, :formServicio" icon="fa fa-save"
                                              action="#{servicios.editarServicioDesecho()}" onclick="PF('dlgEditarDesecho').hide()"  >
@@ -1319,7 +1516,7 @@
                     </h:panelGrid>
                 </h:form>
             </p:dialog>
-            
+
             <p:dialog header="EDITAR" widgetVar="dlgEditarEducacion" minHeight="40" closable="false" draggable="false">
                 <h:form id="formEditarEducacion">
                     <p:growl id="msgsEducacion"  />
@@ -1355,7 +1552,7 @@
                                      value="#{servicios.segEducacionObjects.sitMetodoServicio}" 
                                      size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
                                      />
-                        
+
                         <f:facet name="footer">
                             <p:commandButton value="GUARDAR"  update="msgs,:formh, :formServicio" icon="fa fa-save"
                                              action="#{servicios.editarServicioEducacion()}" onclick="PF('dlgEditarEducacion').hide()"  >
@@ -1364,6 +1561,53 @@
                             <p:commandButton value="SALIR" type="reset" icon="fa fa-close"
                                              onclick="PF('dlgEditarEducacion').hide()"/>
 
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" severity="alert">
+                                <p:commandButton   value="Si" type="button" styleClass="ui-confirmdialog-yes" 
+                                                   icon="ui-icon-check" />
+                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog>
+                        </f:facet>
+                    </h:panelGrid>
+                </h:form>
+            </p:dialog>
+
+            <p:dialog header="EDITAR" widgetVar="dlgEditarFosil" minHeight="40" closable="false" draggable="false">
+                <h:form id="formEditarFosil">
+                    <p:growl id="msgsFosil"  />
+                    <h:panelGrid columns="2" cellpadding="3">
+
+                        <h:outputLabel value="Empresa Proveedora : " ></h:outputLabel>
+                        <p:inputText id="txt_NombreEditarFosil" style="text-transform: uppercase; font-weight:bold; color: black " 
+                                     value="#{servicios.segFosilObjects.servicioSituacionAlbergue.albServicio.albEmpresa.empNombre}" 
+                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
+                                     required="true" >
+                        </p:inputText>
+
+                        <h:outputLabel value="Tipo Proveedor del Servicio: " ></h:outputLabel>
+                        <p:selectOneMenu  id="tipoProveedorServFosil_edit"  value="#{servicios.idSeleccionAgua}" style="width:150px" >
+                            <f:selectItem  itemValue="" itemLabel="#{servicios.segFosilObjects.servicioSituacionAlbergue.albServicio.albEmpresa.albTipoEmpresa.tieNombre} " noSelectionOption="false"  />
+                            <f:selectItems value="#{servicios.listaAgua1}" /> 
+                        </p:selectOneMenu>
+
+                        <h:outputLabel value="Combustible empleado : " ></h:outputLabel>
+                        <p:inputText id="txt_IstaEditarFosil" style="text-transform: uppercase; font-weight:bold; color: black " 
+                                     value="#{servicios.segFosilObjects.sitCombustibleEmpleado}" 
+                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
+                                     required="true" >
+                        </p:inputText>
+
+                        <h:outputLabel value="Medios en los que se emplea: " />
+                        <p:inputText id="tipoInstaFosil" style="text-transform: uppercase; font-weight:bold; color: black "
+                                     value="#{servicios.segFosilObjects.sitMediosEmpleados}" 
+                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
+                                     />
+                        <f:facet name="footer">
+                            <p:commandButton value="GUARDAR"  update="msgs,:formh, :formServicio" icon="fa fa-save"
+                                             action="#{servicios.editarServicioFosil()}" onclick="PF('dlgEditarFosil').hide()"  >
+                                <p:confirm header="Confirmación" message="Está seguro de actualizar?" />
+                            </p:commandButton>
+                            <p:commandButton value="SALIR" type="reset" icon="fa fa-close"
+                                             onclick="PF('dlgEditarFosil').hide()"/>
                             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" severity="alert">
                                 <p:commandButton   value="Si" type="button" styleClass="ui-confirmdialog-yes" 
                                                    icon="ui-icon-check" />
