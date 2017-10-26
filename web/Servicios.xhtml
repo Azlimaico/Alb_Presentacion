@@ -351,6 +351,101 @@
                 </p:dialog>
             </h:form>
 
+            <h:form id="Desecho"> 
+                <p:dialog header="NUEVO" widgetVar="pNuevoDesecho" id="dlgNuevoDesecho" 
+                          closable="false">
+                    <h:panelGrid columns="2" cellpadding="2">
+
+                        <h:outputLabel value="Empresa: " />
+                        <p:inputText id="nombreEmpresaDesecho" style="text-transform: uppercase; font-weight:bold; color: black " 
+                                     value="#{servicios.albEmpresa.empNombre}" 
+                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
+                                     />                     
+                        <p:outputLabel value="Tipo Empresa:" />
+                        <p:selectOneMenu  id="tipoEmpresaDesecho" value="#{servicios.idSeleccionAgua}" style="width:150px">
+                            <f:selectItem  itemValue="" itemLabel="Seleccione Tipo: " noSelectionOption="false" />
+                            <f:selectItems value="#{servicios.listaAgua1}" />
+                        </p:selectOneMenu>
+
+                        <h:outputLabel value="Instalación Disponible: " />
+                        <p:inputText id="instalacionDesecho" style="text-transform: uppercase; font-weight:bold; color: black " 
+                                     value="#{servicios.albSituacion.sitInstalacionDisponible}" 
+                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
+                                     />
+                        <h:outputLabel value="Método de Evacuacion: " />
+                        <p:inputText id="evacuaDesecho" style="text-transform: uppercase; font-weight:bold; color: black " 
+                                     value="#{servicios.albSituacion.sitMetodoEvacuacion}" 
+                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
+                                     />
+
+                        <h:panelGrid columns="2" cellpadding="1">
+                            <p:commandButton id="btn_guardarDesecho" value="GUARDAR" update="msgs,:formh,:Desecho,:formServicio" icon="fa fa-save"
+                                             action="#{servicios.guardarServicioDesecho()}" onclick="PF('pNuevoDesecho').hide()" >
+                                <p:confirm header="Confirmación" message="¿Está seguro de guardar?" />
+                            </p:commandButton>
+                            <p:commandButton value="SALIR" icon="fa fa-close" onclick="PF('pNuevoDesecho').hide()"
+                                             action="#{servicios.cancelarCargaDatos()}"/>
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" severity="alert">
+                                <p:commandButton   value="Si" type="button" styleClass="ui-confirmdialog-yes" 
+                                                   icon="ui-icon-check" />
+                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog>
+                        </h:panelGrid>
+
+                    </h:panelGrid>
+                </p:dialog>
+            </h:form>
+            
+            <h:form id="Educacion"> 
+                <p:dialog header="NUEVO" widgetVar="pNuevoEducacion" id="dlgNuevoEducacion" 
+                          closable="false">
+                    <h:panelGrid columns="2" cellpadding="2">
+
+                        <h:outputLabel value="Empresa: " />
+                        <p:inputText id="nombreEmpresaEducacion" style="text-transform: uppercase; font-weight:bold; color: black " 
+                                     value="#{servicios.albEmpresa.empNombre}" 
+                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
+                                     />                     
+                        <p:outputLabel value="Tipo Empresa:" />
+                        <p:selectOneMenu  id="tipoEmpresaEducacion" value="#{servicios.idSeleccionAgua}" style="width:150px">
+                            <f:selectItem  itemValue="" itemLabel="Seleccione Tipo: " noSelectionOption="false" />
+                            <f:selectItems value="#{servicios.listaAgua1}" />
+                        </p:selectOneMenu>
+
+                        <h:outputLabel value="Instalación Disponible: " />
+                        <p:inputText id="instalacionEducacion" style="text-transform: uppercase; font-weight:bold; color: black " 
+                                     value="#{servicios.albSituacion.sitInstalacionDisponible}" 
+                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
+                                     />
+                        <h:outputLabel value="Tipo de instalacion: " />
+                        <p:inputText id="tipoInsta" style="text-transform: uppercase; font-weight:bold; color: black " 
+                                     value="#{servicios.albSituacion.sitTipoInstalacion}" 
+                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
+                                     />
+                        <h:outputLabel value="Metodo del Servicio: " />
+                        <p:inputText id="MetEducacion" style="text-transform: uppercase; font-weight:bold; color: black " 
+                                     value="#{servicios.albSituacion.sitMetodoServicio}" 
+                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
+                                     />
+
+                        <h:panelGrid columns="2" cellpadding="1">
+                            <p:commandButton id="btn_guardarEducacion" value="GUARDAR" update="msgs,:formh,:Educacion,:formServicio" icon="fa fa-save"
+                                             action="#{servicios.guardarServicioEducacion()}" onclick="PF('pNuevoEducacion').hide()" >
+                                <p:confirm header="Confirmación" message="¿Está seguro de guardar?" />
+                            </p:commandButton>
+                            <p:commandButton value="SALIR" icon="fa fa-close" onclick="PF('pNuevoEducacion').hide()"
+                                             action="#{servicios.cancelarCargaDatos()}"/>
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" severity="alert">
+                                <p:commandButton   value="Si" type="button" styleClass="ui-confirmdialog-yes" 
+                                                   icon="ui-icon-check" />
+                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog>
+                        </h:panelGrid>
+
+                    </h:panelGrid>
+                </p:dialog>
+            </h:form>
+
             <p:dialog header="SERVICIOS DEL ALBERGUE" widgetVar="dlgServicios" minHeight="40" closable="true" draggable="true" resizable="true">
                 <h:form id="formServicio">
                     <h:panelGrid columns="2" cellpadding="3">
@@ -713,7 +808,7 @@
                                                 <p:resetInput target=":formEditarSalud" />
                                             </p:commandButton>
                                         </p:column>
-                                        
+
                                         <p:column   headerText="ELIMINAR" width="70" style="text-align: center" >
                                             <p:commandButton id="btn_EliminarSald"  update="msgs,:formh,:formServicio" icon="ui-icon-trash"  >
                                                 <f:setPropertyActionListener value="#{object5}" target="#{servicios.selectedServicioSaludEliminar}" />
@@ -726,6 +821,128 @@
                                                 <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
                                             </p:confirmDialog>
                                         </p:column>
+
+                                    </p:dataTable>
+                                </h:panelGrid>
+                            </p:tab>
+
+                            <p:tab title="MANEJO DE DESECHOS SÓLIDOS">
+                                <h:panelGrid columns="2" cellpadding="10">               
+                                    <p:dataTable id="tprincipal6" 
+                                                 var="object6" value="#{servicios.listaDesechosSolidos}"
+                                                 emptyMessage="No se encontraron datos"
+                                                 rows="9" paginator="true" 
+                                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} 
+                                                 {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"    
+                                                 >
+                                        <f:facet name="header">
+                                            <p:outputPanel>
+                                                <p:commandButton   id="nuevoDesecho" type="button" value=" NUEVO " style="float: right"
+                                                                   onclick="PF('pNuevoDesecho').show()" icon="fa fa fa-plus"
+                                                                   update=":#{p:component('Desecho')}" >
+                                                </p:commandButton>
+                                            </p:outputPanel>
+                                        </f:facet>
+
+                                        <p:column   headerText="EMPRESA PROVEEDORA"  width="100"
+                                                    filterMatchMode="contains">
+                                            <h:outputText value="#{object6.servicioSituacionAlbergue.albServicio.albEmpresa.empNombre}" />
+                                        </p:column>
+                                        <p:column   headerText="TIPO PROVEEDOR DEL SERVICIO"  width="100"
+                                                    filterMatchMode="contains">
+                                            <h:outputText value="#{object6.servicioSituacionAlbergue.albServicio.albEmpresa.albTipoEmpresa.tieNombre}" />
+                                        </p:column>
+                                        <p:column   headerText="INSTALACIÓN DISPONIBLE"  width="100"
+                                                    filterMatchMode="contains">
+                                            <h:outputText value="#{object6.sitInstalacionDisponible}" />
+                                        </p:column>
+                                        <p:column   headerText="MÉTODO DE EVACUACIÓN"  width="100"
+                                                    filterMatchMode="contains">
+                                            <h:outputText value="#{object6.sitMetodoEvacuacion}" />
+                                        </p:column>
+
+                                        <p:column   headerText="EDITAR" width="50"  style="text-align: center" >
+                                            <p:commandButton id="btn_EditarDesecho" icon="ui-icon-pencil" onclick="PF('dlgEditarDesecho').show();" update="formEditarDesecho" >
+                                                <f:setPropertyActionListener value="#{object6}" target="#{servicios.selectedDesechoEditar}" />
+                                                <p:resetInput target=":formEditarDesecho" />
+                                            </p:commandButton>
+                                        </p:column>
+                                        
+                                        <p:column   headerText="ELIMINAR" width="70" style="text-align: center" >
+                                            <p:commandButton id="btn_EliminarDesecho"  update="msgs,:formh,:formServicio" icon="ui-icon-trash"  >
+                                                <f:setPropertyActionListener value="#{object6}" target="#{servicios.selectedServicioDesechoEliminar}" />
+                                                <p:confirm header="Confirmación" message="Está seguro de Eliminar?" />
+                                            </p:commandButton>
+
+                                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" severity="alert">
+                                                <p:commandButton   value="Si" type="button" styleClass="ui-confirmdialog-yes" 
+                                                                   icon="ui-icon-check" />
+                                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                            </p:confirmDialog>
+                                        </p:column>
+
+                                    </p:dataTable>
+                                </h:panelGrid>
+                            </p:tab>
+                            
+                             <p:tab title="EDUCACIÓN">
+                                <h:panelGrid columns="2" cellpadding="10">               
+                                    <p:dataTable id="tprincipal7" 
+                                                 var="object7" value="#{servicios.listaEducacion}"
+                                                 emptyMessage="No se encontraron datos"
+                                                 rows="9" paginator="true" 
+                                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} 
+                                                 {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"    
+                                                 >
+                                        <f:facet name="header">
+                                            <p:outputPanel>
+                                                <p:commandButton   id="nuevoEducacion" type="button" value=" NUEVO " style="float: right"
+                                                                   onclick="PF('pNuevoEducacion').show()" icon="fa fa fa-plus"
+                                                                   update=":#{p:component('Educacion')}" >
+                                                </p:commandButton>
+                                            </p:outputPanel>
+                                        </f:facet>
+                                        <p:column   headerText="EMPRESA PROVEEDORA"  width="100"
+                                                    filterMatchMode="contains">
+                                            <h:outputText value="#{object7.servicioSituacionAlbergue.albServicio.albEmpresa.empNombre}" />
+                                        </p:column>
+                                        <p:column   headerText="TIPO PROVEEDOR DEL SERVICIO"  width="100"
+                                                    filterMatchMode="contains">
+                                            <h:outputText value="#{object7.servicioSituacionAlbergue.albServicio.albEmpresa.albTipoEmpresa.tieNombre}" />
+                                        </p:column>
+                                        <p:column   headerText="INSTALACIÓN DISPONIBLE"  width="100"
+                                                    filterMatchMode="contains">
+                                            <h:outputText value="#{object7.sitInstalacionDisponible}" />
+                                        </p:column>
+                                        <p:column   headerText="TIPO DE INSTALACIÓN"  width="100"
+                                                    filterMatchMode="contains">
+                                            <h:outputText value="#{object7.sitTipoInstalacion}" />
+                                        </p:column>
+                                        <p:column   headerText="MÉTODO DEL SERVICIO"  width="100"
+                                                    filterMatchMode="contains">
+                                            <h:outputText value="#{object7.sitMetodoServicio}" />
+                                        </p:column>
+                                        
+                                        <p:column   headerText="EDITAR" width="50"  style="text-align: center" >
+                                            <p:commandButton id="btn_EditarEducacion" icon="ui-icon-pencil" onclick="PF('dlgEditarEducacion').show();" update="formEditarEducacion" >
+                                                <f:setPropertyActionListener value="#{object7}" target="#{servicios.selectedEducacionEditar}" />
+                                                <p:resetInput target=":formEditarEducacion" />
+                                            </p:commandButton>
+                                        </p:column>
+                                        
+                                        <p:column   headerText="ELIMINAR" width="70" style="text-align: center" >
+                                            <p:commandButton id="btn_EliminarEducacion"  update="msgs,:formh,:formServicio" icon="ui-icon-trash"  >
+                                                <f:setPropertyActionListener value="#{object7}" target="#{servicios.selectedServicioEducacionEliminar}" />
+                                                <p:confirm header="Confirmación" message="Está seguro de Eliminar?" />
+                                            </p:commandButton>
+
+                                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" severity="alert">
+                                                <p:commandButton   value="Si" type="button" styleClass="ui-confirmdialog-yes" 
+                                                                   icon="ui-icon-check" />
+                                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                            </p:confirmDialog>
+                                        </p:column>
+
 
                                     </p:dataTable>
                                 </h:panelGrid>
@@ -1052,8 +1269,109 @@
                         </f:facet>
                     </h:panelGrid>
                 </h:form>
+            </p:dialog>
 
+            <p:dialog header="EDITAR" widgetVar="dlgEditarDesecho" minHeight="40" closable="false" draggable="false">
+                <h:form id="formEditarDesecho">
+                    <p:growl id="msgsDesecho"  />
+                    <h:panelGrid columns="2" cellpadding="3">
 
+                        <h:outputLabel value="Empresa Proveedora : *" ></h:outputLabel>
+                        <p:inputText id="txt_NombreEditarDesecho" style="text-transform: uppercase; font-weight:bold; color: black " 
+                                     value="#{servicios.segDesechoObjects.servicioSituacionAlbergue.albServicio.albEmpresa.empNombre}" 
+                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
+                                     required="true" >
+                        </p:inputText>
+
+                        <h:outputLabel value="Tipo Proveedor del Servicio: *" ></h:outputLabel>
+                        <p:selectOneMenu  id="tipoProveedorServDesecho_edit"  value="#{servicios.idSeleccionAgua}" style="width:150px" >
+                            <f:selectItem  itemValue="" itemLabel="#{servicios.segDesechoObjects.servicioSituacionAlbergue.albServicio.albEmpresa.albTipoEmpresa.tieNombre} " noSelectionOption="false"  />
+                            <f:selectItems value="#{servicios.listaAgua1}" /> 
+                        </p:selectOneMenu>
+
+                        <h:outputLabel value="Instalacion Disponible : *" ></h:outputLabel>
+                        <p:inputText id="txt_IstaEditarDesecho" style="text-transform: uppercase; font-weight:bold; color: black " 
+                                     value="#{servicios.segDesechoObjects.sitInstalacionDisponible}" 
+                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
+                                     required="true" >
+                        </p:inputText>
+
+                        <h:outputLabel value="Método de evacuación: " />
+                        <p:inputText id="evacuaDesechoEd" style="text-transform: uppercase; font-weight:bold; color: black "
+                                     value="#{servicios.segDesechoObjects.sitMetodoEvacuacion}" 
+                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
+                                     />
+                        
+                        <f:facet name="footer">
+                            <p:commandButton value="GUARDAR"  update="msgs,:formh, :formServicio" icon="fa fa-save"
+                                             action="#{servicios.editarServicioDesecho()}" onclick="PF('dlgEditarDesecho').hide()"  >
+                                <p:confirm header="Confirmación" message="Está seguro de actualizar?" />
+                            </p:commandButton>
+                            <p:commandButton value="SALIR" type="reset" icon="fa fa-close"
+                                             onclick="PF('dlgEditarDesecho').hide()"/>
+
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" severity="alert">
+                                <p:commandButton   value="Si" type="button" styleClass="ui-confirmdialog-yes" 
+                                                   icon="ui-icon-check" />
+                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog>
+                        </f:facet>
+                    </h:panelGrid>
+                </h:form>
+            </p:dialog>
+            
+            <p:dialog header="EDITAR" widgetVar="dlgEditarEducacion" minHeight="40" closable="false" draggable="false">
+                <h:form id="formEditarEducacion">
+                    <p:growl id="msgsEducacion"  />
+                    <h:panelGrid columns="2" cellpadding="3">
+
+                        <h:outputLabel value="Empresa Proveedora : *" ></h:outputLabel>
+                        <p:inputText id="txt_NombreEditarEducacion" style="text-transform: uppercase; font-weight:bold; color: black " 
+                                     value="#{servicios.segEducacionObjects.servicioSituacionAlbergue.albServicio.albEmpresa.empNombre}" 
+                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
+                                     required="true" >
+                        </p:inputText>
+
+                        <h:outputLabel value="Tipo Proveedor del Servicio: *" ></h:outputLabel>
+                        <p:selectOneMenu  id="tipoProveedorServEducacion_edit"  value="#{servicios.idSeleccionAgua}" style="width:150px" >
+                            <f:selectItem  itemValue="" itemLabel="#{servicios.segEducacionObjects.servicioSituacionAlbergue.albServicio.albEmpresa.albTipoEmpresa.tieNombre} " noSelectionOption="false"  />
+                            <f:selectItems value="#{servicios.listaAgua1}" /> 
+                        </p:selectOneMenu>
+
+                        <h:outputLabel value="Instalacion Disponible : *" ></h:outputLabel>
+                        <p:inputText id="txt_IstaEditarEducacion" style="text-transform: uppercase; font-weight:bold; color: black " 
+                                     value="#{servicios.segEducacionObjects.sitInstalacionDisponible}" 
+                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
+                                     required="true" >
+                        </p:inputText>
+
+                        <h:outputLabel value="Típo de instalación: " />
+                        <p:inputText id="tipoInstaEducacion" style="text-transform: uppercase; font-weight:bold; color: black "
+                                     value="#{servicios.segEducacionObjects.sitTipoInstalacion}" 
+                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
+                                     />
+                        <h:outputLabel value="Metodo del servicio: " />
+                        <p:inputText id="metEducacion" style="text-transform: uppercase; font-weight:bold; color: black "
+                                     value="#{servicios.segEducacionObjects.sitMetodoServicio}" 
+                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
+                                     />
+                        
+                        <f:facet name="footer">
+                            <p:commandButton value="GUARDAR"  update="msgs,:formh, :formServicio" icon="fa fa-save"
+                                             action="#{servicios.editarServicioEducacion()}" onclick="PF('dlgEditarEducacion').hide()"  >
+                                <p:confirm header="Confirmación" message="Está seguro de actualizar?" />
+                            </p:commandButton>
+                            <p:commandButton value="SALIR" type="reset" icon="fa fa-close"
+                                             onclick="PF('dlgEditarEducacion').hide()"/>
+
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" severity="alert">
+                                <p:commandButton   value="Si" type="button" styleClass="ui-confirmdialog-yes" 
+                                                   icon="ui-icon-check" />
+                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog>
+                        </f:facet>
+                    </h:panelGrid>
+                </h:form>
             </p:dialog>
 
         </h:body>
