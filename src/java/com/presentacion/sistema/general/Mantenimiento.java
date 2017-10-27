@@ -1,5 +1,6 @@
 package com.presentacion.sistema.general;
 
+import com.negocio.servicio.general.sistema.AlbAvanceImplementacionServicio;
 import com.negocio.servicio.general.sistema.AlbDiscapacidadServicio;
 import com.negocio.servicio.general.sistema.AlbEstadoCivilServicio;
 import com.negocio.servicio.general.sistema.AlbFamiliaServicio;
@@ -8,6 +9,7 @@ import com.negocio.servicio.general.sistema.AlbInstruccionServicio;
 import com.negocio.servicio.general.sistema.AlbProfesionServicio;
 import com.negocio.servicio.general.sistema.AlbRangoServicio;
 import com.persistencia.albergue.AlbAlbergue;
+import com.persistencia.general.sistema.AlbAvanceImplementacion;
 import com.persistencia.general.sistema.AlbDiscapacidad;
 import com.persistencia.general.sistema.AlbEstadoCivil;
 import com.persistencia.general.sistema.AlbFamilia;
@@ -83,6 +85,12 @@ public class Mantenimiento implements Serializable {
     private List<AlbDiscapacidad> listaTempDisca = new ArrayList<>();
     AlbDiscapacidad albDiscapacidad = new AlbDiscapacidad();
 
+    @ManagedProperty(value = "#{AlbAvanceImplementacionServicioImpl}")
+    AlbAvanceImplementacionServicio albAvanceImplementacionServicio;
+    private List<AlbAvanceImplementacion> listaAvanceI= new ArrayList();
+    private List<AlbAvanceImplementacion> listaTempAvanceI = new ArrayList<>();
+    AlbAvanceImplementacion albAvanceImplementacion = new AlbAvanceImplementacion();
+    
     private Boolean guardadoCabecera = false;
     private MensajeEAS mensajeEAS = new MensajeEAS();
     //EDITAR PROFESION
@@ -133,6 +141,13 @@ public class Mantenimiento implements Serializable {
     private Long IdEditarDisca;
     //ELIMINAR DISCAPACIDAD
     private AlbDiscapacidad selectedDiscaEliminar = new AlbDiscapacidad();
+    
+    //EDITAR AVANCE IMPLEMENTACION
+    private AlbAvanceImplementacion selectedAvanceIEditar = new AlbAvanceImplementacion();
+    private AlbAvanceImplementacion segAvanceIObjects = new AlbAvanceImplementacion();
+    private Long IdEditarAvanceI;
+    //ELIMINAR AVANCE IMPLEMENTACION
+    private AlbAvanceImplementacion selectedAvanceIEliminar = new AlbAvanceImplementacion();
 
     @PostConstruct
     public void init() {
@@ -148,6 +163,7 @@ public class Mantenimiento implements Serializable {
             listaInstruccion.clear();
             listaFlia.clear();
             listaDisca.clear();
+            listaAvanceI.clear();
         }
         listaFuerza.clear();
         this.listaFuerza.addAll(getAlbFuerzaServicio().listarFuerza());
@@ -163,6 +179,8 @@ public class Mantenimiento implements Serializable {
         this.listaFlia.addAll(getAlbFamiliaServicio().listarFamilia());
         listaDisca.clear();
         this.listaDisca.addAll(getAlbDiscapacidadServicio().listarDiscapacidad());
+        listaAvanceI.clear();
+        listaAvanceI.addAll(getAlbAvanceImplementacionServicio().listarAvanceImplementacion());
     }
 
     public AlbFuerzaServicio getAlbFuerzaServicio() {
@@ -1080,4 +1098,135 @@ public class Mantenimiento implements Serializable {
         this.listaDisca.addAll(getAlbDiscapacidadServicio().listarDiscapacidad());
     }
 
+    public AlbAvanceImplementacionServicio getAlbAvanceImplementacionServicio() {
+        return albAvanceImplementacionServicio;
+    }
+
+    public void setAlbAvanceImplementacionServicio(AlbAvanceImplementacionServicio albAvanceImplementacionServicio) {
+        this.albAvanceImplementacionServicio = albAvanceImplementacionServicio;
+    }
+
+    public List<AlbAvanceImplementacion> getListaAvanceI() {
+        return listaAvanceI;
+    }
+
+    public void setListaAvanceI(List<AlbAvanceImplementacion> listaAvanceI) {
+        this.listaAvanceI = listaAvanceI;
+    }
+
+    public AlbAvanceImplementacion getAlbAvanceImplementacion() {
+        return albAvanceImplementacion;
+    }
+
+    public void setAlbAvanceImplementacion(AlbAvanceImplementacion albAvanceImplementacion) {
+        this.albAvanceImplementacion = albAvanceImplementacion;
+    }
+
+    public void guardarAvanceI() {
+        if ("".equals(albAvanceImplementacion.getAvaNombre())) {
+            mensajeEAS.errorLlenarDatos();
+        } else {
+            try {
+                albAvanceImplementacion.setAvaEstado(1);
+                listaTempAvanceI.clear();
+                listaTempAvanceI.add(albAvanceImplementacion);
+                getAlbAvanceImplementacionServicio().guardarAvanceI(listaTempAvanceI);
+                albAvanceImplementacion = new AlbAvanceImplementacion();
+                guardadoCabecera = true;
+                mensajeEAS.info(true);
+                init();
+            } catch (Exception ex) {
+                guardadoCabecera = false;
+                LOG.error("Error: " + ex.getMessage());
+                mensajeEAS.errorDublicado();
+            }
+
+        }
+    }
+
+    public AlbAvanceImplementacion getSelectedAvanceIEditar() {
+        return selectedAvanceIEditar;
+    }
+
+    public void setSelectedAvanceIEditar(AlbAvanceImplementacion selectedAvanceIEditar) {
+        this.selectedAvanceIEditar = selectedAvanceIEditar;
+        editarAvanceISistema(selectedAvanceIEditar);
+    }
+    
+    
+    public void editarAvanceISistema(AlbAvanceImplementacion obj) {
+        try {
+            segAvanceIObjects = new AlbAvanceImplementacion();
+            IdEditarAvanceI = obj.getAvaId();
+            obj.getAvaNombre();
+            segAvanceIObjects.setAvaNombre(obj.getAvaNombre());
+            segAvanceIObjects.setAvaEstado(1);
+        } catch (Exception ex) {
+            LOG.error("Error: " + ex.getMessage());
+            mensajeEAS.error();
+        }
+    }
+
+    public AlbAvanceImplementacion getSegAvanceIObjects() {
+        return segAvanceIObjects;
+    }
+
+    public void setSegAvanceIObjects(AlbAvanceImplementacion segAvanceIObjects) {
+        this.segAvanceIObjects = segAvanceIObjects;
+    }
+    
+    public void actualizarAvanceISistema() {
+        try {
+            AlbAvanceImplementacion obj = new AlbAvanceImplementacion();
+            obj.setAvaId(IdEditarAvanceI);
+            obj.setAvaNombre(segAvanceIObjects.getAvaNombre());
+            obj.setAvaEstado(1);
+            if ("".equals(albAvanceImplementacion.getAvaNombre())) {
+                mensajeEAS.errorLlenarDatos();
+            } else {
+                listaTempAvanceI.clear();
+                listaTempAvanceI.add(obj);
+                getAlbAvanceImplementacionServicio().guardarAvanceI(listaTempAvanceI);
+                albAvanceImplementacion = new AlbAvanceImplementacion();
+                guardadoCabecera = true;
+                init();
+                mensajeEAS.Modificar();
+            }
+        } catch (Exception ex) {
+            LOG.error("Error: " + ex.getMessage());
+            mensajeEAS.errorDublicado();
+        }
+    }
+
+    public AlbAvanceImplementacion getSelectedAvanceIEliminar() {
+        return selectedAvanceIEliminar;
+    }
+
+    public void setSelectedAvanceIEliminar(AlbAvanceImplementacion selectedAvanceIEliminar) {
+        this.selectedAvanceIEliminar = selectedAvanceIEliminar;
+        eliminarAvanceISistema(selectedAvanceIEliminar);
+    }
+    
+    public void eliminarAvanceISistema(AlbAvanceImplementacion obj) {
+        try {
+
+            obj.setAvaEstado(ParametrosObjetos.INACTIVO);
+            getAlbAvanceImplementacionServicio().guardarAvanceIEl(obj);
+            mensajeEAS.Eliminar();
+            cargarTableAvanceI();
+
+        } catch (Exception ex) {
+
+            LOG.error("Error: " + ex.getMessage());
+            mensajeEAS.error();
+        }
+
+    }
+
+    public void cargarTableAvanceI() {
+        albAvanceImplementacion= new AlbAvanceImplementacion();
+        listaAvanceI.clear();
+        this.listaAvanceI.addAll(getAlbAvanceImplementacionServicio().listarAvanceImplementacion());
+    }
+    
 }

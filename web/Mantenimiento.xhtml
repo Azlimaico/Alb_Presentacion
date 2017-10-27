@@ -361,8 +361,58 @@
 
                         </h:panelGrid>
                     </p:tab>
+                    
+                    <p:tab title="AVANCE DE LA IMPLEMENTACION">
+                        <h:panelGrid columns="2" cellpadding="5">
+                            <p:dataTable id="tprincipalImple" 
+                                         value="#{mantenimiento.listaAvanceI}" var="object7"
+                                         emptyMessage="No se encontraron datos"
+                                         rows="11" paginator="true" 
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} 
+                                         {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"    
+                                         >
+                                <f:facet name="header">
+                                    <p:outputPanel>
+                                        <p:commandButton   id="id_boton1" type="button" value=" NUEVO " style="float: right"
+                                                           onclick="PF('pNuevoAvanceI').show()" icon="fa fa fa-plus"
+                                                           update=":#{p:component('AvanceI')}" >
+                                        </p:commandButton>
+                                    </p:outputPanel>
+                                </f:facet>
+                                <p:column headerText="AVANCE IMPLEMENTACIÓN"  width="50"
+                                          filterMatchMode="contains">
+                                    <h:outputText value="#{object7.avaNombre}" />
+                                </p:column>
 
-                </p:tabView>
+                                <p:column headerText="ESTADO"  width="50"
+                                          filterMatchMode="contains">
+                                    <h:outputText value="#{object7.avaEstado}" />
+                                </p:column>
+                                <p:column   headerText="EDITAR" width="50"  style="text-align: center" >
+                                    <p:commandButton id="btn_EditarAvanceI" icon="ui-icon-pencil" onclick="PF('dlgEditarAvanceI').show();" update="formEditarAvanceI" >
+                                        <f:setPropertyActionListener value="#{object7}" target="#{mantenimiento.selectedAvanceIEditar}" />
+                                        <p:resetInput target=":formEditarAvanceI" />
+                                    </p:commandButton>
+                                </p:column>
+
+                                <p:column   headerText="ELIMINAR" width="50" style="text-align: center" >
+                                    <p:commandButton id="btn_EliminarAvanceI"  update="msgs,:form" icon="ui-icon-trash"  >
+                                        <f:setPropertyActionListener value="#{object7}" target="#{mantenimiento.selectedAvanceIEliminar}" />
+                                        <p:confirm header="Confirmación" message="Está seguro de Eliminar?" />
+                                    </p:commandButton>
+
+                                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" severity="alert">
+                                        <p:commandButton   value="Si" type="button" styleClass="ui-confirmdialog-yes" 
+                                                           icon="ui-icon-check" />
+                                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                    </p:confirmDialog>
+                                </p:column>
+                            </p:dataTable>
+
+                        </h:panelGrid>
+                    </p:tab>
+                    
+                    </p:tabView>
             </h:form>
 
             <h:form id="Profesion" >      
@@ -535,6 +585,31 @@
                                 <p:confirm header="Confirmación" message="¿Está seguro de guardar?" />
                             </p:commandButton>
                             <p:commandButton value="SALIR" icon="fa fa-close" onclick="PF('pNuevoDisca').hide()"
+                                             />
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" severity="alert">
+                                <p:commandButton   value="Si" type="button" styleClass="ui-confirmdialog-yes" 
+                                                   icon="ui-icon-check" />
+                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog>
+                        </h:panelGrid>
+                    </h:panelGrid>
+                </p:dialog>
+            </h:form>
+            
+            <h:form id="AvanceI" >      
+                <p:dialog header="NUEVO AVANCE IMPLEMENTACION" widgetVar="pNuevoAvanceI" id="dlgNuevoAvanceI" 
+                          closable="false">
+                    <h:panelGrid columns="2" cellpadding="2">
+                        <h:outputLabel value="AVANCE IMPLEMENTACIÓN: " />
+                        <p:inputText id="nombreAvanceI"  style="text-transform: uppercase; font-weight:bold; color: black "
+                                     value="#{mantenimiento.albAvanceImplementacion.avaNombre}" 
+                                     /> 
+                        <h:panelGrid columns="2" cellpadding="1">
+                            <p:commandButton id="btn_guardarAvanceI" value="GUARDAR"  update="msgs,:form,:AvanceI" icon="fa fa-save"
+                                             action="#{mantenimiento.guardarAvanceI()}"   >
+                                <p:confirm header="Confirmación" message="¿Está seguro de guardar?" />
+                            </p:commandButton>
+                            <p:commandButton value="SALIR" icon="fa fa-close" onclick="PF('pNuevoAvanceI').hide()"
                                              />
                             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" severity="alert">
                                 <p:commandButton   value="Si" type="button" styleClass="ui-confirmdialog-yes" 
@@ -724,6 +799,33 @@
                             </p:commandButton>
                             <p:commandButton value="SALIR" type="reset" icon="fa fa-close"
                                              onclick="PF('dlgEditarDisca').hide()"/>
+
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" severity="alert">
+                                <p:commandButton   value="Si" type="button" styleClass="ui-confirmdialog-yes" 
+                                                   icon="ui-icon-check" />
+                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog>
+                        </f:facet>
+                    </h:panelGrid>
+                </h:form>
+            </p:dialog>
+            
+            <p:dialog header="EDITAR" widgetVar="dlgEditarAvanceI" minHeight="40" closable="false" draggable="false">
+                <h:form id="formEditarAvanceI">
+                    <p:growl id="msgsAvanceI"  />
+                    <h:panelGrid columns="2" cellpadding="3">
+                        <h:outputLabel value="Avance Implementacion : " ></h:outputLabel>
+                        <p:inputText id="txt_AvanceIEditar" style="text-transform: uppercase; font-weight:bold; color: black "
+                                     value="#{mantenimiento.segAvanceIObjects.avaNombre}" 
+                                     required="true" >
+                        </p:inputText> 
+                        <f:facet name="footer">
+                            <p:commandButton value="GUARDAR"  update="msgs,:form" icon="fa fa-save"
+                                             action="#{mantenimiento.actualizarAvanceISistema()}" onclick="PF('dlgEditarAvanceI').hide()"  >
+                                <p:confirm header="Confirmación" message="Está seguro de actualizar?" />
+                            </p:commandButton>
+                            <p:commandButton value="SALIR" type="reset" icon="fa fa-close"
+                                             onclick="PF('dlgEditarAvanceI').hide()"/>
 
                             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" severity="alert">
                                 <p:commandButton   value="Si" type="button" styleClass="ui-confirmdialog-yes" 
