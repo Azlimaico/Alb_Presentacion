@@ -9,6 +9,7 @@ import com.negocio.servicio.albergue.AlbAlbergueServicio;
 import com.negocio.servicio.albergue.ServicioSituacionAlbergueServicio;
 import com.negocio.servicio.albergue.servicio.basico.AlbServicioServicio;
 import com.negocio.servicio.albergue.servicio.basico.AlbSituacionServicio;
+import com.negocio.servicio.general.sistema.AlbCarpaServicio;
 import com.negocio.servicio.general.sistema.AlbVehiculoServicio;
 import com.persistencia.albergue.AlbAlbergue;
 import com.persistencia.albergue.ServicioSituacionAlbergue;
@@ -16,9 +17,11 @@ import com.persistencia.albergue.servicio.AlbServicio;
 import com.persistencia.albergue.servicio.AlbSituacion;
 import com.persistencia.general.sistema.AlbAvanceImplementacion;
 import com.persistencia.general.sistema.AlbCanton;
+import com.persistencia.general.sistema.AlbCarpa;
 import com.persistencia.general.sistema.AlbEmpresa;
 import com.persistencia.general.sistema.AlbParroquia;
 import com.persistencia.general.sistema.AlbProvincia;
+import com.persistencia.general.sistema.AlbTipoCarpa;
 import com.persistencia.general.sistema.AlbTipoEmpresa;
 import com.persistencia.general.sistema.AlbTipoVehiculo;
 import com.persistencia.general.sistema.AlbVehiculo;
@@ -56,10 +59,13 @@ public class Servicios implements Serializable {
     private List<AlbSituacion> listaTempAlbSituacion = new ArrayList<>();
     private Long IdSeleccionAgua;
     private Long IdSeleccionTipoVehi;
+    private Long IdSeleccionTipoCarpa;
     private List<AlbTipoEmpresa> listaTipoEmpresa = new ArrayList<>();
     private List<AlbTipoVehiculo> listaTipoVehiculo = new ArrayList<>();
+    private List<AlbTipoCarpa> listaTipoCarpa = new ArrayList<>();
     List<SelectItem> genListaSelected = new ArrayList<SelectItem>();
     List<SelectItem> genListaSelectedTipoVehi = new ArrayList<SelectItem>();
+    List<SelectItem> genListaSelectedTipoCarpa = new ArrayList<SelectItem>();
     //SERVICIO SITUACION ALBERGUE
     @ManagedProperty(value = "#{ServicioSituacionAlbergueServicioImpl}")
     ServicioSituacionAlbergueServicio servicioSituacionAlbergueServicio;
@@ -181,6 +187,13 @@ public class Servicios implements Serializable {
     //ELIMINAR SERVICIO NORMAS
     private AlbSituacion selectedServicioNormasEliminar = new AlbSituacion();
 
+    //EDITAR SERVICIO VEHICULOS
+    private AlbVehiculo selectedVehiEditar = new AlbVehiculo();
+    private AlbVehiculo segVehiObjects = new AlbVehiculo();
+    private Long IdEditarVehi;
+    //ELIMINAR SERVICIO VEHICULOS
+    private AlbVehiculo selectedServicioVehiEliminar = new AlbVehiculo();
+
     //VEHÍCULOS
     private List<AlbVehiculo> listaVehiculo = new ArrayList<>();
     private List<AlbVehiculo> listaVehiculoAux = new ArrayList<>();
@@ -188,6 +201,22 @@ public class Servicios implements Serializable {
     AlbVehiculoServicio albVehiculoServicio;
     private AlbVehiculo albVehiculo = new AlbVehiculo();
     private List<AlbVehiculo> listaTempAlbVehiculo = new ArrayList<>();
+    
+    //CARPAS
+    private List<AlbCarpa> listaCarpa = new ArrayList<>();
+    private List<AlbCarpa> listaCarpaAux = new ArrayList<>();
+    @ManagedProperty(value = "#{AlbCarpaServicioImpl}")
+    AlbCarpaServicio albCarpaServicio;
+    private AlbCarpa albCarpa = new AlbCarpa();
+    private List<AlbCarpa> listaTempAlbCarpa = new ArrayList<>();
+    
+    //EDITAR SERVICIO CARPAS
+    private AlbCarpa selectedCarpaEditar = new AlbCarpa();
+    private AlbCarpa segCarpaObjects = new AlbCarpa();
+    private Long IdEditarCarpa;
+    //ELIMINAR SERVICIO VEHICULOS
+    private AlbCarpa selectedServicioCarpaEliminar = new AlbCarpa();
+
 
     @PostConstruct
     public void init() {
@@ -208,6 +237,10 @@ public class Servicios implements Serializable {
             this.listaTipoVehiculo.addAll(getAlbVehiculoServicio().listarTipoVehiculo());
             listaVehiculo.clear();
             listaVehiculoAux.clear();
+            listaCarpa.clear();
+            listaCarpaAux.clear();
+            listaTipoCarpa.clear();
+            this.listaTipoCarpa.addAll(getAlbCarpaServicio().listarTipoCarpa());
         }
         listaServicio.clear();
         this.listaServicio.addAll(getAlbServicioServicio().listarServicio());
@@ -217,6 +250,8 @@ public class Servicios implements Serializable {
         this.listaAlbSituacion.addAll(getAlbSituacionServicio().listarAlbSituacion());
         listaVehiculo.clear();
         this.listaVehiculo.addAll(getAlbVehiculoServicio().listarVehiculo());
+        listaCarpa.clear();
+        this.listaCarpa.addAll(getAlbCarpaServicio().listarCarpa());
     }
 
     public List<SelectItem> getListaAgua1() {
@@ -239,6 +274,16 @@ public class Servicios implements Serializable {
 
     }
 
+    public List<SelectItem> getListaTipoCarpa() {
+        this.genListaSelectedTipoCarpa = new ArrayList<SelectItem>();
+        for (AlbTipoCarpa obj : listaTipoCarpa) {
+            SelectItem selectItem = new SelectItem(obj.getTicId(), obj.getTicNombre());
+            this.genListaSelectedTipoCarpa.add(selectItem);
+        }
+        return genListaSelectedTipoCarpa;
+
+    }
+    
     public AlbServicioServicio getAlbServicioServicio() {
         return albServicioServicio;
     }
@@ -352,6 +397,16 @@ public class Servicios implements Serializable {
         this.IdSeleccionTipoVehi = IdSeleccionTipoVehi;
     }
 
+    public Long getIdSeleccionTipoCarpa() {
+        return IdSeleccionTipoCarpa;
+    }
+
+    public void setIdSeleccionTipoCarpa(Long IdSeleccionTipoCarpa) {
+        this.IdSeleccionTipoCarpa = IdSeleccionTipoCarpa;
+    }
+    
+    
+
     public AlbAlbergue getSelectedAlbergueAsignar() {
         return selectedAlbergueAsignar;
     }
@@ -363,6 +418,7 @@ public class Servicios implements Serializable {
     }
     private Long aux;
     private Long servicio;
+    private Long carpa;
 
     public void obtenerAlbergue(AlbAlbergue objPUE) {
         try {
@@ -379,6 +435,7 @@ public class Servicios implements Serializable {
             listaDeporte.clear();
             listaNormas.clear();
             listaVehiculoAux.clear();
+            listaCarpaAux.clear();
             IdGeneral = objPUE.getAlbId();
             for (AlbSituacion obj : listaAlbSituacion) {
                 aux = obj.getServicioSituacionAlbergue().getAlbAlbergue().getAlbId();
@@ -425,6 +482,12 @@ public class Servicios implements Serializable {
                 servicio = objV.getAlbAlbergue().getAlbId();
                 if (servicio == IdGeneral) {
                     listaVehiculoAux.add(objV);
+                }
+            }
+            for (AlbCarpa objC: listaCarpa) {
+                carpa = objC.getAlbAlbergue().getAlbId();
+                if (carpa == IdGeneral) {
+                    listaCarpaAux.add(objC);
                 }
             }
 
@@ -2808,12 +2871,11 @@ public class Servicios implements Serializable {
     }
 
     public void guardarServicioVehiculo() {
-
         if ("".equals(albVehiculo.getAlbTipoVehiculo()) || "".equals(albVehiculo.getVehConductores())) {
             mensajeEAS.errorLlenarDatos();
         } else {
             try {
-                AlbTipoVehiculo objTipoVehiculo= new AlbTipoVehiculo();
+                AlbTipoVehiculo objTipoVehiculo = new AlbTipoVehiculo();
                 objTipoVehiculo.setTivId(IdSeleccionTipoVehi);
                 albVehiculo.setAlbTipoVehiculo(objTipoVehiculo);
                 albVehiculo.setVehEstado(1);
@@ -2830,7 +2892,6 @@ public class Servicios implements Serializable {
                 mensajeEAS.info(true);
                 init();
                 this.obtenerAlbergue(selectedAlbergueAsignar);
-                
 
             } catch (Exception ex) {
                 guardadoCabecera = false;
@@ -2840,4 +2901,273 @@ public class Servicios implements Serializable {
         }
     }
 
+    public AlbVehiculo getSelectedVehiEditar() {
+        return selectedVehiEditar;
+    }
+
+    public void setSelectedVehiEditar(AlbVehiculo selectedVehiEditar) {
+        this.selectedVehiEditar = selectedVehiEditar;
+        editarVehiSistema(selectedVehiEditar);
+    }
+
+    public void editarVehiSistema(AlbVehiculo obj) {
+        try {
+            segVehiObjects = new AlbVehiculo();
+            AlbTipoVehiculo objTipoVehi = new AlbTipoVehiculo();
+            objTipoVehi.setTivId(obj.getAlbTipoVehiculo().getTivId());
+            objTipoVehi.setTivNombre(obj.getAlbTipoVehiculo().getTivNombre());
+            AlbAlbergue objAlbergue = new AlbAlbergue();
+            objAlbergue.setAlbId(obj.getAlbAlbergue().getAlbId());
+            IdEditarVehi = obj.getVehId();
+            segVehiObjects.setAlbTipoVehiculo(objTipoVehi);
+            segVehiObjects.setAlbAlbergue(objAlbergue);
+            //VARÍA DEPENDIENDO DEL SERVICIO
+            segVehiObjects.setVehCantidad(obj.getVehCantidad());
+            segVehiObjects.setVehKm(obj.getVehKm());
+            segVehiObjects.setVehConductores(obj.getVehConductores());
+            segVehiObjects.setVehEstado(1);
+        } catch (Exception ex) {
+
+            LOG.error("Error: " + ex.getMessage());
+            mensajeEAS.errorDublicado();
+        }
+    }
+
+    public AlbVehiculo getSegVehiObjects() {
+        return segVehiObjects;
+    }
+
+    public void setSegVehiObjects(AlbVehiculo segVehiObjects) {
+        this.segVehiObjects = segVehiObjects;
+    }
+
+    public void editarServicioVehi() {
+
+        try {
+            AlbTipoVehiculo objTipoVehiculo = new AlbTipoVehiculo();
+            AlbAlbergue objAlbergue = new AlbAlbergue();
+            AlbVehiculo obj= new AlbVehiculo();
+            if (IdSeleccionTipoVehi== null) {
+                objTipoVehiculo.setTivId(segVehiObjects.getAlbTipoVehiculo().getTivId());
+            } else {
+                objTipoVehiculo.setTivId(IdSeleccionTipoVehi);
+            }
+            obj.setVehId(IdEditarVehi);
+            obj.setAlbTipoVehiculo(objTipoVehiculo);
+            objAlbergue.setAlbId(segVehiObjects.getAlbAlbergue().getAlbId());
+            obj.setVehCantidad(segVehiObjects.getVehCantidad());
+            obj.setVehKm(segVehiObjects.getVehKm());
+            obj.setVehConductores(segVehiObjects.getVehConductores());
+            obj.setVehEstado(1);
+
+            if ("".equals(albVehiculo.getVehConductores()) ) {
+                mensajeEAS.errorLlenarDatos();
+            } else {
+                listaTempAlbVehiculo.clear();
+                obj.setAlbAlbergue(objAlbergue);
+                listaTempAlbVehiculo.add(obj);
+                getAlbVehiculoServicio().guardarVehiculo(listaTempAlbVehiculo);
+                albVehiculo = new AlbVehiculo();
+                guardadoCabecera = true;
+                init();
+                mensajeEAS.Modificar();
+                obtenerAlbergue(selectedAlbergueAsignar);
+            }
+
+        } catch (Exception ex) {
+            LOG.error("Error: " + ex.getMessage());
+            mensajeEAS.errorDublicado();
+
+        }
+    }
+
+    public AlbVehiculo getSelectedServicioVehiEliminar() {
+        return selectedServicioVehiEliminar;
+    }
+
+    public void setSelectedServicioVehiEliminar(AlbVehiculo selectedServicioVehiEliminar) {
+        this.selectedServicioVehiEliminar = selectedServicioVehiEliminar;
+        eliminarVehiSistema(selectedServicioVehiEliminar);
+    }
+    
+    public void eliminarVehiSistema(AlbVehiculo obj) {
+        try {
+            obj.setVehEstado(ParametrosObjetos.INACTIVO);
+            getAlbVehiculoServicio().guardarVehiculoEl(obj);
+            mensajeEAS.Eliminar();
+            this.cargarTableVehi();
+            this.obtenerAlbergue(selectedAlbergueAsignar);
+        } catch (Exception ex) {
+            LOG.error("Error: " + ex.getMessage());
+            mensajeEAS.error();
+        }
+    }
+    
+    public void cargarTableVehi() {
+        albVehiculo = new AlbVehiculo();
+        listaVehiculo.clear();
+        this.listaVehiculo.addAll(getAlbVehiculoServicio().listarVehiculo());
+    }
+
+    public AlbCarpaServicio getAlbCarpaServicio() {
+        return albCarpaServicio;
+    }
+
+    public void setAlbCarpaServicio(AlbCarpaServicio albCarpaServicio) {
+        this.albCarpaServicio = albCarpaServicio;
+    }
+
+    public List<AlbCarpa> getListaCarpaAux() {
+        return listaCarpaAux;
+    }
+
+    public void setListaCarpaAux(List<AlbCarpa> listaCarpaAux) {
+        this.listaCarpaAux = listaCarpaAux;
+    }
+
+    public AlbCarpa getAlbCarpa() {
+        return albCarpa;
+    }
+
+    public void setAlbCarpa(AlbCarpa albCarpa) {
+        this.albCarpa = albCarpa;
+    }
+    
+    public void guardarServicioCarpa() {
+        if ((albCarpa.getCarTotal()==null) || (albCarpa.getCarDisponibles()==null)) {
+            mensajeEAS.errorLlenarDatos();
+        } else {
+            try {
+                AlbTipoCarpa objTipoCarpa = new AlbTipoCarpa();
+                objTipoCarpa.setTicId(IdSeleccionTipoCarpa);
+                albCarpa.setAlbTipoCarpa(objTipoCarpa);
+                albCarpa.setCarEstado(1);
+                albCarpa.getAlbTipoCarpa();
+                albCarpa.getCarDisponibles();
+                albCarpa.getCarTotal();
+                albCarpa.setAlbAlbergue(selectedAlbergueAsignar);
+                listaTempAlbCarpa.clear();
+                listaTempAlbCarpa.add(albCarpa);
+                getAlbCarpaServicio().guardarCarpa(listaTempAlbCarpa);
+                albCarpa = new AlbCarpa();
+                guardadoCabecera = true;
+                mensajeEAS.info(true);
+                init();
+                this.obtenerAlbergue(selectedAlbergueAsignar);
+
+            } catch (Exception ex) {
+                guardadoCabecera = false;
+                LOG.error("Error: " + ex.getMessage());
+                mensajeEAS.error();
+            }
+        }
+    }
+
+    public AlbCarpa getSelectedCarpaEditar() {
+        return selectedCarpaEditar;
+    }
+
+    public void setSelectedCarpaEditar(AlbCarpa selectedCarpaEditar) {
+        this.selectedCarpaEditar = selectedCarpaEditar;
+        editarCarpaSistema(selectedCarpaEditar);
+    }
+    
+    public void editarCarpaSistema(AlbCarpa obj) {
+        try {
+            segCarpaObjects = new AlbCarpa();
+            AlbTipoCarpa objTipoCarpa = new AlbTipoCarpa();
+            objTipoCarpa.setTicId(obj.getAlbTipoCarpa().getTicId());
+            objTipoCarpa.setTicNombre(obj.getAlbTipoCarpa().getTicNombre());
+            AlbAlbergue objAlbergue = new AlbAlbergue();
+            objAlbergue.setAlbId(obj.getAlbAlbergue().getAlbId());
+            IdEditarCarpa = obj.getCarId();
+            segCarpaObjects.setAlbTipoCarpa(objTipoCarpa);
+            segCarpaObjects.setAlbAlbergue(objAlbergue);
+            //VARÍA DEPENDIENDO DEL SERVICIO
+            segCarpaObjects.setCarTotal(obj.getCarTotal());
+            segCarpaObjects.setCarDisponibles(obj.getCarDisponibles());
+            segCarpaObjects.setCarEstado(1);
+        } catch (Exception ex) {
+
+            LOG.error("Error: " + ex.getMessage());
+            mensajeEAS.errorDublicado();
+        }
+    }
+
+    public AlbCarpa getSegCarpaObjects() {
+        return segCarpaObjects;
+    }
+
+    public void setSegCarpaObjects(AlbCarpa segCarpaObjects) {
+        this.segCarpaObjects = segCarpaObjects;
+    }
+    
+    public void editarServicioCarpa() {
+
+        try {
+            AlbTipoCarpa objTipoCarpa= new AlbTipoCarpa();
+            AlbAlbergue objAlbergue = new AlbAlbergue();
+            AlbCarpa obj= new AlbCarpa();
+            if (IdSeleccionTipoCarpa== null) {
+                objTipoCarpa.setTicId(segCarpaObjects.getAlbTipoCarpa().getTicId());
+            } else {
+                objTipoCarpa.setTicId(IdSeleccionTipoCarpa);
+            }
+            obj.setCarId(IdEditarCarpa);
+            obj.setAlbTipoCarpa(objTipoCarpa);
+            objAlbergue.setAlbId(segCarpaObjects.getAlbAlbergue().getAlbId());
+            obj.setCarDisponibles(segCarpaObjects.getCarDisponibles());
+            obj.setCarTotal(segCarpaObjects.getCarTotal());
+            obj.setCarEstado(1);
+
+            if ((segCarpaObjects.getCarTotal()==null) || (segCarpaObjects.getCarDisponibles()==null)) {
+            mensajeEAS.errorLlenarDatos();
+        } else {
+                listaTempAlbCarpa.clear();
+                obj.setAlbAlbergue(objAlbergue);
+                listaTempAlbCarpa.add(obj);
+                getAlbCarpaServicio().guardarCarpa(listaTempAlbCarpa);
+                albCarpa = new AlbCarpa();
+                guardadoCabecera = true;
+                init();
+                mensajeEAS.Modificar();
+                obtenerAlbergue(selectedAlbergueAsignar);
+            }
+
+        } catch (Exception ex) {
+            LOG.error("Error: " + ex.getMessage());
+            mensajeEAS.errorDublicado();
+
+        }
+    }
+
+    public AlbCarpa getSelectedServicioCarpaEliminar() {
+        return selectedServicioCarpaEliminar;
+    }
+
+    public void setSelectedServicioCarpaEliminar(AlbCarpa selectedServicioCarpaEliminar) {
+        this.selectedServicioCarpaEliminar = selectedServicioCarpaEliminar;
+        eliminarCarpaSistema(selectedServicioCarpaEliminar);
+    }
+    
+     public void eliminarCarpaSistema(AlbCarpa obj) {
+        try {
+            obj.setCarEstado(ParametrosObjetos.INACTIVO);
+            getAlbCarpaServicio().guardarCarpaEl(obj);
+            mensajeEAS.Eliminar();
+            this.cargarTableCarpa();
+            this.obtenerAlbergue(selectedAlbergueAsignar);
+        } catch (Exception ex) {
+            LOG.error("Error: " + ex.getMessage());
+            mensajeEAS.error();
+        }
+    }
+    
+    public void cargarTableCarpa() {
+        albCarpa = new AlbCarpa();
+        listaCarpa.clear();
+        this.listaCarpa.addAll(getAlbCarpaServicio().listarCarpa());
+    }
+
 }
+
