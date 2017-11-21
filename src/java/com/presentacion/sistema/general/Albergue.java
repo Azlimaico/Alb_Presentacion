@@ -26,7 +26,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.model.SelectItem;
-import static org.hibernate.ejb.EntityManagerImpl.LOG;
 import org.jboss.logging.Logger;
 import org.primefaces.component.datatable.DataTable;
 
@@ -64,8 +63,7 @@ public class Albergue implements Serializable {
     //EDITAR ALBERGUE
     private AlbAlbergue selectedAlbergueEditar = new AlbAlbergue();
     private AlbAlbergue segAlbergueObjects = new AlbAlbergue();
-    private Long estado, IdEditar;
-
+    private Long estado, IdEditar; 
 
     //ELIMINAR ALBERGUE
     private AlbAlbergue selectedSegUsuarioEliminar = new AlbAlbergue();

@@ -1,0 +1,124 @@
+<?xml version='1.0' encoding='iso-8859-1' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/Layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+    <ui:define name="content">
+        <h:head><title>USUARIOS</title>
+
+            <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+            <link href="estilos/jsfcrud.css" type="text/css" rel="stylesheet" />
+            <link href="estilos/estilo.css" type="text/css" rel="stylesheet" />
+            <script type="text/javascript" src="estilos/validaciones.js"></script>
+        </h:head>
+        <h:body>
+            <p:growl id="msgs2" />
+            <h:form id="form4">
+                <h:panelGrid columns="2" cellpadding="10">
+                    <p:panel header="SEGURIDAD DEL SISTEMA-USUARIOS DEL SISTEMA " style="margin-bottom:20px" toggleable="false">
+                        <p:dataTable id="tprincipal" 
+                                     var="object" value="#{usuariosSistema.listaUsuario}" 
+                                     emptyMessage="No se encontraron datos"
+                                     rows="9" paginator="true" 
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} 
+                                     {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"     
+                                     >
+
+                            <f:facet name="header">
+                                <p:outputPanel>
+                                    <p:commandButton   id="id_boton1" type="button" value=" NUEVO " style="float: right"
+                                                       onclick="PF('pNuevoUsuario').show()" icon="fa fa fa-plus"
+                                                       update=":#{p:component('usu')}" >
+                                    </p:commandButton>
+                                </p:outputPanel>
+                            </f:facet>
+
+                            <p:column   filterBy="#{object.albPersonalAdministrativo.peaCedula}" headerText="CÉDULA"  width="100"
+                                        filterMatchMode="contains">
+                                <h:outputText value="#{object.albPersonalAdministrativo.peaCedula}" />
+                            </p:column> 
+                            <p:column   filterBy="#{object.albPersonalAdministrativo.peaNombres}" headerText="NOMBRES"  width="100"
+                                        filterMatchMode="contains">
+                                <h:outputText value="#{object.albPersonalAdministrativo.peaNombres}" />
+                            </p:column>
+                            <p:column   filterBy="#{object.albPersonalAdministrativo.peaApellidos}" headerText="APELLIDOS"  width="100"
+                                        filterMatchMode="contains">
+                                <h:outputText value="#{object.albPersonalAdministrativo.peaApellidos}" />
+                            </p:column>
+                            <p:column   filterBy="#{object.padUsuario}" headerText="USUARIO"  width="100"
+                                        filterMatchMode="contains">
+                                <h:outputText value="#{object.padUsuario}" />
+                            </p:column>
+                            <p:column   filterBy="#{object.albPerfil.perNombre}" headerText="PERFIL" width="100" 
+                                        filterMatchMode="contains">
+                                <h:outputText value="#{object.albPerfil.perNombre}" />
+                            </p:column>
+                            <p:column   filterBy="#{object.albAlbergue.albNombre}" headerText="ALBERGUE ASIGNADO" width="100" 
+                                        filterMatchMode="contains">
+                                <h:outputText value="#{object.albAlbergue.albNombre}" />
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                </h:panelGrid>
+            </h:form>
+
+
+            <p:dialog header="NUEVO USUARIO" widgetVar="pNuevoUsuario" id="dlgNuevoUsuario" 
+                      closable="false">
+                <h:form id="usu" >     
+                    <p:growl id="msgsUsuario"  />
+                    <h:panelGrid columns="2" cellpadding="3">
+                        <h:outputLabel value="Cédula : *" ></h:outputLabel>
+                        <p:inputText id="cedula"  value="#{usuariosSistema.usuarioObjects.albPersonalAdministrativo.peaCedula}"  required="true" />
+
+                        <h:outputLabel value="Perfil de Usuario : *" ></h:outputLabel>
+                        <p:selectOneMenu  id="perfil"  value="#{usuariosSistema.idSeleccion}" style="width:150px" >
+                            <f:selectItem  itemValue="" itemLabel="Seleccione: " noSelectionOption="false"  />
+                            <f:selectItems value="#{usuariosSistema.listaPerfil}" /> 
+                        </p:selectOneMenu> 
+
+                        <h:outputLabel value="Albergue destinado : *" ></h:outputLabel>
+                        <p:selectOneMenu  id="albergue"  value="#{usuariosSistema.idSeleccionAlbergue}" style="width:150px" >
+                            <f:selectItem  itemValue="" itemLabel="Seleccione: " noSelectionOption="false"  />
+                            <f:selectItems value="#{usuariosSistema.listaAlbergue}" /> 
+                        </p:selectOneMenu> 
+
+                        <h:outputLabel value="Usuario : *" ></h:outputLabel>
+                        <p:inputText id="txt_Usuario"  value="#{usuariosSistema.usuarioObjects.padUsuario}"  required="true" />
+
+                        <h:outputLabel for="pwd1" value="Contraseña : *" />
+                        <p:password id="pwd1" value="#{usuariosSistema.usuarioObjects.padContrasenia}" match="pwd2" label="Contraseña 1" required="true" 
+                                    feedback="true"
+                                    promptLabel="Ingresar Contraseña :" weakLabel="Contraseña Debil"
+                                    goodLabel="Contraseña mediana" strongLabel="Contraseña Fuerte"/>
+
+                        <h:outputLabel for="pwd2" value="Repetir Contraseña *" />
+                        <p:password id="pwd2" value="#{usuariosSistema.usuarioObjects.padContrasenia}" label="RContrasenia" required="false" feedback="true" 
+                                    promptLabel="Ingresar Contraseña" weakLabel="Contraseña Debil"
+                                    goodLabel="Contraseña mediana" strongLabel="Contraseña Fuerte"/>
+
+                        <f:facet name="footer">
+                            <p:commandButton value="GUARDAR"  update=":form4" icon="fa fa-save"
+                                             action="#{usuariosSistema.guardarUsuario()}" onclick="PF('pNuevoUsuario').hide()"  >
+                                <p:confirm header="Confirmación" message="Está seguro de actualizar?" />
+                            </p:commandButton>
+                            <p:commandButton value="SALIR" type="reset" icon="fa fa-close"
+                                             onclick="PF('pNuevoUsuario').hide()"/>
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" severity="alert">
+                                <p:commandButton   value="Si" type="button" styleClass="ui-confirmdialog-yes" 
+                                                   icon="ui-icon-check" />
+                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog>
+                        </f:facet>
+                    </h:panelGrid>
+
+                </h:form>
+            </p:dialog>
+
+
+        </h:body>
+    </ui:define>
+</ui:composition>

@@ -23,7 +23,7 @@ and open the template in the editor.
                         <h:outputLabel value="BIENVENIDO:    " style="font-weight:bold;color: #ffffff"  />
                         <h:outputLabel value="" style="font-weight:100;color: #ffffff"/>
                         <div align="center"> 
-                            <h:outputLabel value="CENTRO DE INVESTIGACIÃÂN, MODELAMIENTO, SIMULACIÃÂN Y ENTRENAMIENTO" style="font-weight:bold;color: #ffffff;top: 20px; 
+                            <h:outputLabel value="CENTRO DE INVESTIGACI&#211;N MODELAMIENTO, SIMULACI&#211;N Y ENTRENAMIENTO" style="font-weight:bold;color: #ffffff;top: 20px; 
                                            left:120px;width: 300px;"  />
                          </div> 
                        <p:commandButton id="cerrarSesion" value="Salir"  action="#{accesoSistema.logout}"  icon="fa-sign-in" style="-moz-box-shadow:inset 1px -1px 16px -2px #dcecfb;
@@ -70,7 +70,7 @@ and open the template in the editor.
             <p:layoutUnit position="west" size="200"
                           header="OPCIONES SISTEMA" resizable="true" closable="false" collapsible="true">
                 <h:form> 
-
+                    <p:menu model="#{menu.model}" />
                 </h:form> 
             </p:layoutUnit>
 

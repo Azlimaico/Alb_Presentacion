@@ -1,0 +1,388 @@
+<?xml version='1.0' encoding='iso-8859-1' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition template="/Layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+    <ui:define name="content">
+        <h:head><title>MENÚ</title>
+            <link href="estilos/jsfcrud.css" type="text/css" rel="stylesheet" />
+            <link href="estilos/estilo.css" type="text/css" rel="stylesheet" />
+            <script type="text/javascript" src="estilos/validaciones.js"></script>
+            <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+        </h:head>
+        <h:body>
+            <p:growl id="msgs" showDetail="true" />
+            <h:form id="form">
+                <p:tabView >
+                    <p:tab title="MENÚ">
+                        <h:panelGrid columns="2" cellpadding="5">
+                            <p:dataTable id="tprincipal1" 
+                                         value="#{seguridadSistema.listaMenu}" var="object"
+                                         emptyMessage="No se encontraron datos"
+                                         rows="11" paginator="true" 
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} 
+                                         {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"    
+                                         >
+                                <f:facet name="header">
+                                    <p:outputPanel>
+                                        <p:commandButton   id="id_boton1" type="button" value=" NUEVO " style="float: right"
+                                                           onclick="PF('pNuevoMenu').show()" icon="fa fa fa-plus"
+                                                           update=":#{p:component('Menu')}" >
+                                        </p:commandButton>
+                                    </p:outputPanel>
+                                </f:facet>
+                                <p:column headerText="MENÚ"  width="50"
+                                          filterMatchMode="contains">
+                                    <h:outputText value="#{object.menNombre}" />
+                                </p:column>
+
+                                <p:column headerText="ESTADO"  width="50"
+                                          filterMatchMode="contains">
+                                    <h:outputText value="#{object.menEstado}" />
+                                </p:column>
+                                <p:column   headerText="EDITAR" width="50"  style="text-align: center" >
+                                    <p:commandButton id="btn_EditarMenu" icon="ui-icon-pencil" onclick="PF('dlgEditarMenu').show();" update="formEditarMenu" >
+                                        <f:setPropertyActionListener value="#{object}" target="#{seguridadSistema.selectedAlbMenuEditar}" />
+                                        <p:resetInput target=":formEditarMenu" />
+                                    </p:commandButton>
+                                </p:column>
+                                <p:column   headerText="ELIMINAR" width="50" style="text-align: center" >
+                                    <p:commandButton id="btn_EliminarMenu"  update="msgs,:form" icon="ui-icon-trash"  >
+                                        <f:setPropertyActionListener value="#{object}" target="#{seguridadSistema.selectedAlbMenuEliminar}" />
+                                        <p:confirm header="Confirmación" message="Está seguro de Eliminar?" />
+                                    </p:commandButton>
+
+                                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" severity="alert">
+                                        <p:commandButton   value="Si" type="button" styleClass="ui-confirmdialog-yes" 
+                                                           icon="ui-icon-check" />
+                                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                    </p:confirmDialog>
+
+                                </p:column>
+                            </p:dataTable>
+                        </h:panelGrid>
+                    </p:tab> 
+
+                    <p:tab title="PANTALLA">
+                        <h:panelGrid columns="2" cellpadding="5">
+                            <p:dataTable id="tprincipal2" 
+                                         value="#{seguridadSistema.listaPantalla}" var="object1"
+                                         emptyMessage="No se encontraron datos"
+                                         rows="11" paginator="true" 
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} 
+                                         {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"    
+                                         >
+                                <f:facet name="header">
+                                    <p:outputPanel>
+                                        <p:commandButton   id="id_boton1" type="button" value=" NUEVO " style="float: right"
+                                                           onclick="PF('pNuevoPantalla').show()" icon="fa fa fa-plus"
+                                                           update=":#{p:component('Pantalla')}" >
+                                        </p:commandButton>
+                                    </p:outputPanel>
+                                </f:facet>
+
+
+                                <p:column headerText="PANTALLA"  width="50"
+                                          filterMatchMode="contains">
+                                    <h:outputText value="#{object1.panNombrePantallas}" />
+                                </p:column>
+
+                                <p:column headerText="ESTADO"  width="50"
+                                          filterMatchMode="contains">
+                                    <h:outputText value="#{object1.panEstado}" />
+                                </p:column>
+                                <p:column   headerText="EDITAR" width="50"  style="text-align: center" >
+                                    <p:commandButton id="btn_EditarPantalla" icon="ui-icon-pencil" onclick="PF('dlgEditarPantalla').show();" update="formEditarPantalla" >
+                                        <f:setPropertyActionListener value="#{object1}" target="#{seguridadSistema.selectedAlbPantallaEditar}" />
+                                        <p:resetInput target=":formEditarPantalla" />
+                                    </p:commandButton>
+                                </p:column>
+                                <p:column   headerText="ELIMINAR" width="50" style="text-align: center" >
+                                    <p:commandButton id="btn_EliminarPantalla"  update="msgs,:form" icon="ui-icon-trash"  >
+                                        <f:setPropertyActionListener value="#{object1}" target="#{seguridadSistema.selectedAlbPantallaEliminar}" />
+                                        <p:confirm header="Confirmación" message="Está seguro de Eliminar?" />
+                                    </p:commandButton>
+
+                                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" severity="alert">
+                                        <p:commandButton   value="Si" type="button" styleClass="ui-confirmdialog-yes" 
+                                                           icon="ui-icon-check" />
+                                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                    </p:confirmDialog>
+
+                                </p:column>
+                            </p:dataTable>
+                        </h:panelGrid>
+                    </p:tab> 
+
+                    <p:tab title="PERFIL">
+                        <h:panelGrid columns="2" cellpadding="5">
+                            <p:dataTable id="tprincipal3" 
+                                         value="#{seguridadSistema.listaPerfil}" var="object2"
+                                         emptyMessage="No se encontraron datos"
+                                         rows="11" paginator="true" 
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} 
+                                         {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"    
+                                         >
+                                <f:facet name="header">
+                                    <p:outputPanel>
+                                        <p:commandButton   id="id_boton1" type="button" value=" NUEVO " style="float: right"
+                                                           onclick="PF('pNuevoPerfil').show()" icon="fa fa fa-plus"
+                                                           update=":#{p:component('Perfil')}" >
+                                        </p:commandButton>
+                                    </p:outputPanel>
+                                </f:facet>
+
+
+                                <p:column headerText="PERFIL"  width="50"
+                                          filterMatchMode="contains">
+                                    <h:outputText value="#{object2.perNombre}" />
+                                </p:column>
+
+                                <p:column headerText="ESTADO"  width="50"
+                                          filterMatchMode="contains">
+                                    <h:outputText value="#{object2.perEstado}" />
+                                </p:column>
+                                <p:column   headerText="EDITAR" width="50"  style="text-align: center" >
+                                    <p:commandButton id="btn_EditarPerfil" icon="ui-icon-pencil" onclick="PF('dlgEditarPerfil').show();" update="formEditarPerfil" >
+                                        <f:setPropertyActionListener value="#{object2}" target="#{seguridadSistema.selectedAlbPerfilEditar}" />
+                                        <p:resetInput target=":formEditarPerfil" />
+                                    </p:commandButton>
+                                </p:column>
+                                <p:column   headerText="ELIMINAR" width="50" style="text-align: center" >
+                                    <p:commandButton id="btn_EliminarPerfil"  update="msgs,:form" icon="ui-icon-trash"  >
+                                        <f:setPropertyActionListener value="#{object2}" target="#{seguridadSistema.selectedAlbPerfilEliminar}" />
+                                        <p:confirm header="Confirmación" message="Está seguro de Eliminar?" />
+                                    </p:commandButton>
+
+                                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" severity="alert">
+                                        <p:commandButton   value="Si" type="button" styleClass="ui-confirmdialog-yes" 
+                                                           icon="ui-icon-check" />
+                                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                    </p:confirmDialog>
+                                </p:column>
+
+                                <p:column   headerText="ASIGNAR A PANTALLA" width="80"  style="text-align: center" >
+                                    <p:commandButton icon="ui-icon-transferthick-e-w"  update=":#{p:component('dlgAsigPan')}" 
+                                                     oncomplete="PF('asiPan').show()"    
+                                                     >
+                                        <f:setPropertyActionListener value="#{object2}" target="#{seguridadSistema.selectedPantallaPerfil}"/>
+
+                                    </p:commandButton>
+                                </p:column>
+                            </p:dataTable>
+                        </h:panelGrid>
+                    </p:tab> 
+
+                </p:tabView>
+            </h:form>
+
+
+            <h:form id="Menu" >      
+                <p:dialog header="NUEVO" widgetVar="pNuevoMenu" id="dlgNuevoMenu" 
+                          closable="false">
+                    <h:panelGrid columns="2" cellpadding="2">
+                        <h:outputLabel value="Menú: " />
+                        <p:inputText id="Menu" style="text-transform: uppercase; font-weight:bold; color: black " 
+                                     value="#{seguridadSistema.albMenu.menNombre}" 
+                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
+                                     /> 
+                        <h:panelGrid columns="2" cellpadding="1">
+                            <p:commandButton id="btn_guardarMenu" value="GUARDAR"  update="msgs,:form,:Menu" icon="fa fa-save"
+                                             action="#{seguridadSistema.guardarMenu()}"   >
+                                <p:confirm header="Confirmación" message="¿Está seguro de guardar?" />
+                            </p:commandButton>
+                            <p:commandButton value="SALIR" icon="fa fa-close" onclick="PF('pNuevoMenu').hide()"
+                                             />
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" severity="alert">
+                                <p:commandButton   value="Si" type="button" styleClass="ui-confirmdialog-yes" 
+                                                   icon="ui-icon-check" />
+                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog>
+                        </h:panelGrid>
+                    </h:panelGrid>
+                </p:dialog>
+            </h:form>
+
+            <h:form id="Pantalla" >      
+                <p:dialog header="NUEVO" widgetVar="pNuevoPantalla" id="dlgNuevoPantalla" 
+                          closable="false">
+                    <h:panelGrid columns="2" cellpadding="2">
+                        <p:outputLabel value="Menú:" />
+                        <p:selectOneMenu id="menu" value="#{seguridadSistema.idSelectedMenu}" style="width:150px">
+                            <f:selectItem  itemValue="" itemLabel="Seleccione Menú: " noSelectionOption="false" />
+                            <f:selectItems value="#{seguridadSistema.listaMenuAux}" />
+                        </p:selectOneMenu>
+                        <h:outputLabel value="Pantalla: " />
+                        <p:inputText id="Pantalla" style="text-transform: uppercase; font-weight:bold; color: black " 
+                                     value="#{seguridadSistema.albPantalla.panNombrePantallas}" 
+                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
+                                     /> 
+                        <h:panelGrid columns="2" cellpadding="1">
+                            <p:commandButton id="btn_guardarPantalla" value="GUARDAR"  update="msgs,:form,:Pantalla" icon="fa fa-save"
+                                             action="#{seguridadSistema.guardarPantalla()}"   >
+                                <p:confirm header="Confirmación" message="¿Está seguro de guardar?" />
+                            </p:commandButton>
+                            <p:commandButton value="SALIR" icon="fa fa-close" onclick="PF('pNuevoPantalla').hide()"
+                                             />
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" severity="alert">
+                                <p:commandButton   value="Si" type="button" styleClass="ui-confirmdialog-yes" 
+                                                   icon="ui-icon-check" />
+                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog>
+                        </h:panelGrid>
+                    </h:panelGrid>
+                </p:dialog>
+            </h:form>
+
+            <h:form id="Perfil" >      
+                <p:dialog header="NUEVO" widgetVar="pNuevoPerfil" id="dlgNuevoPerfil" 
+                          closable="false">
+                    <h:panelGrid columns="2" cellpadding="2">
+
+                        <h:outputLabel value="Perfil: " />
+                        <p:inputText id="Perfil" style="text-transform: uppercase; font-weight:bold; color: black " 
+                                     value="#{seguridadSistema.albPerfil.perNombre}" 
+                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
+                                     /> 
+                        <h:panelGrid columns="2" cellpadding="1">
+                            <p:commandButton id="btn_guardarPerfil" value="GUARDAR"  update="msgs,:form,:Perfil" icon="fa fa-save"
+                                             action="#{seguridadSistema.guardarPerfil()}"   >
+                                <p:confirm header="Confirmación" message="¿Está seguro de guardar?" />
+                            </p:commandButton>
+                            <p:commandButton value="SALIR" icon="fa fa-close" onclick="PF('pNuevoPerfil').hide()"
+                                             />
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" severity="alert">
+                                <p:commandButton   value="Si" type="button" styleClass="ui-confirmdialog-yes" 
+                                                   icon="ui-icon-check" />
+                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog>
+                        </h:panelGrid>
+                    </h:panelGrid>
+                </p:dialog>
+            </h:form>
+
+            <p:dialog header="EDITAR" widgetVar="dlgEditarMenu" minHeight="40" closable="false" draggable="false">
+                <h:form id="formEditarMenu">
+                    <p:growl id="msgsMenu"  />
+                    <h:panelGrid columns="2" cellpadding="3">
+                        <h:outputLabel value="Menu : " ></h:outputLabel>
+                        <p:inputText id="txt_MenuEditar" style="text-transform: uppercase; font-weight:bold; color: black "
+                                     value="#{seguridadSistema.segAlbMenuObjects.menNombre}" 
+                                     required="true" >
+                        </p:inputText> 
+                        <f:facet name="footer">
+                            <p:commandButton value="GUARDAR"  update="msgs,:form" icon="fa fa-save"
+                                             action="#{seguridadSistema.actualizarMenuSistema()}" onclick="PF('dlgEditarMenu').hide()"  >
+                                <p:confirm header="Confirmación" message="Está seguro de actualizar?" />
+                            </p:commandButton>
+                            <p:commandButton value="SALIR" type="reset" icon="fa fa-close"
+                                             onclick="PF('dlgEditarMenu').hide()"/>
+
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" severity="alert">
+                                <p:commandButton   value="Si" type="button" styleClass="ui-confirmdialog-yes" 
+                                                   icon="ui-icon-check" />
+                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog>
+                        </f:facet>
+                    </h:panelGrid>
+                </h:form>
+            </p:dialog>
+
+            <p:dialog header="EDITAR" widgetVar="dlgEditarPantalla" minHeight="40" closable="false" draggable="false">
+                <h:form id="formEditarPantalla">
+                    <p:growl id="msgsPantalla"  />
+                    <h:panelGrid columns="2" cellpadding="3">
+                        <h:outputLabel value="Menú : " ></h:outputLabel>
+                        <p:selectOneMenu  id="txtMenu_edit"  value="#{seguridadSistema.idSelectedMenu}" style="width:150px" >
+                            <f:selectItem  itemValue="" itemLabel="#{seguridadSistema.segAlbPantallaObjects.albMenu.menNombre} " noSelectionOption="false"  />
+                            <f:selectItems value="#{seguridadSistema.listaMenuAux}" /> 
+                        </p:selectOneMenu>
+                        <h:outputLabel value="Pantalla : " ></h:outputLabel>
+                        <p:inputText id="txt_PantallaEditar" style="text-transform: uppercase; font-weight:bold; color: black "
+                                     value="#{seguridadSistema.segAlbPantallaObjects.panNombrePantallas}" 
+                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
+                                     required="true" >
+                        </p:inputText> 
+                        <f:facet name="footer">
+                            <p:commandButton value="GUARDAR"  update="msgs,:form" icon="fa fa-save"
+                                             action="#{seguridadSistema.actualizarPantallaSistema()}" onclick="PF('dlgEditarPantalla').hide()"  >
+                                <p:confirm header="Confirmación" message="Está seguro de actualizar?" />
+                            </p:commandButton>
+                            <p:commandButton value="SALIR" type="reset" icon="fa fa-close"
+                                             onclick="PF('dlgEditarPantalla').hide()"/>
+
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" severity="alert">
+                                <p:commandButton   value="Si" type="button" styleClass="ui-confirmdialog-yes" 
+                                                   icon="ui-icon-check" />
+                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog>
+                        </f:facet>
+                    </h:panelGrid>
+                </h:form>
+            </p:dialog>
+
+
+            <p:dialog header="EDITAR" widgetVar="dlgEditarPerfil" minHeight="40" closable="false" draggable="false">
+                <h:form id="formEditarPerfil">
+                    <p:growl id="msgsPerfil"  />
+                    <h:panelGrid columns="2" cellpadding="3">
+                        <h:outputLabel value="Perfil : " ></h:outputLabel>
+                        <p:inputText id="txt_PerfilEditar" style="text-transform: uppercase; font-weight:bold; color: black "
+                                     value="#{seguridadSistema.segAlbPerfilObjects.perNombre}" 
+                                     required="true" >
+                        </p:inputText> 
+                        <f:facet name="footer">
+                            <p:commandButton value="GUARDAR"  update="msgs,:form" icon="fa fa-save"
+                                             action="#{seguridadSistema.actualizarPerfilSistema()}" onclick="PF('dlgEditarPerfil').hide()"  >
+                                <p:confirm header="Confirmación" message="Está seguro de actualizar?" />
+                            </p:commandButton>
+                            <p:commandButton value="SALIR" type="reset" icon="fa fa-close"
+                                             onclick="PF('dlgEditarPerfil').hide()"/>
+
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" severity="alert">
+                                <p:commandButton   value="Si" type="button" styleClass="ui-confirmdialog-yes" 
+                                                   icon="ui-icon-check" />
+                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog>
+                        </f:facet>
+                    </h:panelGrid>
+                </h:form>
+            </p:dialog>
+
+            <h:form id="asignarPantalla" >     
+                <p:dialog header="ASIGNACIÓN PANTALLA" widgetVar="asiPan" id="dlgAsigPan" 
+                          closable="false">
+                    <h:panelGrid columns="2" cellpadding="1">
+                        <h:outputLabel value="Perfil :" ></h:outputLabel>
+                        <h:outputText id="txt_nombre"  value="#{seguridadSistema.segAlbPerfilObjects.perNombre}" />
+
+                        <h:outputLabel for="menu" value="Pantalla : *" ></h:outputLabel>
+                        <p:selectCheckboxMenu id="menu" value="#{seguridadSistema.selectedPagina}" label="Seleccione: "
+                                              filter="true" filterMatchMode="startsWith" panelStyle="width:330px">
+                            <f:selectItems value="#{seguridadSistema.listaAsignarPantalla}" />
+                        </p:selectCheckboxMenu>
+                        
+                        <h:panelGrid columns="2" cellpadding="1">
+                            <p:commandButton value="GUARDAR"   icon="fa fa-save"
+                                             action="#{seguridadSistema.guardarPerfilDefinitivo()}" onclick="PF('asiPan').hide()"   >
+                                <p:confirm header="Confirmación" message="¿Está seguro de guardar?" />
+                            </p:commandButton>
+                            <p:commandButton value="SALIR" style="  height: 28px" icon="fa fa-sign-in" onclick="PF('asiPan').hide()"
+                                             />
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" severity="alert">
+                                <p:commandButton   value="Si" type="button" styleClass="ui-confirmdialog-yes" 
+                                                   icon="ui-icon-check" />
+                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog>
+                        </h:panelGrid>
+                    </h:panelGrid>
+                </p:dialog>
+            </h:form> 
+
+        </h:body>
+    </ui:define>
+</ui:composition>
