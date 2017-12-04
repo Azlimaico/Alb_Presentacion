@@ -31,12 +31,27 @@
                                      {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"    
                                      >    
 
-                            <p:column   filterBy="#{object.albNombre}" headerText="ALBERGUE"  width="100"
+                            <p:column   filterBy="#{object.albProvincia.proNombre}" headerText="PROVINCIA"  width="15"
+                                        filterMatchMode="contains">
+                                <h:outputText value="#{object.albProvincia.proNombre}" />
+                            </p:column>
+
+                            <p:column   filterBy="#{object.albCanton.canNombre}" headerText="CANTÓN"  width="15"
+                                        filterMatchMode="contains">
+                                <h:outputText value="#{object.albCanton.canNombre}" />
+                            </p:column>
+
+                            <p:column   filterBy="#{object.albParroquia.parNombre}" headerText="PARROQUIA"  width="15"
+                                        filterMatchMode="contains">
+                                <h:outputText value="#{object.albParroquia.parNombre}" />
+                            </p:column>
+
+                            <p:column   filterBy="#{object.albNombre}" headerText="ALBERGUE"  width="15"
                                         filterMatchMode="contains">
                                 <h:outputText value="#{object.albNombre}" />
                             </p:column>
 
-                            <p:column   headerText="VER ESTADO DE SERVICIOS" width="50"  style="text-align: center" >
+                            <p:column   headerText="ESTADO DE SERVICIOS" width="15"  style="text-align: center" >
                                 <p:commandButton id="btn_AsigServicios" icon="ui-icon-pencil" onclick="PF('dlgServicios').show();" update="formServicio" >
                                     <f:setPropertyActionListener value="#{object}" target="#{servicios.selectedAlbergueAsignar}" />
                                     <p:resetInput target=":formServicio" />
@@ -53,32 +68,33 @@
                 <p:dialog header="NUEVO" widgetVar="pNuevoAgua" id="dlgNuevoJ" 
                           closable="false">
                     <h:panelGrid columns="2" cellpadding="2">
-                        <h:outputLabel value="Empresa: " />
-                        <p:inputText id="nombreEmpresa" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.albEmpresa.empNombre}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />                     
-                        <p:outputLabel value="Tipo Empresa:" />
+                        <p:outputLabel value="Tipo Empresa: *" />
                         <p:selectOneMenu  id="tipoEmpresa" value="#{servicios.idSeleccionAgua}" style="width:150px">
+                            <p:ajax update="nombreEmpresa" /> 
                             <f:selectItem  itemValue="" itemLabel="Seleccione Tipo: " noSelectionOption="false" />
                             <f:selectItems value="#{servicios.listaAgua1}" />
                         </p:selectOneMenu>
 
-                        <h:outputLabel value="Método de Provisión: " />
-                        <p:inputText id="metProv" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.albSituacion.sitMetProvision}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
-                        <h:outputLabel value="Almacenamiento: " />
-                        <p:inputText id="almacAgua" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.albSituacion.sitAlmacenamiento}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
-                        <h:outputLabel value="Tratamiento del agua bebible: " />
-                        <p:inputText id="tratamAgua" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.albSituacion.sitAguaBebible}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
+                        <h:outputLabel value="Empresa: *" />
+                        <p:selectOneMenu  id="nombreEmpresa" value="#{servicios.idSeleccionEmpresa}"  style="width:150px">
+                            <f:selectItem  itemValue="" itemLabel="Seleccione Empresa: " noSelectionOption="false" />
+                            <f:selectItems value="#{servicios.listaEmpresa}" />                            
+                        </p:selectOneMenu>  
+
+                        <h:outputLabel value="Método de Provisión: *" />
+                        <p:inputTextarea id="metProv" rows="3" cols="55" maxlength="100"  
+                                         value="#{servicios.albSituacion.sitMetProvision}" 
+                                         style="text-transform: uppercase; font-weight:bold; color: black"/>
+
+                        <h:outputLabel value="Almacenamiento: *" />
+                        <p:inputTextarea id="almacAgua" rows="3" cols="55" maxlength="100"  
+                                         value="#{servicios.albSituacion.sitAlmacenamiento}" 
+                                         style="text-transform: uppercase; font-weight:bold; color: black"/>
+
+                        <h:outputLabel value="Tratamiento del agua bebible: *" />
+                        <p:inputTextarea id="tratamAgua" rows="3" cols="55" maxlength="100"  
+                                         value="#{servicios.albSituacion.sitAguaBebible}"  
+                                         style="text-transform: uppercase; font-weight:bold; color: black"/>
 
                         <h:panelGrid columns="2" cellpadding="1">
                             <p:commandButton id="btn_guardar" value="GUARDAR" update="msgs,:formh:,:Agua,:formServicio" icon="fa fa-save"
@@ -102,27 +118,28 @@
                 <p:dialog header="NUEVO" widgetVar="pNuevoElectri" id="dlgNuevoElectr" 
                           closable="false">
                     <h:panelGrid columns="2" cellpadding="2">
-                        <h:outputLabel value="Empresa: " />
-                        <p:inputText id="nombreEmpresa" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.albEmpresa.empNombre}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />                     
-                        <p:outputLabel value="Tipo Empresa:" />
-                        <p:selectOneMenu  id="tipoEmpresa" value="#{servicios.idSeleccionAgua}" style="width:150px">
+                        <p:outputLabel value="Tipo Empresa: *" />
+                        <p:selectOneMenu  id="tipoEmpresaEl" value="#{servicios.idSeleccionAgua}" style="width:150px">
+                            <p:ajax update="nombreEmpresaEl" /> 
                             <f:selectItem  itemValue="" itemLabel="Seleccione Tipo: " noSelectionOption="false" />
                             <f:selectItems value="#{servicios.listaAgua1}" />
                         </p:selectOneMenu>
 
-                        <h:outputLabel value="Método de Provisión: " />
-                        <p:inputText id="metProv" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.albSituacion.sitMetProvision}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
-                        <h:outputLabel value="Alcance del servicio: " />
-                        <p:inputText id="almacAgua" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.albSituacion.sitAlcanceServicio}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
+                        <h:outputLabel value="Empresa: *" />
+                        <p:selectOneMenu  id="nombreEmpresaEl" value="#{servicios.idSeleccionEmpresa}"  style="width:150px">
+                            <f:selectItem  itemValue="" itemLabel="Seleccione Empresa: " noSelectionOption="false" />
+                            <f:selectItems value="#{servicios.listaEmpresa}" />                            
+                        </p:selectOneMenu>  
+
+                        <h:outputLabel value="Método de Provisión: *" />
+                        <p:inputTextarea id="metProv" rows="3" cols="55" maxlength="100"  
+                                         value="#{servicios.albSituacion.sitMetProvision}" 
+                                         style="text-transform: uppercase; font-weight:bold; color: black"/>
+
+                        <h:outputLabel value="Alcance del servicio: *" />
+                        <p:inputTextarea id="alcancServ" rows="3" cols="55" maxlength="100"  
+                                         value="#{servicios.albSituacion.sitAlcanceServicio}" 
+                                         style="text-transform: uppercase; font-weight:bold; color: black"/>
 
                         <h:panelGrid columns="2" cellpadding="1">
                             <p:commandButton id="btn_guardar" value="GUARDAR" update="msgs,:formh,:Electricidad,:formServicio" icon="fa fa-save"
@@ -146,38 +163,38 @@
                 <p:dialog header="NUEVO" widgetVar="pNuevoInter" id="dlgNuevoInter" 
                           closable="false">
                     <h:panelGrid columns="2" cellpadding="2">
-                        <h:outputLabel value="Empresa: " />
-                        <p:inputText id="nombreEmpresaInter" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.albEmpresa.empNombre}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />                     
-                        <p:outputLabel value="Tipo Empresa:" />
-                        <p:selectOneMenu  id="tipoEmpresaInter" value="#{servicios.idSeleccionAgua}" style="width:150px">
+                        <p:outputLabel value="Tipo Empresa: *" />
+                        <p:selectOneMenu  id="tipoEmpresaI" value="#{servicios.idSeleccionAgua}" style="width:150px">
+                            <p:ajax update="nombreEmpresaI" /> 
                             <f:selectItem  itemValue="" itemLabel="Seleccione Tipo: " noSelectionOption="false" />
                             <f:selectItems value="#{servicios.listaAgua1}" />
                         </p:selectOneMenu>
 
-                        <h:outputLabel value="Método de Provisión Telefonía: " />
-                        <p:inputText id="metProvTelf" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.albSituacion.sitMetProvision}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
-                        <h:outputLabel value="Alcance del servicio: " />
-                        <p:inputText id="alcanceTelf" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.albSituacion.sitAlcanceServicio}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
+                        <h:outputLabel value="Empresa: *" />
+                        <p:selectOneMenu  id="nombreEmpresaI" value="#{servicios.idSeleccionEmpresa}"  style="width:150px">
+                            <f:selectItem  itemValue="" itemLabel="Seleccione Empresa: " noSelectionOption="false" />
+                            <f:selectItems value="#{servicios.listaEmpresa}" />                            
+                        </p:selectOneMenu>  
 
-                        <h:outputLabel value="Método de Provisión Internet: " />
-                        <p:inputText id="metProvInter" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.albSituacion.sitMetProvisionInternet}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
-                        <h:outputLabel value="Alcance del servicio Internet: " />
-                        <p:inputText id="alcanceInter" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.albSituacion.sitAlcanceInternet}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
+                        <h:outputLabel value="Método de Provisión Telefonía: *" />
+                        <p:inputTextarea id="metProvTelf" rows="3" cols="55" maxlength="100"  
+                                         value="#{servicios.albSituacion.sitMetProvision}" 
+                                         style="text-transform: uppercase; font-weight:bold; color: black"/>
+
+                        <h:outputLabel value="Alcance del servicio: *" />
+                        <p:inputTextarea id="alcanceTelf"  rows="3" cols="55" maxlength="100"  
+                                         value="#{servicios.albSituacion.sitAlcanceServicio}" 
+                                         style="text-transform: uppercase; font-weight:bold; color: black"/>
+
+                        <h:outputLabel value="Método de Provisión Internet: *" />
+                        <p:inputTextarea id="metProvInter"   rows="3" cols="55" maxlength="100"  
+                                         value="#{servicios.albSituacion.sitMetProvisionInternet}"  
+                                         style="text-transform: uppercase; font-weight:bold; color: black"/>
+
+                        <h:outputLabel value="Alcance del servicio Internet: *" />
+                        <p:inputTextarea id="alcanceInter" rows="3" cols="55" maxlength="100"  
+                                         value="#{servicios.albSituacion.sitAlcanceInternet}"
+                                         style="text-transform: uppercase; font-weight:bold; color: black"/>
 
                         <h:panelGrid columns="2" cellpadding="1">
                             <p:commandButton id="btn_guardar" value="GUARDAR" update="msgs,:formh,:Internet,:formServicio" icon="fa fa-save"
@@ -200,94 +217,95 @@
             <h:form id="Sanitario"> 
                 <p:dialog header="NUEVO" widgetVar="pNuevoSani" id="dlgNuevoSani" 
                           closable="false">
-                    <h:panelGrid columns="2" cellpadding="2">
+                    <h:panelGrid columns="4" cellpadding="2">
 
-                        <h:outputLabel value="Empresa: " />
-                        <p:inputText id="nombreEmpresaSani" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.albEmpresa.empNombre}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />                     
-                        <p:outputLabel value="Tipo Empresa:" />
-                        <p:selectOneMenu  id="tipoEmpresaSani" value="#{servicios.idSeleccionAgua}" style="width:150px">
+                        <p:outputLabel value="Tipo Empresa: *" />
+                        <p:selectOneMenu  id="tipoEmpresaSan" value="#{servicios.idSeleccionAgua}" style="width:150px">
+                            <p:ajax update="nombreEmpresaSan" /> 
                             <f:selectItem  itemValue="" itemLabel="Seleccione Tipo: " noSelectionOption="false" />
                             <f:selectItems value="#{servicios.listaAgua1}" />
                         </p:selectOneMenu>
 
-                        <h:outputLabel value="Servicio de Lavandería: " />
-                        <p:inputText id="lavande" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.albSituacion.sitServicioLavanderias}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
-                        <h:outputLabel value="Alcantarillado: " />
-                        <p:inputText id="alcantarillado" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.albSituacion.sitAlcantarillado}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
+                        <h:outputLabel value="Empresa: *" />
+                        <p:selectOneMenu  id="nombreEmpresaSan" value="#{servicios.idSeleccionEmpresa}"  style="width:150px">
+                            <f:selectItem  itemValue="" itemLabel="Seleccione Empresa: " noSelectionOption="false" />
+                            <f:selectItems value="#{servicios.listaEmpresa}" />                            
+                        </p:selectOneMenu>  
 
-                        <h:outputLabel value="N° Sanitarios Fijos Hombres: " />
+                        <h:outputLabel value="Servicio de Lavandería: *" />
+                        <p:inputTextarea id="lavande" rows="3" cols="50" maxlength="100"  
+                                         value="#{servicios.albSituacion.sitServicioLavanderias}" 
+                                         style="text-transform: uppercase; font-weight:bold; color: black"/>
+
+                        <h:outputLabel value="Alcantarillado: *" />
+                        <p:inputTextarea id="alcantarillado" rows="3" cols="50" maxlength="100"  
+                                         value="#{servicios.albSituacion.sitAlcantarillado}" 
+                                         style="text-transform: uppercase; font-weight:bold; color: black"/>
+
+                        <h:outputLabel value="N° Sanitarios Fijos Hombres: *" />
                         <p:inputText id="sanH" value="#{servicios.albSituacion.sitSanitarioFijoHombres}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
+                                     size="5" maxlength="3"
                                      />
-                        <h:outputLabel value="N° Sanitarios Fijos Mujeres: " />
+                        <h:outputLabel value="N° Sanitarios Fijos Mujeres: *" />
                         <p:inputText id="sanM" value="#{servicios.albSituacion.sitSanitarioFijoMujeres}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
-                        <h:outputLabel value="N° Sanitarios Móviles Individuales Hombres: " />
+                                     size="5" maxlength="3"/>
+
+                        <h:outputLabel value="N° Sanitarios Móviles Individuales Hombres: *" />
                         <p:inputText id="sanMH" value="#{servicios.albSituacion.sitSanitarioMovilIndividualHombres}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
-                        <h:outputLabel value="N° Sanitarios Móviles Individuales Mujeres: " />
+                                     size="5" maxlength="3"/>
+
+                        <h:outputLabel value="N° Sanitarios Móviles Individuales Mujeres: *" />
                         <p:inputText id="sanMM" value="#{servicios.albSituacion.sitSanitarioMovilIndividualMujeres}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
-                        <h:outputLabel value="N° Sanitarios Móviles Conteiners Hombres: " />
+                                     size="5" maxlength="3"/>
+
+                        <h:outputLabel value="N° Sanitarios Móviles Conteiners Hombres: *" />
                         <p:inputText id="sanCH" value="#{servicios.albSituacion.sitSanitarioMovilContinerHombres}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
-                        <h:outputLabel value="N° Sanitarios Móviles Conteiners Mujeres: " />
+                                     size="5" maxlength="3"/>
+
+                        <h:outputLabel value="N° Sanitarios Móviles Conteiners Mujeres: *" />
                         <p:inputText id="sanCM" value="#{servicios.albSituacion.sitSanitarioMovilConteinerMujeres}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
-                        <h:outputLabel value="N° Letrinas Fijas Hombres: " />
+                                     size="5" maxlength="3"/>
+
+                        <h:outputLabel value="N° Letrinas Fijas Hombres: *" />
                         <p:inputText id="sanLM" value="#{servicios.albSituacion.sitLetrinaFijaHombres}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
-                        <h:outputLabel value="N° Letrinas Fijas Mujeres: " />
+                                     size="5" maxlength="3"/>
+
+                        <h:outputLabel value="N° Letrinas Fijas Mujeres: *" />
                         <p:inputText id="sanLf" value="#{servicios.albSituacion.sitLetrinaFijaMujeres}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
-                        <h:outputLabel value="N° Letrinas Móviles Hombres: " />
+                                     size="5" maxlength="3"/>
+
+                        <h:outputLabel value="N° Letrinas Móviles Hombres: *" />
                         <p:inputText id="sanLh" value="#{servicios.albSituacion.sitLetrinaMovilHombres}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
-                        <h:outputLabel value="N° Letrinas Móviles Mujeres: " />
+                                     size="5" maxlength="3"/>
+
+                        <h:outputLabel value="N° Letrinas Móviles Mujeres: *" />
                         <p:inputText id="sanLm" value="#{servicios.albSituacion.sitLetrinaMovilMujeres}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
-                        <h:outputLabel value="N° Sanitarios Hombres Discapacitados: " />
+                                     size="5" maxlength="3"/>
+
+                        <h:outputLabel value="N° Sanitarios Hombres Discapacitados: *" />
                         <p:inputText id="sanDiscaH" value="#{servicios.albSituacion.sitSanitarioDiscapacitadoHom}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
-                        <h:outputLabel value="N° Sanitarios Mujeres Discapacitadas: " />
+                                     size="5" maxlength="3" />
+
+                        <h:outputLabel value="N° Sanitarios Mujeres Discapacitadas: *" />
                         <p:inputText id="sanDiscaM" value="#{servicios.albSituacion.sitSanitarioDiscapacitadoMuj}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
-                        <h:outputLabel value="N° Duchas Hombres: " />
+                                     size="5" maxlength="3"/>
+
+                        <h:outputLabel value="N° Duchas Hombres: *" />
                         <p:inputText id="sanDuchasH" value="#{servicios.albSituacion.sitDuchasHombres}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
-                        <h:outputLabel value="N° Duchas Mujeres: " />
+                                     size="5" maxlength="3"/>
+
+                        <h:outputLabel value="N° Duchas Mujeres: *" />
                         <p:inputText id="sanDuchasM" value="#{servicios.albSituacion.sitDuchasMujeres}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
-                        <h:outputLabel value="N° Duchas Hombres Discapacitados: " />
+                                     size="5" maxlength="3"/>
+
+                        <h:outputLabel value="N° Duchas Hombres Discapacitados: *" />
                         <p:inputText id="sanDuchasHdis" value="#{servicios.albSituacion.sitDuchasDiscapacitadosHom}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
-                        <h:outputLabel value="N° Duchas Mujeres Discapacitados: " />
+                                     size="5" maxlength="3"/>
+
+                        <h:outputLabel value="N° Duchas Mujeres Discapacitados: *" />
                         <p:inputText id="sanDuchasMdis" value="#{servicios.albSituacion.sitDuchasDiscapacitadosMuj}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
+                                     size="5" maxlength="3"/>
+
                         <h:panelGrid columns="2" cellpadding="1">
                             <p:commandButton id="btn_guardar" value="GUARDAR" update="msgs,:formh,:Sanitario,:formServicio" icon="fa fa-save"
                                              action="#{servicios.guardarServicioSanitario()}" onclick="PF('pNuevoSani').hide()" >
@@ -311,27 +329,28 @@
                           closable="false">
                     <h:panelGrid columns="2" cellpadding="2">
 
-                        <h:outputLabel value="Empresa: " />
-                        <p:inputText id="nombreEmpresaSalud" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.albEmpresa.empNombre}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />                     
-                        <p:outputLabel value="Tipo Empresa:" />
+                        <p:outputLabel value="Tipo Empresa: *" />
                         <p:selectOneMenu  id="tipoEmpresaSalud" value="#{servicios.idSeleccionAgua}" style="width:150px">
+                            <p:ajax update="EmpresaSalud" /> 
                             <f:selectItem  itemValue="" itemLabel="Seleccione Tipo: " noSelectionOption="false" />
                             <f:selectItems value="#{servicios.listaAgua1}" />
                         </p:selectOneMenu>
 
-                        <h:outputLabel value="Instalación Disponible: " />
-                        <p:inputText id="instalacion" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.albSituacion.sitInstalacionDisponible}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
-                        <h:outputLabel value="Tipo de Instalación: " />
-                        <p:inputText id="tipoInstalac" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.albSituacion.sitTipoInstalacion}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
+                        <h:outputLabel value="Empresa: *" />
+                        <p:selectOneMenu  id="EmpresaSalud" value="#{servicios.idSeleccionEmpresa}"  style="width:150px">
+                            <f:selectItem  itemValue="" itemLabel="Seleccione Empresa: " noSelectionOption="false" />
+                            <f:selectItems value="#{servicios.listaEmpresa}" />                            
+                        </p:selectOneMenu>  
+
+                        <h:outputLabel value="Instalación Disponible: *" />
+                        <p:inputTextarea id="instalacion" rows="3" cols="50" maxlength="100"  
+                                         value="#{servicios.albSituacion.sitInstalacionDisponible}" 
+                                         style="text-transform: uppercase; font-weight:bold; color: black"/>
+
+                        <h:outputLabel value="Tipo de Instalación: *" />
+                        <p:inputTextarea id="tipoInstalac" rows="3" cols="50" maxlength="100"  
+                                         value="#{servicios.albSituacion.sitTipoInstalacion}" 
+                                         style="text-transform: uppercase; font-weight:bold; color: black"/>
 
                         <h:panelGrid columns="2" cellpadding="1">
                             <p:commandButton id="btn_guardarSalud" value="GUARDAR" update="msgs,:formh,:Salud,:formServicio" icon="fa fa-save"
@@ -356,27 +375,28 @@
                           closable="false">
                     <h:panelGrid columns="2" cellpadding="2">
 
-                        <h:outputLabel value="Empresa: " />
-                        <p:inputText id="nombreEmpresaDesecho" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.albEmpresa.empNombre}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />                     
-                        <p:outputLabel value="Tipo Empresa:" />
-                        <p:selectOneMenu  id="tipoEmpresaDesecho" value="#{servicios.idSeleccionAgua}" style="width:150px">
+                        <p:outputLabel value="Tipo Empresa: *" />
+                        <p:selectOneMenu  id="tipoEmpresaDeschi" value="#{servicios.idSeleccionAgua}" style="width:150px">
+                            <p:ajax update="EmpresaDeschi" /> 
                             <f:selectItem  itemValue="" itemLabel="Seleccione Tipo: " noSelectionOption="false" />
                             <f:selectItems value="#{servicios.listaAgua1}" />
                         </p:selectOneMenu>
 
-                        <h:outputLabel value="Instalación Disponible: " />
-                        <p:inputText id="instalacionDesecho" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.albSituacion.sitInstalacionDisponible}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
-                        <h:outputLabel value="Método de Evacuacion: " />
-                        <p:inputText id="evacuaDesecho" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.albSituacion.sitMetodoEvacuacion}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
+                        <h:outputLabel value="Empresa: *" />
+                        <p:selectOneMenu  id="EmpresaDeschi" value="#{servicios.idSeleccionEmpresa}"  style="width:150px">
+                            <f:selectItem  itemValue="" itemLabel="Seleccione Empresa: " noSelectionOption="false" />
+                            <f:selectItems value="#{servicios.listaEmpresa}" />                            
+                        </p:selectOneMenu> 
+
+                        <h:outputLabel value="Instalación Disponible: *" />
+                        <p:inputTextarea id="instalacionDesecho" rows="3" cols="50" maxlength="100"  
+                                         value="#{servicios.albSituacion.sitInstalacionDisponible}" 
+                                         style="text-transform: uppercase; font-weight:bold; color: black"/>
+
+                        <h:outputLabel value="Método de Evacuacion: *" />
+                        <p:inputTextarea id="evacuaDesecho" rows="3" cols="50" maxlength="100"  
+                                         value="#{servicios.albSituacion.sitMetodoEvacuacion}" 
+                                         style="text-transform: uppercase; font-weight:bold; color: black"/>
 
                         <h:panelGrid columns="2" cellpadding="1">
                             <p:commandButton id="btn_guardarDesecho" value="GUARDAR" update="msgs,:formh,:Desecho,:formServicio" icon="fa fa-save"
@@ -401,32 +421,33 @@
                           closable="false">
                     <h:panelGrid columns="2" cellpadding="2">
 
-                        <h:outputLabel value="Empresa: " />
-                        <p:inputText id="nombreEmpresaEducacion" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.albEmpresa.empNombre}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />                     
-                        <p:outputLabel value="Tipo Empresa:" />
-                        <p:selectOneMenu  id="tipoEmpresaEducacion" value="#{servicios.idSeleccionAgua}" style="width:150px">
+                        <p:outputLabel value="Tipo Empresa: *" />
+                        <p:selectOneMenu  id="tipoEmpresaEdu" value="#{servicios.idSeleccionAgua}" style="width:150px">
+                            <p:ajax update="EmpresaEdu" /> 
                             <f:selectItem  itemValue="" itemLabel="Seleccione Tipo: " noSelectionOption="false" />
                             <f:selectItems value="#{servicios.listaAgua1}" />
                         </p:selectOneMenu>
 
+                        <h:outputLabel value="Empresa: *" />
+                        <p:selectOneMenu  id="EmpresaEdu" value="#{servicios.idSeleccionEmpresa}"  style="width:150px">
+                            <f:selectItem  itemValue="" itemLabel="Seleccione Empresa: " noSelectionOption="false" />
+                            <f:selectItems value="#{servicios.listaEmpresa}" />                            
+                        </p:selectOneMenu> 
+
                         <h:outputLabel value="Instalación Disponible: " />
-                        <p:inputText id="instalacionEducacion" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.albSituacion.sitInstalacionDisponible}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
+                        <p:inputTextarea id="instalacionEducacion" rows="3" cols="50" maxlength="100"  
+                                         value="#{servicios.albSituacion.sitInstalacionDisponible}" 
+                                         style="text-transform: uppercase; font-weight:bold; color: black"/>
+
                         <h:outputLabel value="Tipo de instalacion: " />
-                        <p:inputText id="tipoInsta" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.albSituacion.sitTipoInstalacion}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
+                        <p:inputTextarea id="tipoInsta" rows="3" cols="50" maxlength="100"  
+                                         value="#{servicios.albSituacion.sitTipoInstalacion}"  
+                                         style="text-transform: uppercase; font-weight:bold; color: black"/>
+
                         <h:outputLabel value="Metodo del Servicio: " />
-                        <p:inputText id="MetEducacion" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.albSituacion.sitMetodoServicio}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
+                        <p:inputTextarea id="MetEducacion" rows="3" cols="50" maxlength="100"  
+                                         value="#{servicios.albSituacion.sitMetodoServicio}"  
+                                         style="text-transform: uppercase; font-weight:bold; color: black"/>
 
                         <h:panelGrid columns="2" cellpadding="1">
                             <p:commandButton id="btn_guardarEducacion" value="GUARDAR" update="msgs,:formh,:Educacion,:formServicio" icon="fa fa-save"
@@ -449,28 +470,29 @@
                 <p:dialog header="NUEVO" widgetVar="pNuevoFosil" id="dlgNuevoFosil" 
                           closable="false">
                     <h:panelGrid columns="2" cellpadding="2">
-
-                        <h:outputLabel value="Empresa: " />
-                        <p:inputText id="nombreEmpresaFosil" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.albEmpresa.empNombre}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />                     
-                        <p:outputLabel value="Tipo Empresa:" />
+                        <p:outputLabel value="Tipo Empresa: *" />
                         <p:selectOneMenu  id="tipoEmpresaFosil" value="#{servicios.idSeleccionAgua}" style="width:150px">
+                            <p:ajax update="EmpresaFosil" /> 
                             <f:selectItem  itemValue="" itemLabel="Seleccione Tipo: " noSelectionOption="false" />
                             <f:selectItems value="#{servicios.listaAgua1}" />
                         </p:selectOneMenu>
 
-                        <h:outputLabel value="Combustible Empleado: " />
-                        <p:inputText id="combustible" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.albSituacion.sitCombustibleEmpleado}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
-                        <h:outputLabel value="Medios en los que se emplea: " />
-                        <p:inputText id="medios" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.albSituacion.sitMediosEmpleados}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
+                        <h:outputLabel value="Empresa: *" />
+                        <p:selectOneMenu  id="EmpresaFosil" value="#{servicios.idSeleccionEmpresa}"  style="width:150px">
+                            <f:selectItem  itemValue="" itemLabel="Seleccione Empresa: " noSelectionOption="false" />
+                            <f:selectItems value="#{servicios.listaEmpresa}" />                            
+                        </p:selectOneMenu>
+
+                        <h:outputLabel value="Combustible Empleado: *" />
+                        <p:inputTextarea id="combustible" rows="3" cols="50" maxlength="100"  
+                                         value="#{servicios.albSituacion.sitCombustibleEmpleado}"
+                                         style="text-transform: uppercase; font-weight:bold; color: black"/>
+
+                        <h:outputLabel value="Medios en los que se emplea: *" />
+                        <p:inputTextarea id="medios" rows="3" cols="50" maxlength="100"  
+                                         value="#{servicios.albSituacion.sitMediosEmpleados}"
+                                         style="text-transform: uppercase; font-weight:bold; color: black"/>
+
                         <h:panelGrid columns="2" cellpadding="1">
                             <p:commandButton id="btn_guardarFosil" value="GUARDAR" update="msgs,:formh,:Fosil,:formServicio" icon="fa fa-save"
                                              action="#{servicios.guardarServicioFosil()}" onclick="PF('pNuevoFosil').hide()" >
@@ -492,33 +514,34 @@
                 <p:dialog header="NUEVO" widgetVar="pNuevoAlimentos" id="dlgNuevoAlimentos" 
                           closable="false">
                     <h:panelGrid columns="2" cellpadding="2">
-
-                        <h:outputLabel value="Empresa: " />
-                        <p:inputText id="nombreEmpresaAlimentos" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.albEmpresa.empNombre}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />                     
-                        <p:outputLabel value="Tipo Empresa:" />
+                        <p:outputLabel value="Tipo Empresa: *" />
                         <p:selectOneMenu  id="tipoEmpresaAlimentos" value="#{servicios.idSeleccionAgua}" style="width:150px">
+                            <p:ajax update="EmpresaAlimentos" /> 
                             <f:selectItem  itemValue="" itemLabel="Seleccione Tipo: " noSelectionOption="false" />
                             <f:selectItems value="#{servicios.listaAgua1}" />
                         </p:selectOneMenu>
 
-                        <h:outputLabel value="Instalaciones Disponibles: " />
-                        <p:inputText id="instalacion" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.albSituacion.sitInstalacionDisponible}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
-                        <h:outputLabel value="Tipo de instalación: " />
-                        <p:inputText id="tipoInst" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.albSituacion.sitTipoInstalacion}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
-                        <h:outputLabel value="Responsabilidad de la Institucion a cargo del servicio: " />
-                        <p:inputText id="responsab" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.albSituacion.sitDescripcion}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
+                        <h:outputLabel value="Empresa: *" />
+                        <p:selectOneMenu  id="EmpresaAlimentos" value="#{servicios.idSeleccionEmpresa}"  style="width:150px">
+                            <f:selectItem  itemValue="" itemLabel="Seleccione Empresa: " noSelectionOption="false" />
+                            <f:selectItems value="#{servicios.listaEmpresa}" />                            
+                        </p:selectOneMenu>
+
+                        <h:outputLabel value="Instalaciones Disponibles: *" />
+                        <p:inputTextarea id="instalacion" rows="3" cols="50" maxlength="100"  
+                                         value="#{servicios.albSituacion.sitInstalacionDisponible}"
+                                         style="text-transform: uppercase; font-weight:bold; color: black"/>
+
+                        <h:outputLabel value="Tipo de instalación: *" />
+                        <p:inputTextarea id="tipoInst" rows="3" cols="50" maxlength="100"  
+                                         value="#{servicios.albSituacion.sitTipoInstalacion}" 
+                                         style="text-transform: uppercase; font-weight:bold; color: black"/>
+
+                        <h:outputLabel value="Responsabilidad de la Institucion a cargo del servicio: *" />
+                        <p:inputTextarea id="responsab" rows="3" cols="50" maxlength="100"  
+                                         value="#{servicios.albSituacion.sitDescripcion}"  
+                                         style="text-transform: uppercase; font-weight:bold; color: black"/>
+
                         <h:panelGrid columns="2" cellpadding="1">
                             <p:commandButton id="btn_guardarAlimentos" value="GUARDAR" update="msgs,:formh,:Alimentos,:formServicio" icon="fa fa-save"
                                              action="#{servicios.guardarServicioAlimentos()}" onclick="PF('pNuevoAlimentos').hide()" >
@@ -541,28 +564,28 @@
                 <p:dialog header="NUEVO" widgetVar="pNuevoSeguridad" id="dlgNuevoSeguridad" 
                           closable="false">
                     <h:panelGrid columns="2" cellpadding="2">
-
-                        <h:outputLabel value="Empresa: " />
-                        <p:inputText id="nombreEmpresaSeguridad" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.albEmpresa.empNombre}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />                     
-                        <p:outputLabel value="Tipo Empresa:" />
+                        <p:outputLabel value="Tipo Empresa: *" />
                         <p:selectOneMenu  id="tipoEmpresaSeguridad" value="#{servicios.idSeleccionAgua}" style="width:150px">
+                            <p:ajax update="EmpresaSeguridad" /> 
                             <f:selectItem  itemValue="" itemLabel="Seleccione Tipo: " noSelectionOption="false" />
                             <f:selectItems value="#{servicios.listaAgua1}" />
                         </p:selectOneMenu>
 
-                        <h:outputLabel value="Método de Provision: " />
-                        <p:inputText id="provicion" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.albSituacion.sitMetProvision}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
-                        <h:outputLabel value="Alcance del servicio: " />
-                        <p:inputText id="alcanceSeguridad" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.albSituacion.sitAlcanceServicio}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
+                        <h:outputLabel value="Empresa: *" />
+                        <p:selectOneMenu  id="EmpresaSeguridad" value="#{servicios.idSeleccionEmpresa}"  style="width:150px">
+                            <f:selectItem  itemValue="" itemLabel="Seleccione Empresa: " noSelectionOption="false" />
+                            <f:selectItems value="#{servicios.listaEmpresa}" />                            
+                        </p:selectOneMenu>
+
+                        <h:outputLabel value="Método de Provision: *" />
+                        <p:inputTextarea id="provicion" rows="3" cols="50" maxlength="100"  
+                                         value="#{servicios.albSituacion.sitMetProvision}"   
+                                         style="text-transform: uppercase; font-weight:bold; color: black"/>
+
+                        <h:outputLabel value="Alcance del servicio: *" />
+                        <p:inputTextarea id="alcanceSeguridad" rows="3" cols="50" maxlength="100"  
+                                         value="#{servicios.albSituacion.sitAlcanceServicio}"    
+                                         style="text-transform: uppercase; font-weight:bold; color: black"/>
 
                         <h:panelGrid columns="2" cellpadding="1">
                             <p:commandButton id="btn_guardarSeguridad" value="GUARDAR" update="msgs,:formh,:Seguridad,:formServicio" icon="fa fa-save"
@@ -585,23 +608,23 @@
                 <p:dialog header="NUEVO" widgetVar="pNuevoDeporte" id="dlgNuevoDeporte" 
                           closable="false">
                     <h:panelGrid columns="2" cellpadding="2">
-
-                        <h:outputLabel value="Empresa: " />
-                        <p:inputText id="nombreEmpresaDeporte" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.albEmpresa.empNombre}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />                     
-                        <p:outputLabel value="Tipo Empresa:" />
+                        <p:outputLabel value="Tipo Empresa: *" />
                         <p:selectOneMenu  id="tipoEmpresaDeporte" value="#{servicios.idSeleccionAgua}" style="width:150px">
+                            <p:ajax update="EmpresaDeport" /> 
                             <f:selectItem  itemValue="" itemLabel="Seleccione Tipo: " noSelectionOption="false" />
                             <f:selectItems value="#{servicios.listaAgua1}" />
                         </p:selectOneMenu>
 
+                        <h:outputLabel value="Empresa: *" />
+                        <p:selectOneMenu  id="EmpresaDeport" value="#{servicios.idSeleccionEmpresa}"  style="width:150px">
+                            <f:selectItem  itemValue="" itemLabel="Seleccione Empresa: " noSelectionOption="false" />
+                            <f:selectItems value="#{servicios.listaEmpresa}" />                            
+                        </p:selectOneMenu>
+
                         <h:outputLabel value="Método de Provision: " />
-                        <p:inputText id="provicionDeporte" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.albSituacion.sitMetProvision}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
+                        <p:inputTextarea id="provicionDeporte" rows="3" cols="50" maxlength="100"  
+                                         value="#{servicios.albSituacion.sitMetProvision}"   
+                                         style="text-transform: uppercase; font-weight:bold; color: black"/>
 
                         <h:panelGrid columns="2" cellpadding="1">
                             <p:commandButton id="btn_guardarDeporte" value="GUARDAR" update="msgs,:formh,:Deporte,:formServicio" icon="fa fa-save"
@@ -624,23 +647,23 @@
                 <p:dialog header="NUEVO" widgetVar="pNuevoNormas" id="dlgNuevoNormas" 
                           closable="false">
                     <h:panelGrid columns="2" cellpadding="2">
-
-                        <h:outputLabel value="Empresa: " />
-                        <p:inputText id="nombreEmpresaNormas" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.albEmpresa.empNombre}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />                     
-                        <p:outputLabel value="Tipo Empresa:" />
+                        <p:outputLabel value="Tipo Empresa: *" />
                         <p:selectOneMenu  id="tipoEmpresaNormas" value="#{servicios.idSeleccionAgua}" style="width:150px">
+                            <p:ajax update="EmpresaNormas" /> 
                             <f:selectItem  itemValue="" itemLabel="Seleccione Tipo: " noSelectionOption="false" />
                             <f:selectItems value="#{servicios.listaAgua1}" />
                         </p:selectOneMenu>
 
+                        <h:outputLabel value="Empresa: *" />
+                        <p:selectOneMenu  id="EmpresaNormas" value="#{servicios.idSeleccionEmpresa}"  style="width:150px">
+                            <f:selectItem  itemValue="" itemLabel="Seleccione Empresa: " noSelectionOption="false" />
+                            <f:selectItems value="#{servicios.listaEmpresa}" />                            
+                        </p:selectOneMenu>
+
                         <h:outputLabel value="Descripcion General Normas: " />
-                        <p:inputText id="provicionNormas" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.albSituacion.sitDescripcion}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
+                        <p:inputTextarea id="provicionNormas"  rows="3" cols="50" maxlength="100"  
+                                         value="#{servicios.albSituacion.sitDescripcion}"    
+                                         style="text-transform: uppercase; font-weight:bold; color: black"/>
 
                         <h:panelGrid columns="2" cellpadding="1">
                             <p:commandButton id="btn_guardarNormas" value="GUARDAR" update="msgs,:formh,:Normas,:formServicio" icon="fa fa-save"
@@ -673,18 +696,17 @@
                         <h:outputLabel value="N° de vehículos: " />
                         <p:inputText id="numVehi"  
                                      value="#{servicios.albVehiculo.vehCantidad}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
+                                     size="5" maxlength="3"/>
+                        
                         <h:outputLabel value="Kilometraje: " />
                         <p:inputText id="Kilometraje"  
                                      value="#{servicios.albVehiculo.vehKm}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
+                                     size="5" maxlength="5"/>
+                        
                         <h:outputLabel value="Conductores: " />
-                        <p:inputText id="conductres"  
-                                     value="#{servicios.albVehiculo.vehConductores}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
+                        <p:inputTextarea id="conductres"   rows="3" cols="50" maxlength="100"  
+                                         value="#{servicios.albVehiculo.vehConductores}"     
+                                         style="text-transform: uppercase; font-weight:bold; color: black"/>
 
                         <h:panelGrid columns="2" cellpadding="1">
                             <p:commandButton id="btn_guardarVehi" value="GUARDAR" update="msgs,:formh,:Vehi,:formServicio" icon="fa fa-save"
@@ -702,7 +724,7 @@
                     </h:panelGrid>
                 </p:dialog>
             </h:form>
-            
+
             <h:form id="Carpa"> 
                 <p:dialog header="NUEVO" widgetVar="pNuevoCarpa" id="dlgNuevoCarpa" 
                           closable="false">
@@ -717,14 +739,13 @@
                         <h:outputLabel value="N° total de carpas: " />
                         <p:inputText id="numCarpa"  
                                      value="#{servicios.albCarpa.carTotal}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
+                                     size="5" maxlength="3"/>
+                        
                         <h:outputLabel value="N° de carpas disponibles: " />
                         <p:inputText id="disponibles"  
                                      value="#{servicios.albCarpa.carDisponibles}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
-                        
+                                     size="5" maxlength="3"/>
+
                         <h:panelGrid columns="2" cellpadding="1">
                             <p:commandButton id="btn_guardarCarpa" value="GUARDAR" update="msgs,:formh,:Carpa,:formServicio" icon="fa fa-save"
                                              action="#{servicios.guardarServicioCarpa()}" onclick="PF('pNuevoCarpa').hide()" >
@@ -869,7 +890,7 @@
                                 </h:panelGrid>
                             </p:tab>
 
-                            <p:tab title="TELECOMUNICACIONES Y CONECTIVIDAD A INTERNET">
+                            <p:tab title="TELECOMUNICACIONES">
                                 <h:panelGrid columns="2" cellpadding="10">               
                                     <p:dataTable id="tprincipal3" 
                                                  var="object3" value="#{servicios.listaInternet}"
@@ -936,7 +957,7 @@
                                 </h:panelGrid>
                             </p:tab>
 
-                            <p:tab title="SANEAMIENTO AMBIENTAL, BATERIAS SANITARIAS, DUCHAS, LAVANDERIAS" >
+                            <p:tab title="SANEAMIENTO AMBIENTAL" >
                                 <h:panelGrid columns="2" cellpadding="10">               
                                     <p:dataTable id="tprincipal4" 
                                                  var="object4" value="#{servicios.listaBateriasSanitarias}"
@@ -1122,7 +1143,7 @@
                                 </h:panelGrid>
                             </p:tab>
 
-                            <p:tab title="MANEJO DE DESECHOS SÓLIDOS">
+                            <p:tab title="DESECHOS SÓLIDOS">
                                 <h:panelGrid columns="2" cellpadding="10">               
                                     <p:dataTable id="tprincipal6" 
                                                  var="object6" value="#{servicios.listaDesechosSolidos}"
@@ -1242,7 +1263,7 @@
                                 </h:panelGrid>
                             </p:tab>
 
-                            <p:tab title="CONSUMO DE COMBUSTIBLES FOSILES">
+                            <p:tab title="CONSUMO DE COMBUSTIBLES">
                                 <h:panelGrid columns="2" cellpadding="10">               
                                     <p:dataTable id="tprincipal8" 
                                                  var="object8" value="#{servicios.listaCombustibleFosil}"
@@ -1569,7 +1590,7 @@
                                                 <p:resetInput target=":formEditarVehi" />
                                             </p:commandButton>
                                         </p:column>
-                                        
+
                                         <p:column   headerText="ELIMINAR" width="70" style="text-align: center" >
                                             <p:commandButton id="btn_EliminarVehi"  update="msgs,:formh,:formServicio" icon="ui-icon-trash"  >
                                                 <f:setPropertyActionListener value="#{object13}" target="#{servicios.selectedServicioVehiEliminar}" />
@@ -1586,7 +1607,7 @@
                                     </p:dataTable>
                                 </h:panelGrid>
                             </p:tab>
-                            
+
                             <p:tab title="CARPAS">
                                 <h:panelGrid columns="2" cellpadding="10">               
                                     <p:dataTable id="tprincipal14" 
@@ -1625,7 +1646,7 @@
                                                 <p:resetInput target=":formEditarCarpa" />
                                             </p:commandButton>
                                         </p:column>
-                                        
+
                                         <p:column   headerText="ELIMINAR" width="70" style="text-align: center" >
                                             <p:commandButton id="btn_EliminarCarpa"  update="msgs,:formh,:formServicio" icon="ui-icon-trash"  >
                                                 <f:setPropertyActionListener value="#{object14}" target="#{servicios.selectedServicioCarpaEliminar}" />
@@ -1654,33 +1675,26 @@
 
                     <h:panelGrid columns="2" cellpadding="3">
 
-                        <h:outputLabel value="Empresa Proveedora : *" ></h:outputLabel>
-                        <p:inputText id="txt_NombreEditar" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.segSituacionObjects.servicioSituacionAlbergue.albServicio.albEmpresa.empNombre}" 
-                                     required="true" >
-                        </p:inputText>
+                        <h:outputLabel value="Empresa Proveedora :" ></h:outputLabel>
+                        <h:outputLabel value="#{servicios.segSituacionObjects.servicioSituacionAlbergue.albServicio.albEmpresa.empNombre}"></h:outputLabel>
 
-                        <h:outputLabel value="Tipo Proveedor del Servicio: *" ></h:outputLabel>
-                        <p:selectOneMenu  id="tipoProveedorServ_edit"  value="#{servicios.idSeleccionAgua}" style="width:150px" >
-                            <f:selectItem  itemValue="" itemLabel="#{servicios.segSituacionObjects.servicioSituacionAlbergue.albServicio.albEmpresa.albTipoEmpresa.tieNombre} " noSelectionOption="false"  />
-                            <f:selectItems value="#{servicios.listaAgua1}" /> 
-                        </p:selectOneMenu>
+                        <h:outputLabel value="Tipo Proveedor del Servicio:" ></h:outputLabel>
+                        <h:outputLabel value="#{servicios.segSituacionObjects.servicioSituacionAlbergue.albServicio.albEmpresa.albTipoEmpresa.tieNombre} " ></h:outputLabel>
 
-                        <h:outputLabel value="Método de Provisión: " />
-                        <p:inputText id="metProv" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.segSituacionObjects.sitMetProvision}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
-                        <h:outputLabel value="Almacenamiento: " />
-                        <p:inputText id="almacAgua" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.segSituacionObjects.sitAlmacenamiento}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
-                        <h:outputLabel value="Tratamiento del agua bebible: " />
-                        <p:inputText id="tratamAgua" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.segSituacionObjects.sitAguaBebible}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
+                        <h:outputLabel value="Método de Provisión: *" />
+                        <p:inputTextarea id="metProv" rows="3" cols="55" maxlength="100" 
+                                         value="#{servicios.segSituacionObjects.sitMetProvision}"
+                                         style="text-transform: uppercase; font-weight:bold; color: black"/>
+
+                        <h:outputLabel value="Almacenamiento: *" />
+                        <p:inputTextarea id="almacAgua" rows="3" cols="55" maxlength="100" 
+                                         value="#{servicios.segSituacionObjects.sitAlmacenamiento}" 
+                                         style="text-transform: uppercase; font-weight:bold; color: black"/>
+
+                        <h:outputLabel value="Tratamiento del agua bebible: *" />
+                        <p:inputTextarea id="tratamAgua" rows="3" cols="55" maxlength="100" 
+                                         value="#{servicios.segSituacionObjects.sitAguaBebible}" 
+                                         style="text-transform: uppercase; font-weight:bold; color: black"/>
 
                         <f:facet name="footer">
                             <p:commandButton value="GUARDAR"  update="msgs,:formh, :formServicio" icon="fa fa-save"
@@ -1708,28 +1722,22 @@
 
                     <h:panelGrid columns="2" cellpadding="3">
 
-                        <h:outputLabel value="Empresa Proveedora : *" ></h:outputLabel>
-                        <p:inputText id="txt_NombreEditarElectri" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.segElectriObjects.servicioSituacionAlbergue.albServicio.albEmpresa.empNombre}" 
-                                     required="true" >
-                        </p:inputText>
+                        <h:outputLabel value="Empresa Proveedora :" ></h:outputLabel>
+                        <h:outputLabel value="#{servicios.segElectriObjects.servicioSituacionAlbergue.albServicio.albEmpresa.empNombre}"></h:outputLabel>
 
-                        <h:outputLabel value="Tipo Proveedor del Servicio: *" ></h:outputLabel>
-                        <p:selectOneMenu  id="tipoProveedorServElectri_edit"  value="#{servicios.idSeleccionAgua}" style="width:150px" >
-                            <f:selectItem  itemValue="" itemLabel="#{servicios.segElectriObjects.servicioSituacionAlbergue.albServicio.albEmpresa.albTipoEmpresa.tieNombre} " noSelectionOption="false"  />
-                            <f:selectItems value="#{servicios.listaAgua1}" /> 
-                        </p:selectOneMenu>
+                        <h:outputLabel value="Tipo Proveedor del Servicio:" ></h:outputLabel>
+                        <h:outputLabel value="#{servicios.segElectriObjects.servicioSituacionAlbergue.albServicio.albEmpresa.albTipoEmpresa.tieNombre}"></h:outputLabel>
 
-                        <h:outputLabel value="Método de Provisión: " />
-                        <p:inputText id="metProvElectri" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.segElectriObjects.sitMetProvision}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
-                        <h:outputLabel value="Alcance del servicio: " />
-                        <p:inputText id="almacElectri" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.segElectriObjects.sitAlcanceServicio}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
+                        <h:outputLabel value="Método de Provisión: *" />
+                        <p:inputTextarea id="metProvElectri"  rows="3" cols="55" maxlength="100" 
+                                         value="#{servicios.segElectriObjects.sitMetProvision}" 
+                                         style="text-transform: uppercase; font-weight:bold; color: black"/>
+
+                        <h:outputLabel value="Alcance del servicio: *" />
+                        <p:inputTextarea id="alcancElectri"  rows="3" cols="55" maxlength="100" 
+                                         value="#{servicios.segElectriObjects.sitAlcanceServicio}" 
+                                         style="text-transform: uppercase; font-weight:bold; color: black"/>
+
                         <f:facet name="footer">
                             <p:commandButton value="GUARDAR"  update="msgs,:formh, :formServicio" icon="fa fa-save"
                                              action="#{servicios.editarServicioElectricidad()}" onclick="PF('dlgEditarElectri').hide()"  >
@@ -1754,38 +1762,31 @@
                 <h:form id="formEditarInter">
                     <p:growl id="msgsInter"  />
                     <h:panelGrid columns="2" cellpadding="3">
-                        <h:outputLabel value="Empresa Proveedora : *" ></h:outputLabel>
-                        <p:inputText id="txt_NombreEditarInter" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.segInterObjects.servicioSituacionAlbergue.albServicio.albEmpresa.empNombre}" 
-                                     required="true" >
-                        </p:inputText>
+                        <h:outputLabel value="Empresa Proveedora :" ></h:outputLabel>
+                        <h:outputLabel value="#{servicios.segInterObjects.servicioSituacionAlbergue.albServicio.albEmpresa.empNombre}" ></h:outputLabel>
 
-                        <h:outputLabel value="Tipo Proveedor del Servicio: *" ></h:outputLabel>
-                        <p:selectOneMenu  id="tipoProveedorServInter_edit"  value="#{servicios.idSeleccionAgua}" style="width:150px" >
-                            <f:selectItem  itemValue="" itemLabel="#{servicios.segInterObjects.servicioSituacionAlbergue.albServicio.albEmpresa.albTipoEmpresa.tieNombre} " noSelectionOption="false"  />
-                            <f:selectItems value="#{servicios.listaAgua1}" /> 
-                        </p:selectOneMenu>
+                        <h:outputLabel value="Tipo Proveedor del Servicio:" ></h:outputLabel>
+                        <h:outputLabel value="#{servicios.segInterObjects.servicioSituacionAlbergue.albServicio.albEmpresa.albTipoEmpresa.tieNombre}" ></h:outputLabel>
 
-                        <h:outputLabel value="Método de Provisión Telefonía: " />
-                        <p:inputText id="metProvTel" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.segInterObjects.sitMetProvision}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
-                        <h:outputLabel value="Alcance del servicio Telefonía: " />
-                        <p:inputText id="alcanTel" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.segInterObjects.sitAlcanceServicio}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
-                        <h:outputLabel value="Método de Provisión Internet: " />
-                        <p:inputText id="metProvIntern" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.segInterObjects.sitMetProvisionInternet}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
-                        <h:outputLabel value="Alcance del servicio Internet: " />
-                        <p:inputText id="alcanInter" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.segInterObjects.sitAlcanceInternet}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
+                        <h:outputLabel value="Método de Provisión Telefonía: *" />
+                        <p:inputTextarea id="metProvTel"  rows="3" cols="55" maxlength="100" 
+                                         value="#{servicios.segInterObjects.sitMetProvision}"
+                                         style="text-transform: uppercase; font-weight:bold; color: black"/>
+                        
+                        <h:outputLabel value="Alcance del servicio Telefonía: *" />
+                        <p:inputTextarea id="alcanTel"  rows="3" cols="55" maxlength="100" 
+                                        value="#{servicios.segInterObjects.sitAlcanceServicio}" 
+                                         style="text-transform: uppercase; font-weight:bold; color: black"/>
+                        
+                        <h:outputLabel value="Método de Provisión Internet: *" />
+                        <p:inputTextarea id="metProvIntern"  rows="3" cols="55" maxlength="100" 
+                                        value="#{servicios.segInterObjects.sitMetProvisionInternet}" 
+                                         style="text-transform: uppercase; font-weight:bold; color: black"/>
+                        
+                        <h:outputLabel value="Alcance del servicio Internet: *" />
+                        <p:inputTextarea id="alcanInter" rows="3" cols="55" maxlength="100" 
+                                        value="#{servicios.segInterObjects.sitAlcanceInternet}"
+                                         style="text-transform: uppercase; font-weight:bold; color: black"/>
                         <f:facet name="footer">
                             <p:commandButton value="GUARDAR"  update="msgs,:formh, :formServicio" icon="fa fa-save"
                                              action="#{servicios.editarServicioInternet()}" onclick="PF('dlgEditarInter').hide()"  >
@@ -1809,83 +1810,68 @@
                     <p:growl id="msgsSan"  />
                     <h:panelGrid columns="2" cellpadding="3">
 
-                        <h:outputLabel value="Empresa Proveedora : *" ></h:outputLabel>
-                        <p:inputText id="txt_NombreEditarSani" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.segSaniObjects.servicioSituacionAlbergue.albServicio.albEmpresa.empNombre}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     required="true" >
-                        </p:inputText>
+                        <h:outputLabel value="Empresa Proveedora :" ></h:outputLabel>
+                        <h:outputLabel value="#{servicios.segSaniObjects.servicioSituacionAlbergue.albServicio.albEmpresa.empNombre}" ></h:outputLabel>
 
-                        <h:outputLabel value="Tipo Proveedor del Servicio: *" ></h:outputLabel>
-                        <p:selectOneMenu  id="tipoProveedorServSani_edit"  value="#{servicios.idSeleccionAgua}" style="width:150px" >
-                            <f:selectItem  itemValue="" itemLabel="#{servicios.segSaniObjects.servicioSituacionAlbergue.albServicio.albEmpresa.albTipoEmpresa.tieNombre} " noSelectionOption="false"  />
-                            <f:selectItems value="#{servicios.listaAgua1}" /> 
-                        </p:selectOneMenu>
+                        <h:outputLabel value="Tipo Proveedor del Servicio:" ></h:outputLabel>
+                        <h:outputLabel value="#{servicios.segSaniObjects.servicioSituacionAlbergue.albServicio.albEmpresa.albTipoEmpresa.tieNombre}" ></h:outputLabel>
 
                         <h:outputLabel value="Servicio de Lavandería: " />
-                        <p:inputText id="lavandeEd" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.segSaniObjects.sitServicioLavanderias}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
+                        <p:inputText id="lavandeEd" 
+                                       value="#{servicios.segSaniObjects.sitServicioLavanderias}" 
+                                       size="5" maxlength="3"/>
 
                         <h:outputLabel value="Alcantarillado: " />
-                        <p:inputText id="alcantarilladoEd" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.segSaniObjects.sitAlcantarillado}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
+                        <p:inputText id="alcantarilladoEd" 
+                                      value="#{servicios.segSaniObjects.sitAlcantarillado}" 
+                                         size="5" maxlength="3"/>
 
                         <h:outputLabel value="N° Sanitarios Fijos Hombres: " />
                         <p:inputText id="sanHEd" value="#{servicios.segSaniObjects.sitSanitarioFijoHombres}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
+                                     size="5" maxlength="3"/>
+                        
                         <h:outputLabel value="N° Sanitarios Fijos Mujeres: " />
                         <p:inputText id="sanMEd" value="#{servicios.segSaniObjects.sitSanitarioFijoMujeres}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
+                                     size="5" maxlength="3"/>
+                        
                         <h:outputLabel value="N° Sanitarios Móviles Individuales Hombres: " />
                         <p:inputText id="sanMHEd" value="#{servicios.segSaniObjects.sitSanitarioMovilIndividualHombres}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
+                                     size="5" maxlength="3"/>
+                        
                         <h:outputLabel value="N° Sanitarios Móviles Individuales Mujeres: " />
                         <p:inputText id="sanMMEd" value="#{servicios.segSaniObjects.sitSanitarioMovilIndividualMujeres}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
+                                     size="5" maxlength="3"/>
+                        
                         <h:outputLabel value="N° Sanitarios Móviles Conteiners Hombres: " />
                         <p:inputText id="sanCHEd" value="#{servicios.segSaniObjects.sitSanitarioMovilContinerHombres}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
+                                     size="5" maxlength="3"/>
+                        
                         <h:outputLabel value="N° Sanitarios Móviles Conteiners Mujeres: " />
                         <p:inputText id="sanCMEd" value="#{servicios.segSaniObjects.sitSanitarioMovilConteinerMujeres}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
+                                     size="5" maxlength="3"/>
+                        
                         <h:outputLabel value="N° Letrinas Fijas Hombres: " />
                         <p:inputText id="sanLMEd" value="#{servicios.segSaniObjects.sitLetrinaFijaHombres}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
+                                     size="5" maxlength="3"/>
+                        
                         <h:outputLabel value="N° Letrinas Fijas Mujeres: " />
                         <p:inputText id="sanLfEd" value="#{servicios.segSaniObjects.sitLetrinaFijaMujeres}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
+                                     size="5" maxlength="3"/>
                         <h:outputLabel value="N° Letrinas Móviles Hombres: " />
                         <p:inputText id="sanLhEd" value="#{servicios.segSaniObjects.sitLetrinaMovilHombres}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
+                                     size="5" maxlength="3"/>
                         <h:outputLabel value="N° Letrinas Móviles Mujeres: " />
                         <p:inputText id="sanLmEd" value="#{servicios.segSaniObjects.sitLetrinaMovilMujeres}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
+                                     size="5" maxlength="3"/>
                         <h:outputLabel value="N° Sanitarios Hombres Discapacitados: " />
                         <p:inputText id="sanDiscaHEd" value="#{servicios.segSaniObjects.sitSanitarioDiscapacitadoHom}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
+                                     size="5" maxlength="3"/>
                         <h:outputLabel value="N° Sanitarios Mujeres Discapacitadas: " />
                         <p:inputText id="sanDiscaMEd" value="#{servicios.segSaniObjects.sitSanitarioDiscapacitadoMuj}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
+                                     size="5" maxlength="3"/>
                         <h:outputLabel value="N° Duchas Hombres: " />
                         <p:inputText id="sanDuchasHEd" value="#{servicios.segSaniObjects.sitDuchasHombres}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
+                                     size="5" maxlength="3"/>
                         <h:outputLabel value="N° Duchas Mujeres: " />
                         <p:inputText id="sanDuchasMEd" value="#{servicios.segSaniObjects.sitDuchasMujeres}" 
                                      size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
@@ -1922,18 +1908,11 @@
                     <p:growl id="msgsSalud"  />
                     <h:panelGrid columns="2" cellpadding="3">
 
-                        <h:outputLabel value="Empresa Proveedora : *" ></h:outputLabel>
-                        <p:inputText id="txt_NombreEditarSalud" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.segSaludObjects.servicioSituacionAlbergue.albServicio.albEmpresa.empNombre}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     required="true" >
-                        </p:inputText>
+                        <h:outputLabel value="Empresa Proveedora :" ></h:outputLabel>
+                        <h:outputLabel value="#{servicios.segSaludObjects.servicioSituacionAlbergue.albServicio.albEmpresa.empNombre}" ></h:outputLabel>
 
-                        <h:outputLabel value="Tipo Proveedor del Servicio: *" ></h:outputLabel>
-                        <p:selectOneMenu  id="tipoProveedorServSalud_edit"  value="#{servicios.idSeleccionAgua}" style="width:150px" >
-                            <f:selectItem  itemValue="" itemLabel="#{servicios.segSaludObjects.servicioSituacionAlbergue.albServicio.albEmpresa.albTipoEmpresa.tieNombre} " noSelectionOption="false"  />
-                            <f:selectItems value="#{servicios.listaAgua1}" /> 
-                        </p:selectOneMenu>
+                        <h:outputLabel value="Tipo Proveedor del Servicio:" ></h:outputLabel>
+                        <h:outputLabel value="#{servicios.segSaludObjects.servicioSituacionAlbergue.albServicio.albEmpresa.albTipoEmpresa.tieNombre}" ></h:outputLabel>
 
                         <h:outputLabel value="Instalacion Disponible : *" ></h:outputLabel>
                         <p:inputText id="txt_IstaEditarSalud" style="text-transform: uppercase; font-weight:bold; color: black " 
@@ -1972,17 +1951,10 @@
                     <h:panelGrid columns="2" cellpadding="3">
 
                         <h:outputLabel value="Empresa Proveedora : *" ></h:outputLabel>
-                        <p:inputText id="txt_NombreEditarDesecho" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.segDesechoObjects.servicioSituacionAlbergue.albServicio.albEmpresa.empNombre}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     required="true" >
-                        </p:inputText>
+                        <h:outputLabel  value="#{servicios.segDesechoObjects.servicioSituacionAlbergue.albServicio.albEmpresa.empNombre}"  ></h:outputLabel>
 
                         <h:outputLabel value="Tipo Proveedor del Servicio: *" ></h:outputLabel>
-                        <p:selectOneMenu  id="tipoProveedorServDesecho_edit"  value="#{servicios.idSeleccionAgua}" style="width:150px" >
-                            <f:selectItem  itemValue="" itemLabel="#{servicios.segDesechoObjects.servicioSituacionAlbergue.albServicio.albEmpresa.albTipoEmpresa.tieNombre} " noSelectionOption="false"  />
-                            <f:selectItems value="#{servicios.listaAgua1}" /> 
-                        </p:selectOneMenu>
+                        <h:outputLabel  value="#{servicios.segDesechoObjects.servicioSituacionAlbergue.albServicio.albEmpresa.albTipoEmpresa.tieNombre} "  ></h:outputLabel>
 
                         <h:outputLabel value="Instalacion Disponible : *" ></h:outputLabel>
                         <p:inputText id="txt_IstaEditarDesecho" style="text-transform: uppercase; font-weight:bold; color: black " 
@@ -2021,17 +1993,10 @@
                     <h:panelGrid columns="2" cellpadding="3">
 
                         <h:outputLabel value="Empresa Proveedora : *" ></h:outputLabel>
-                        <p:inputText id="txt_NombreEditarEducacion" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.segEducacionObjects.servicioSituacionAlbergue.albServicio.albEmpresa.empNombre}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     required="true" >
-                        </p:inputText>
+                        <h:outputLabel  value="#{servicios.segEducacionObjects.servicioSituacionAlbergue.albServicio.albEmpresa.empNombre}"></h:outputLabel>
 
                         <h:outputLabel value="Tipo Proveedor del Servicio: *" ></h:outputLabel>
-                        <p:selectOneMenu  id="tipoProveedorServEducacion_edit"  value="#{servicios.idSeleccionAgua}" style="width:150px" >
-                            <f:selectItem  itemValue="" itemLabel="#{servicios.segEducacionObjects.servicioSituacionAlbergue.albServicio.albEmpresa.albTipoEmpresa.tieNombre} " noSelectionOption="false"  />
-                            <f:selectItems value="#{servicios.listaAgua1}" /> 
-                        </p:selectOneMenu>
+                        <h:outputLabel  value="#{servicios.segEducacionObjects.servicioSituacionAlbergue.albServicio.albEmpresa.albTipoEmpresa.tieNombre}"  ></h:outputLabel>
 
                         <h:outputLabel value="Instalacion Disponible : *" ></h:outputLabel>
                         <p:inputText id="txt_IstaEditarEducacion" style="text-transform: uppercase; font-weight:bold; color: black " 
@@ -2075,17 +2040,10 @@
                     <h:panelGrid columns="2" cellpadding="3">
 
                         <h:outputLabel value="Empresa Proveedora : " ></h:outputLabel>
-                        <p:inputText id="txt_NombreEditarFosil" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.segFosilObjects.servicioSituacionAlbergue.albServicio.albEmpresa.empNombre}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     required="true" >
-                        </p:inputText>
+                        <h:outputLabel  value="#{servicios.segFosilObjects.servicioSituacionAlbergue.albServicio.albEmpresa.empNombre}" ></h:outputLabel>
 
                         <h:outputLabel value="Tipo Proveedor del Servicio: " ></h:outputLabel>
-                        <p:selectOneMenu  id="tipoProveedorServFosil_edit"  value="#{servicios.idSeleccionAgua}" style="width:150px" >
-                            <f:selectItem  itemValue="" itemLabel="#{servicios.segFosilObjects.servicioSituacionAlbergue.albServicio.albEmpresa.albTipoEmpresa.tieNombre} " noSelectionOption="false"  />
-                            <f:selectItems value="#{servicios.listaAgua1}" /> 
-                        </p:selectOneMenu>
+                        <h:outputLabel  value="#{servicios.segFosilObjects.servicioSituacionAlbergue.albServicio.albEmpresa.albTipoEmpresa.tieNombre}"  ></h:outputLabel>
 
                         <h:outputLabel value="Combustible empleado : " ></h:outputLabel>
                         <p:inputText id="txt_IstaEditarFosil" style="text-transform: uppercase; font-weight:bold; color: black " 
@@ -2122,17 +2080,10 @@
                     <h:panelGrid columns="2" cellpadding="3">
 
                         <h:outputLabel value="Empresa Proveedora : " ></h:outputLabel>
-                        <p:inputText id="txt_NombreEditarAlimentos" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.segAlimentosObjects.servicioSituacionAlbergue.albServicio.albEmpresa.empNombre}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     required="true" >
-                        </p:inputText>
+                        <h:outputLabel  value="#{servicios.segAlimentosObjects.servicioSituacionAlbergue.albServicio.albEmpresa.empNombre}"  ></h:outputLabel>
 
                         <h:outputLabel value="Tipo Proveedor del Servicio: " ></h:outputLabel>
-                        <p:selectOneMenu  id="tipoProveedorServAlimentos_edit"  value="#{servicios.idSeleccionAgua}" style="width:150px" >
-                            <f:selectItem  itemValue="" itemLabel="#{servicios.segAlimentosObjects.servicioSituacionAlbergue.albServicio.albEmpresa.albTipoEmpresa.tieNombre} " noSelectionOption="false"  />
-                            <f:selectItems value="#{servicios.listaAgua1}" /> 
-                        </p:selectOneMenu>
+                        <h:outputLabel  value="#{servicios.segAlimentosObjects.servicioSituacionAlbergue.albServicio.albEmpresa.albTipoEmpresa.tieNombre}"  ></h:outputLabel>
 
                         <h:outputLabel value="Instalaciones Diponibles: " ></h:outputLabel>
                         <p:inputText id="instaAlimentos_edit" style="text-transform: uppercase; font-weight:bold; color: black " 
@@ -2175,19 +2126,11 @@
                 <h:form id="formEditarSeguridad">
                     <p:growl id="msgsSeguridad"  />
                     <h:panelGrid columns="2" cellpadding="3">
-
                         <h:outputLabel value="Empresa Proveedora : " ></h:outputLabel>
-                        <p:inputText id="txt_NombreEditarSeguridad" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.segSeguridadObjects.servicioSituacionAlbergue.albServicio.albEmpresa.empNombre}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     required="true" >
-                        </p:inputText>
+                        <h:outputLabel  value="#{servicios.segSeguridadObjects.servicioSituacionAlbergue.albServicio.albEmpresa.empNombre}"   ></h:outputLabel>
 
                         <h:outputLabel value="Tipo Proveedor del Servicio: " ></h:outputLabel>
-                        <p:selectOneMenu  id="tipoProveedorServSeguridad_edit"  value="#{servicios.idSeleccionAgua}" style="width:150px" >
-                            <f:selectItem  itemValue="" itemLabel="#{servicios.segSeguridadObjects.servicioSituacionAlbergue.albServicio.albEmpresa.albTipoEmpresa.tieNombre} " noSelectionOption="false"  />
-                            <f:selectItems value="#{servicios.listaAgua1}" /> 
-                        </p:selectOneMenu>
+                        <h:outputLabel  value="#{servicios.segSeguridadObjects.servicioSituacionAlbergue.albServicio.albEmpresa.albTipoEmpresa.tieNombre}"  ></h:outputLabel>
 
                         <h:outputLabel value="Método de provision: " ></h:outputLabel>
                         <p:inputText id="provicionSeguridad_edit" style="text-transform: uppercase; font-weight:bold; color: black " 
@@ -2225,19 +2168,11 @@
                 <h:form id="formEditarDeporte">
                     <p:growl id="msgsDeporte"  />
                     <h:panelGrid columns="2" cellpadding="3">
-
                         <h:outputLabel value="Empresa Proveedora : " ></h:outputLabel>
-                        <p:inputText id="txt_NombreEditarDeporte" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.segDeporteObjects.servicioSituacionAlbergue.albServicio.albEmpresa.empNombre}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     required="true" >
-                        </p:inputText>
+                        <h:outputLabel   value="#{servicios.segDeporteObjects.servicioSituacionAlbergue.albServicio.albEmpresa.empNombre}"   ></h:outputLabel>
 
                         <h:outputLabel value="Tipo Proveedor del Servicio: " ></h:outputLabel>
-                        <p:selectOneMenu  id="tipoProveedorServDeporte_edit"  value="#{servicios.idSeleccionAgua}" style="width:150px" >
-                            <f:selectItem  itemValue="" itemLabel="#{servicios.segDeporteObjects.servicioSituacionAlbergue.albServicio.albEmpresa.albTipoEmpresa.tieNombre} " noSelectionOption="false"  />
-                            <f:selectItems value="#{servicios.listaAgua1}" /> 
-                        </p:selectOneMenu>
+                        <h:outputLabel   value="#{servicios.segDeporteObjects.servicioSituacionAlbergue.albServicio.albEmpresa.albTipoEmpresa.tieNombre}"   ></h:outputLabel>
 
                         <h:outputLabel value="Método de provision: " ></h:outputLabel>
                         <p:inputText id="provicionDeporte_edit" style="text-transform: uppercase; font-weight:bold; color: black " 
@@ -2245,8 +2180,6 @@
                                      size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
                                      required="true" >
                         </p:inputText>
-
-
 
                         <f:facet name="footer">
                             <p:commandButton value="GUARDAR"  update="msgs,:formh, :formServicio" icon="fa fa-save"
@@ -2271,17 +2204,10 @@
                     <h:panelGrid columns="2" cellpadding="3">
 
                         <h:outputLabel value="Empresa Proveedora : " ></h:outputLabel>
-                        <p:inputText id="txt_NombreEditarNormas" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{servicios.segNormasObjects.servicioSituacionAlbergue.albServicio.albEmpresa.empNombre}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     required="true" >
-                        </p:inputText>
+                        <h:outputLabel   value="#{servicios.segNormasObjects.servicioSituacionAlbergue.albServicio.albEmpresa.empNombre}"    ></h:outputLabel>
 
                         <h:outputLabel value="Tipo Proveedor del Servicio: " ></h:outputLabel>
-                        <p:selectOneMenu  id="tipoProveedorServNormas_edit"  value="#{servicios.idSeleccionAgua}" style="width:150px" >
-                            <f:selectItem  itemValue="" itemLabel="#{servicios.segNormasObjects.servicioSituacionAlbergue.albServicio.albEmpresa.albTipoEmpresa.tieNombre} " noSelectionOption="false"  />
-                            <f:selectItems value="#{servicios.listaAgua1}" /> 
-                        </p:selectOneMenu>
+                        <h:outputLabel   value="#{servicios.segNormasObjects.servicioSituacionAlbergue.albServicio.albEmpresa.albTipoEmpresa.tieNombre}"    ></h:outputLabel>
 
                         <h:outputLabel value="Descripcion General Normas: " ></h:outputLabel>
                         <p:inputText id="provicionNormased_edit" style="text-transform: uppercase; font-weight:bold; color: black " 
@@ -2316,7 +2242,8 @@
                         <p:selectOneMenu  id="tipoVehi" value="#{servicios.idSeleccionTipoVehi}" style="width:150px">
                             <f:selectItem  itemValue="" itemLabel="#{servicios.segVehiObjects.albTipoVehiculo.tivNombre}" noSelectionOption="false" />
                             <f:selectItems value="#{servicios.listaTipoVehiculo}" />
-                        </p:selectOneMenu>                     
+                        </p:selectOneMenu> 
+
 
                         <h:outputLabel value="N° de vehículos: " />
                         <p:inputText id="numVehiEdi"  
@@ -2388,7 +2315,7 @@
                     </h:panelGrid>
                 </h:form>
             </p:dialog>
-            
+
         </h:body>
     </ui:define>
 </ui:composition>

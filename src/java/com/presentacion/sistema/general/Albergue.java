@@ -7,11 +7,13 @@ package com.presentacion.sistema.general;
 
 import com.negocio.servicio.albergue.AlbAlbergueServicio;
 import com.negocio.servicio.general.sistema.AlbCiudadesServicio;
+import com.negocio.servicio.general.sistema.AlbTipoAlbergueServicio;
 import com.persistencia.albergue.AlbAlbergue;
 import com.persistencia.general.sistema.AlbAvanceImplementacion;
 import com.persistencia.general.sistema.AlbCanton;
 import com.persistencia.general.sistema.AlbParroquia;
 import com.persistencia.general.sistema.AlbProvincia;
+import com.persistencia.general.sistema.AlbTipoAlbergue;
 import com.persistencia.parametros.sistema.ParametrosObjetos;
 import com.presentacion.mensajes.MensajeEAS;
 import java.io.Serializable;
@@ -59,7 +61,11 @@ public class Albergue implements Serializable {
     private Long IdSeleccionAvanceImp;
     List<SelectItem> genListaSelectedAvanceImplementacion = new ArrayList<SelectItem>();
     private List<AlbAvanceImplementacion> listaAvanceImplementacion = new ArrayList<>();
-
+    private Long IdSeleccionTipoAlb;
+    List<SelectItem> genListaSelectedTipoAlbergue= new ArrayList<SelectItem>();
+    private List<AlbTipoAlbergue> listaTipoAlbergue = new ArrayList<>();
+    @ManagedProperty(value = "#{AlbTipoAlbergueServicioImpl}")
+    AlbTipoAlbergueServicio albTipoAlbergueServicio;
     //EDITAR ALBERGUE
     private AlbAlbergue selectedAlbergueEditar = new AlbAlbergue();
     private AlbAlbergue segAlbergueObjects = new AlbAlbergue();
@@ -82,7 +88,8 @@ public class Albergue implements Serializable {
             this.listaParroquia.addAll(getAlbCiudadesServicio().listarParroquias());
             listaAvanceImplementacion.clear();
             this.listaAvanceImplementacion.addAll(getAlbCiudadesServicio().listarAvanceImplementacion());
-
+            listaTipoAlbergue.clear();
+            this.listaTipoAlbergue.addAll(getAlbTipoAlbergueServicio().listarTipoAlbergue());
         }
         listaAlbergue.clear();
         this.listaAlbergue.addAll(getAlbAlbergueServicio().listarAlbergue());
@@ -101,7 +108,7 @@ public class Albergue implements Serializable {
     }
 
     public void guardarAlbergue() {
-        if ("".equals(albAlbergue.getAlbNombre()) || "".equals(albAlbergue.getAlbDireccion()) || "".equals(albAlbergue.getAlbTipoAlbergue())
+        if ("".equals(albAlbergue.getAlbNombre()) || "".equals(albAlbergue.getAlbDireccion()) 
                 || "".equals(albAlbergue.getAlbArea()) || "".equals(albAlbergue.getAlbCoordx()) || "".equals(albAlbergue.getAlbCoordy()) || "".equals(albAlbergue.getAlbObservaciones())) {
             mensajeEAS.errorLlenarDatos();
         } else {
@@ -111,14 +118,17 @@ public class Albergue implements Serializable {
                 AlbCanton objCanton = new AlbCanton();
                 AlbParroquia objParroquia = new AlbParroquia();
                 AlbAvanceImplementacion objAvaImp = new AlbAvanceImplementacion();
+                AlbTipoAlbergue objTipA= new AlbTipoAlbergue();
                 obj.setProId(IdSeleccionCO);
                 objCanton.setCanId(IdSeleccionCanton);
                 objParroquia.setParId(IdSeleccionParroquia);
                 objAvaImp.setAvaId(IdSeleccionAvanceImp);
+                objTipA.setTiaId(IdSeleccionTipoAlb);
                 albAlbergue.setAlbProvincia(obj);
                 albAlbergue.setAlbCanton(objCanton);
                 albAlbergue.setAlbParroquia(objParroquia);
                 albAlbergue.setAlbAvanceImplementacion(objAvaImp);
+                albAlbergue.setAlbTipoAlbergue(objTipA);
                 albAlbergue.setAlbEstado(1);
                 listaTempAlbAlbergue.clear();
                 listaTempAlbAlbergue.add(albAlbergue);
@@ -170,6 +180,7 @@ public class Albergue implements Serializable {
         }
         return genListaSelectedParroquia;
     }
+    
 
     public List<SelectItem> getListaAvanceImplementacion() {
         this.genListaSelectedAvanceImplementacion = new ArrayList<SelectItem>();
@@ -180,6 +191,15 @@ public class Albergue implements Serializable {
         return genListaSelectedAvanceImplementacion;
     }
 
+    public List<SelectItem> getListaTipoAlbergue() {
+        this.genListaSelectedTipoAlbergue= new ArrayList<SelectItem>();
+        for (AlbTipoAlbergue obj : listaTipoAlbergue) {
+            SelectItem selectItem = new SelectItem(obj.getTiaId(), obj.getTiaNombre());
+            this.genListaSelectedTipoAlbergue.add(selectItem);
+        }
+        return genListaSelectedTipoAlbergue;
+    }
+    
     public void editarUsuarioSistema(AlbAlbergue objPUE) {
         try {
             segAlbergueObjects = new AlbAlbergue();
@@ -238,13 +258,14 @@ public class Albergue implements Serializable {
 
     }
 
-    public void actualizarUsuarioSistema() {
+    public void actualizarAlbergueSistema() {
         try {
             AlbProvincia objPro = new AlbProvincia();
             AlbAlbergue objAlb = new AlbAlbergue();
             AlbCanton objCanton = new AlbCanton();
             AlbParroquia objParroquia = new AlbParroquia();
             AlbAvanceImplementacion objAvaImp = new AlbAvanceImplementacion();
+            AlbTipoAlbergue objTipA= new AlbTipoAlbergue();
 
             if (IdSeleccionCO == null) {
                 objPro.setProId(segAlbergueObjects.getAlbProvincia().getProId());
@@ -266,13 +287,18 @@ public class Albergue implements Serializable {
             } else {
                 objAvaImp.setAvaId(IdSeleccionAvanceImp);
             }
+            if (IdSeleccionTipoAlb == null) {
+                objTipA.setTiaId(segAlbergueObjects.getAlbTipoAlbergue().getTiaId());
+            } else {
+                objTipA.setTiaId(IdSeleccionTipoAlb);
+            }
             objAlb.setAlbId(IdEditar);
             objAlb.setAlbNombre(segAlbergueObjects.getAlbNombre());
             objAlb.setAlbProvincia(objPro);
             objAlb.setAlbCanton(objCanton);
             objAlb.setAlbParroquia(objParroquia);
             objAlb.setAlbDireccion(segAlbergueObjects.getAlbDireccion());
-            objAlb.setAlbTipoAlbergue(segAlbergueObjects.getAlbTipoAlbergue());
+            objAlb.setAlbTipoAlbergue(objTipA);
             objAlb.setAlbArea(segAlbergueObjects.getAlbArea());
             objAlb.setAlbAvanceImplementacion(objAvaImp);
             objAlb.setAlbCoordx(segAlbergueObjects.getAlbCoordx());
@@ -280,7 +306,7 @@ public class Albergue implements Serializable {
             objAlb.setAlbObservaciones(segAlbergueObjects.getAlbObservaciones());
             objAlb.setAlbEstado(1);
 
-            if ("".equals(albAlbergue.getAlbNombre()) || "".equals(albAlbergue.getAlbDireccion()) || "".equals(albAlbergue.getAlbTipoAlbergue())
+            if ("".equals(albAlbergue.getAlbNombre()) || "".equals(albAlbergue.getAlbDireccion())
                     || "".equals(albAlbergue.getAlbArea()) || "".equals(albAlbergue.getAlbCoordx()) || "".equals(albAlbergue.getAlbCoordy()) || "".equals(albAlbergue.getAlbObservaciones())) {
                 mensajeEAS.errorLlenarDatos();
             } else {
@@ -389,6 +415,22 @@ public class Albergue implements Serializable {
     public void setSelectedSegUsuarioEliminar(AlbAlbergue selectedSegUsuarioEliminar) {
         this.selectedSegUsuarioEliminar = selectedSegUsuarioEliminar;
         eliminarUsuarioSistema(selectedSegUsuarioEliminar);
+    }
+
+    public Long getIdSeleccionTipoAlb() {
+        return IdSeleccionTipoAlb;
+    }
+
+    public void setIdSeleccionTipoAlb(Long IdSeleccionTipoAlb) {
+        this.IdSeleccionTipoAlb = IdSeleccionTipoAlb;
+    }
+
+    public AlbTipoAlbergueServicio getAlbTipoAlbergueServicio() {
+        return albTipoAlbergueServicio;
+    }
+
+    public void setAlbTipoAlbergueServicio(AlbTipoAlbergueServicio albTipoAlbergueServicio) {
+        this.albTipoAlbergueServicio = albTipoAlbergueServicio;
     }
 
     

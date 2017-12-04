@@ -7,6 +7,7 @@ package com.presentacion.sistema.general;
 
 import com.negocio.servicio.albergue.AlbAlbergueServicio;
 import com.negocio.servicio.damnificado.AlbDamnificadoServicio;
+import com.negocio.servicio.general.sistema.AlbCiudadesServicio;
 import com.negocio.servicio.general.sistema.AlbDiscapacidadServicio;
 import com.negocio.servicio.general.sistema.AlbEstadoCivilServicio;
 import com.negocio.servicio.general.sistema.AlbFamiliaServicio;
@@ -70,6 +71,17 @@ public class Damnificado implements Serializable {
     AlbAlbergueServicio albAlbergueServicio;
     private List<AlbDamnificado> listaTempAlbDamnificado = new ArrayList<>();
     private List<AlbAlbergue> listaTempDamnificadoAlbergue = new ArrayList<>();
+    @ManagedProperty(value = "#{AlbCiudadesServicioImpl}")
+    AlbCiudadesServicio albCiudadesServicio;
+    List<SelectItem> genListaSelected = new ArrayList<SelectItem>();
+    private Long IdSeleccionCanton;
+    List<SelectItem> genListaSelectedCanton = new ArrayList<SelectItem>();
+    private List<AlbCanton> listaCanton = new ArrayList<>();
+    private Long IdSeleccionParroquia;
+    List<SelectItem> genListaSelectedParroquia = new ArrayList<SelectItem>();
+    private List<AlbParroquia> listaParroquia = new ArrayList<>();
+    private Long IdSeleccionCO;
+    private List<AlbProvincia> listaProvincia1 = new ArrayList<>();
 
     //VER DAMNIFICADO
     private AlbDamnificado dammificadoObjects = new AlbDamnificado();
@@ -127,6 +139,12 @@ public class Damnificado implements Serializable {
             this.listaNumFlia.addAll(getAlbFamiliaServicio().listarFamilia());
             listaAlbergue.clear();
             this.listaAlbergue.addAll(getAlbAlbergueServicio().listarAlbergue());
+             listaProvincia1.clear();
+            this.listaProvincia1.addAll(getAlbCiudadesServicio().listarProvincias());
+            listaCanton.clear();
+            this.listaCanton.addAll(getAlbCiudadesServicio().listarCantones());
+            listaParroquia.clear();
+            this.listaParroquia.addAll(getAlbCiudadesServicio().listarParroquias());
         }
         this.listaDamnificado.clear();
         this.listaDamnificado.addAll(getAlbDamnificadoServicio().listarDamnificado());
@@ -138,14 +156,14 @@ public class Damnificado implements Serializable {
         this.listaDamnificado.addAll(getAlbDamnificadoServicio().listarDamnificado());
 
     }
-    
+
     public void click() {
         RequestContext requestContext = RequestContext.getCurrentInstance();
-         
+
         requestContext.update("form:display");
         requestContext.execute("PF('dlg').show()");
     }
-    
+
     public void editarDamnificadoSistema(AlbDamnificado objPUE) {
         try {
             segDamnificadoObjects = new AlbDamnificado();
@@ -281,18 +299,18 @@ public class Damnificado implements Serializable {
 
     public void guardarDamnificado() {
         if ("".equals(albDamnificado.getDamNombres()) || "".equals(albDamnificado.getDamApellidos()) || "".equals(albDamnificado.getDamCedula())
-                 || "".equals(albDamnificado.getDamLugarNacimiento()) || "".equals(albDamnificado.getDamFechaNacimiento())
+                || "".equals(albDamnificado.getDamLugarNacimiento()) || "".equals(albDamnificado.getDamFechaNacimiento())
                 || "".equals(albDamnificado.getDamDireccionDomicilio()) || "".equals(albDamnificado.getDamDatosPadre()) || "".equals(albDamnificado.getDamDatosMadre()) || "".equals(albDamnificado.getDamCelular()) || "".equals(albDamnificado.getDamEmail()) || "".equals(albDamnificado.getDamEmbarazo()) || "".equals(albDamnificado.getDamObservaciones())) {
             mensajeEAS.errorLlenarDatos();
         } else {
 
             try {
-                
+
                 albDamnificado.getDamSexo();
                 AlbEstadoCivil objEstCivil = new AlbEstadoCivil();
                 AlbInstruccion objInstruccion = new AlbInstruccion();
                 AlbProfesion objProfesion = new AlbProfesion();
-                AlbDiscapacidad objDiscapacidad = new AlbDiscapacidad();;
+                AlbDiscapacidad objDiscapacidad = new AlbDiscapacidad();
                 AlbFamilia objFamilia = new AlbFamilia();
                 objEstCivil.setEciId(IdSeleccionEstadoCivil);
                 objInstruccion.setInsId(IdSeleccionNivInstrucc);
@@ -304,6 +322,7 @@ public class Damnificado implements Serializable {
                 albDamnificado.setAlbProfesion(objProfesion);
                 albDamnificado.setAlbDiscapacidad(objDiscapacidad);
                 albDamnificado.setAlbFamilia(objFamilia);
+                albDamnificado.setDamFechaNacimiento(albDamnificado.getDamFechaNacimiento());
                 albDamnificado.setDamEstado(1);
                 listaTempAlbDamnificado.clear();
                 listaTempAlbDamnificado.add(albDamnificado);
@@ -439,7 +458,7 @@ public class Damnificado implements Serializable {
                         albAlbergue.setAlbCoordx(obj.getAlbCoordx());
                         albAlbergue.setAlbCoordy(obj.getAlbCoordy());
                         albAlbergue.setAlbObservaciones(obj.getAlbObservaciones());
-                        
+
                     }
                 }
             }
@@ -587,8 +606,8 @@ public class Damnificado implements Serializable {
         }
         return listaEditarDiscapacida;
     }
-    
-      public List<SelectItem> getListaEditarNumFlia() {
+
+    public List<SelectItem> getListaEditarNumFlia() {
         this.listaEditarNumFlia = new ArrayList<SelectItem>();
         for (AlbFamilia obj : listaNumFlia) {
             SelectItem selectItem = new SelectItem(obj.getFamId(), String.valueOf(obj.getFamNumIntegrantes()));
@@ -616,8 +635,6 @@ public class Damnificado implements Serializable {
     public void setIdSeleccionNumFlia(Long IdSeleccionNumFlia) {
         this.IdSeleccionNumFlia = IdSeleccionNumFlia;
     }
-
-  
 
     public void setListaEditarNumFlia(List<SelectItem> listaEditarNumFlia) {
         this.listaEditarNumFlia = listaEditarNumFlia;
@@ -683,34 +700,6 @@ public class Damnificado implements Serializable {
         this.albAlbergueServicio = albAlbergueServicio;
     }
 
-    public List<SelectItem> getListaAsignarAlbergue() {
-        this.listaAsignarAlbergue = new ArrayList<SelectItem>();
-        for (AlbAlbergue obj : listaAlbergue) {
-            SelectItem selectItem = new SelectItem(obj.getAlbId(), obj.getAlbNombre());
-            this.listaAsignarAlbergue.add(selectItem);
-        }
-        return listaAsignarAlbergue;
-    }
-
-//    public void getListaCanton() {
-//        AlbAlbergue obj1 = new AlbAlbergue();
-//        if (IdSeleccionAlbergue != null) {
-//            for (AlbAlbergue obj : listaAlbergue) {
-//                if (IdSeleccionAlbergue == obj.getAlbId()) {
-//                    obj.getAlbId();
-//                    obj.getAlbNombre();
-//                    obj.getAlbDireccion();
-//                    albDamnificado1.addAlbergue(obj);                   
-//                }
-//            }
-//
-//        }
-//
-//    }
-    public void setListaAsignarAlbergue(List<SelectItem> listaAsignarAlbergue) {
-        this.listaAsignarAlbergue = listaAsignarAlbergue;
-    }
-
     public Long getIdSeleccionAlbergue() {
         return IdSeleccionAlbergue;
     }
@@ -743,8 +732,86 @@ public class Damnificado implements Serializable {
     public void setDate1(Date date1) {
         this.date1 = date1;
     }
-    
-    
-   
+
+    public List<SelectItem> getListaProvincia1() {
+        this.genListaSelected = new ArrayList<SelectItem>();
+        for (AlbProvincia obj : listaProvincia1) {
+            SelectItem selectItem = new SelectItem(obj.getProId(), obj.getProNombre());
+            this.genListaSelected.add(selectItem);
+        }
+        return genListaSelected;
 
     }
+
+    public List<SelectItem> getListaCanton() {
+        this.genListaSelectedCanton = new ArrayList<SelectItem>();
+        if (IdSeleccionCO != null) {
+            List<AlbCanton> lista = getAlbCiudadesServicio().listarCantonCmbx(IdSeleccionCO);
+            for (AlbCanton obj : lista) {
+                SelectItem selectItem = new SelectItem(obj.getCanId(), obj.getCanNombre());
+                this.genListaSelectedCanton.add(selectItem);
+            }
+        }
+        return genListaSelectedCanton;
+    }
+
+    public List<SelectItem> getListaParroquia() {
+        this.genListaSelectedParroquia = new ArrayList<SelectItem>();
+        if (IdSeleccionCanton != null) {
+            List<AlbParroquia> Lista = getAlbCiudadesServicio().ListParroquiaCmbx(IdSeleccionCanton);
+            for (AlbParroquia obj : Lista) {
+                SelectItem selectItem = new SelectItem(obj.getParId(), obj.getParNombre());
+                this.genListaSelectedParroquia.add(selectItem);
+            }
+        }
+        return genListaSelectedParroquia;
+    }
+
+    public List<SelectItem> getListaAsignarAlbergue() {
+        this.listaAsignarAlbergue = new ArrayList<SelectItem>();
+        if (IdSeleccionParroquia != null) {
+            for (AlbAlbergue obj : listaAlbergue) {
+                Long aux=obj.getAlbParroquia().getParId();
+                if(aux.equals(IdSeleccionParroquia))
+                {
+                SelectItem selectItem = new SelectItem(obj.getAlbId(), obj.getAlbNombre());
+                this.listaAsignarAlbergue.add(selectItem);
+                }
+            }
+        }
+        return listaAsignarAlbergue;
+    }
+
+    public AlbCiudadesServicio getAlbCiudadesServicio() {
+        return albCiudadesServicio;
+    }
+
+    public void setAlbCiudadesServicio(AlbCiudadesServicio albCiudadesServicio) {
+        this.albCiudadesServicio = albCiudadesServicio;
+    }
+
+    public Long getIdSeleccionCanton() {
+        return IdSeleccionCanton;
+    }
+
+    public void setIdSeleccionCanton(Long IdSeleccionCanton) {
+        this.IdSeleccionCanton = IdSeleccionCanton;
+    }
+
+    public Long getIdSeleccionParroquia() {
+        return IdSeleccionParroquia;
+    }
+
+    public void setIdSeleccionParroquia(Long IdSeleccionParroquia) {
+        this.IdSeleccionParroquia = IdSeleccionParroquia;
+    }
+
+    public Long getIdSeleccionCO() {
+        return IdSeleccionCO;
+    }
+
+    public void setIdSeleccionCO(Long IdSeleccionCO) {
+        this.IdSeleccionCO = IdSeleccionCO;
+    }
+
+}

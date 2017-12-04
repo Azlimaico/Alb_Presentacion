@@ -67,7 +67,7 @@
 
                             <p:column    headerText="TIPO DE ALBERGUE"  width="60"
                                          filterMatchMode="contains">
-                                <h:outputText value="#{object.albTipoAlbergue}" />
+                                <h:outputText value="#{object.albTipoAlbergue.tiaNombre}" />
                             </p:column>
 
                             <p:column    headerText="ÁREA"  width="30"
@@ -110,67 +110,65 @@
                 <p:dialog header="NUEVO ALBERGUE" widgetVar="pNuevoJ" id="dlgNuevoJ" 
                           closable="false">
                     <h:panelGrid columns="2" cellpadding="2">
-                        <h:outputLabel value="Nombre: " />
-                        <p:inputText id="nombre" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{albergue.albAlbergue.albNombre}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />  
-                        <p:outputLabel value="Provincia:" />
+                        <h:outputLabel value="Nombre: *" />
+                        <p:inputTextarea id="nombre" rows="2" cols="55" maxlength="100"  value="#{albergue.albAlbergue.albNombre}" 
+                                         style="text-transform: uppercase; font-weight:bold; color: black"/>
+
+                        <p:outputLabel value="Provincia: *" />
                         <p:selectOneMenu  id="provincia" value="#{albergue.idSeleccionCO}" style="width:150px">
                             <p:ajax update="canton" />  
                             <f:selectItem  itemValue="" itemLabel="Seleccione Provincia: " noSelectionOption="false" />
                             <f:selectItems value="#{albergue.listaProvincia1}" />
                         </p:selectOneMenu>
 
-                        <p:outputLabel value="Cantón:" />
+                        <p:outputLabel value="Cantón: *" />
                         <p:selectOneMenu  id="canton" value="#{albergue.idSeleccionCanton}"  style="width:150px">
                             <p:ajax update="parroquia"  /> 
                             <f:selectItem  itemValue="" itemLabel="Seleccione Cantón: " noSelectionOption="false" />
                             <f:selectItems value="#{albergue.listaCanton}" />                            
                         </p:selectOneMenu>
 
-                        <h:outputLabel value="Parroquia:" />
+                        <h:outputLabel value="Parroquia: *" />
                         <p:selectOneMenu  id="parroquia" value="#{albergue.idSeleccionParroquia}" style="width:150px">
                             <f:selectItem  itemValue="" itemLabel="Seleccione Parroquia: " noSelectionOption="false" />
                             <f:selectItems value="#{albergue.listaParroquia}" />                            
                         </p:selectOneMenu>
 
-                        <p:outputLabel value="Dirección:" />
-                        <p:inputText id="direccion" value="#{albergue.albAlbergue.albDireccion}" 
-                                     style="text-transform: uppercase; font-weight:bold; color: black" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
-                        <p:outputLabel value="Tipo de albergue:" />
-                        <p:inputText id="tipoAlb" value="#{albergue.albAlbergue.albTipoAlbergue}" 
-                                     style="text-transform: uppercase; font-weight:bold; color: black" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
-                        <p:outputLabel value="Área:" />
+                        <p:outputLabel value="Dirección: *" />
+                        <p:inputTextarea id="direccion" rows="3" cols="55" maxlength="100"  value="#{albergue.albAlbergue.albDireccion}" 
+                                         style="text-transform: uppercase; font-weight:bold; color: black"/>
+                        
+                        <p:outputLabel value="Tipo de albergue: *" />
+                        <p:selectOneMenu  id="tipoAlbs" value="#{albergue.idSeleccionTipoAlb}" style="width:150px">
+                            <f:selectItem  itemValue="" itemLabel="Seleccione Tipo Albergue:" noSelectionOption="false" />
+                            <f:selectItems value="#{albergue.listaTipoAlbergue}" />
+                        </p:selectOneMenu>
+                        <p:outputLabel value="Área: *" />
                         <p:inputText id="area" value="#{albergue.albAlbergue.albArea}" 
                                      style="text-transform: uppercase; font-weight:bold; color: black" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
+                                     size="11" maxlength="5"
                                      />
-                        <p:outputLabel value="Avance Implementación:" />
+                        <p:outputLabel value="Avance Implementación: *" />
                         <p:selectOneMenu  id="avanImpl" value="#{albergue.idSeleccionAvanceImp}" style="width:150px">
                             <f:selectItem  itemValue="" itemLabel="Seleccione Avance Implementación: " noSelectionOption="false" />
                             <f:selectItems value="#{albergue.listaAvanceImplementacion}" />
                         </p:selectOneMenu>
 
-                        <p:outputLabel value="Coordenada X:" />
+                        <p:outputLabel value="Coordenada X: *" />
                         <p:inputText id="coordX" value="#{albergue.albAlbergue.albCoordx}" 
                                      style="text-transform: uppercase; font-weight:bold; color: black" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
+                                     size="11" maxlength="11"
                                      />
-                        <p:outputLabel value="Coordenada Y:" />
+                        <p:outputLabel value="Coordenada Y: *" />
                         <p:inputText id="coodrY" value="#{albergue.albAlbergue.albCoordy}" 
                                      style="text-transform: uppercase; font-weight:bold; color: black" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
+                                     size="11" maxlength="11"
                                      />
-                        <p:outputLabel value="Observaciones:" />
-                        <p:inputText id="observaciones" value="#{albergue.albAlbergue.albObservaciones}" 
-                                     style="text-transform: uppercase; font-weight:bold; color: black" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />  
+                        <p:outputLabel value="Observaciones: *" />
+                        <p:inputTextarea id="observaciones" rows="3" cols="55" maxlength="100" 
+                                         value="#{albergue.albAlbergue.albObservaciones}"
+                                         style="text-transform: uppercase; font-weight:bold; color: black"/>
+                        
 
 
                         <h:panelGrid columns="2" cellpadding="1">
@@ -198,50 +196,50 @@
                     <h:panelGrid columns="2" cellpadding="3">
 
                         <h:outputLabel value="Nombre : *" ></h:outputLabel>
-                        <p:inputText id="txt_NombreEditar"  value="#{albergue.segAlbergueObjects.albNombre}" 
-                                     required="true" >
-                        </p:inputText> 
+                        <p:inputTextarea rows="2" cols="55" maxlength="100"  value="#{albergue.segAlbergueObjects.albNombre}" 
+                                         style="text-transform: uppercase; font-weight:bold; color: black"/>
 
                         <h:outputLabel value="Provincia : *" ></h:outputLabel>
-                        <p:selectOneMenu  id="txtProv_edit"  value="#{albergue.idSeleccionCO}" style="width:150px" >
-                            <f:selectItem  itemValue="" itemLabel="Seleccione Provincia " noSelectionOption="false"  />
+                        <p:selectOneMenu  id="txtProv_edit"  value="#{albergue.idSeleccionCO}" >
+                            <f:selectItem  itemValue="" itemLabel="#{albergue.segAlbergueObjects.albProvincia.proNombre}" noSelectionOption="false"  />
                             <p:ajax update="txtCan_edit" />  
                             <f:selectItems value="#{albergue.listaProvincia1}" /> 
                         </p:selectOneMenu>
-                        
+
                         <h:outputLabel value="Cantón : *" ></h:outputLabel>
                         <p:selectOneMenu  id="txtCan_edit"  value="#{albergue.idSeleccionCanton}" style="width:150px" >
                             <p:ajax update="txtParr_edit"  />
-                            <f:selectItem  itemValue="" itemLabel="Seleccione Canton" noSelectionOption="false"  />
+                            <f:selectItem  itemValue="" itemLabel="#{albergue.segAlbergueObjects.albCanton.canNombre}" noSelectionOption="false"  />
                             <f:selectItems value="#{albergue.listaCanton}" /> 
                         </p:selectOneMenu>
 
                         <h:outputLabel value="Parroquia: *" ></h:outputLabel>
                         <p:selectOneMenu  id="txtParr_edit"  value="#{albergue.idSeleccionParroquia}" style="width:150px" >
-                            <f:selectItem  itemValue="" itemLabel="Seleccione Parroquia " noSelectionOption="false"  />
+                            <f:selectItem  itemValue="" itemLabel="#{albergue.segAlbergueObjects.albParroquia.parNombre}" noSelectionOption="false"  />
                             <f:selectItems value="#{albergue.listaParroquia}" /> 
                         </p:selectOneMenu>
 
                         <h:outputLabel value="Dirección : *" ></h:outputLabel>
-                        <p:inputText id="txt_direcc_Edit"  value="#{albergue.segAlbergueObjects.albDireccion}" 
-                                     required="true" >
-                        </p:inputText> 
+                        <p:inputTextarea rows="3" cols="55" maxlength="100" value="#{albergue.segAlbergueObjects.albDireccion}" 
+                                         style="text-transform: uppercase; font-weight:bold; color: black"/>
 
-                        <h:outputLabel value="Tipo de Albergue : *" ></h:outputLabel>
-                        <p:inputText id="txt_tipoAlb_Edit"  value="#{albergue.segAlbergueObjects.albTipoAlbergue}" 
-                                     required="true" >
-                        </p:inputText>
 
-                        <h:outputLabel value="Área : *" ></h:outputLabel>
-                        <p:inputText id="txt_area_Edit"  value="#{albergue.segAlbergueObjects.albArea}" 
-                                     required="true" >
-                        </p:inputText>
+                        <h:outputLabel value="Tipo Albergue: *" ></h:outputLabel>
+                        <p:selectOneMenu  id="txtTipoAlb_edit"  value="#{albergue.idSeleccionTipoAlb}" style="width:150px" >
+                            <f:selectItem  itemValue="" itemLabel="#{albergue.segAlbergueObjects.albTipoAlbergue.tiaNombre} " noSelectionOption="false"  />
+                            <f:selectItems value="#{albergue.listaTipoAlbergue}" /> 
+                        </p:selectOneMenu>
 
                         <h:outputLabel value="Avance Implementación: *" ></h:outputLabel>
                         <p:selectOneMenu  id="txtAvImp_edit"  value="#{albergue.idSeleccionAvanceImp}" style="width:150px" >
                             <f:selectItem  itemValue="" itemLabel="#{albergue.segAlbergueObjects.albAvanceImplementacion.avaNombre} " noSelectionOption="false"  />
                             <f:selectItems value="#{albergue.listaAvanceImplementacion}" /> 
                         </p:selectOneMenu>
+                        
+                        <h:outputLabel value="Área : *" ></h:outputLabel>
+                        <p:inputText id="txt_area_Edit"  value="#{albergue.segAlbergueObjects.albArea}" 
+                                     required="true" >
+                        </p:inputText>
 
                         <h:outputLabel value="Coord. X : *" ></h:outputLabel>
                         <p:inputText id="txt_coorX_Edit"  value="#{albergue.segAlbergueObjects.albCoordx}" 
@@ -254,12 +252,13 @@
                         </p:inputText>
 
                         <h:outputLabel value="Observaciones : *" ></h:outputLabel>
-                        <p:inputText id="txt_observa_Edit"  value="#{albergue.segAlbergueObjects.albObservaciones}" 
-                                     required="true" >
-                        </p:inputText>              
+                        <p:inputTextarea rows="3" cols="55" maxlength="100" value="#{albergue.segAlbergueObjects.albObservaciones}" 
+                                         style="text-transform: uppercase; font-weight:bold; color: black" 
+                                         />
+
                         <f:facet name="footer">
                             <p:commandButton value="GUARDAR"  update="msgs,:formh:" icon="fa fa-save"
-                                             action="#{albergue.actualizarUsuarioSistema}" onclick="PF('dlgEditar').hide()"  >
+                                             action="#{albergue.actualizarAlbergueSistema}" onclick="PF('dlgEditar').hide()"  >
                                 <p:confirm header="Confirmación" message="Está seguro de actualizar?" />
                             </p:commandButton>
                             <p:commandButton value="SALIR" type="reset" icon="fa fa-close"

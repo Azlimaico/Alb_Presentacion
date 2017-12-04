@@ -21,7 +21,7 @@ and open the template in the editor.
                 <h:form id="cerrar" style="background-color: #374f64" >
                     <h:panelGrid  columns="6" cellpadding="2">
                         <h:outputLabel value="BIENVENIDO:    " style="font-weight:bold;color: #ffffff"  />
-                        <h:outputLabel value="" style="font-weight:100;color: #ffffff"/>
+                        <h:outputLabel value="#{accesoSistema.usuario.padUsuario}" style="font-weight:100;color: #ffffff"/>
                         <div align="center"> 
                             <h:outputLabel value="CENTRO DE INVESTIGACI&#211;N MODELAMIENTO, SIMULACI&#211;N Y ENTRENAMIENTO" style="font-weight:bold;color: #ffffff;top: 20px; 
                                            left:120px;width: 300px;"  />
@@ -76,7 +76,7 @@ and open the template in the editor.
 
             <p:layoutUnit position="center">
                 <ui:insert name="content"></ui:insert>
-
+            
             </p:layoutUnit>
         </p:layout>
     </body>

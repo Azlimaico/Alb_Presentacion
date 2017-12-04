@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='iso-8859-1' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/LayoutLogin.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+    <ui:define name="content">
+
+        <h:head>
+            <title>INICIO</title>
+            <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+            <link href="estilos/jsfcrud.css" type="text/css" rel="stylesheet" />
+            <script type="text/javascript" src="estilos/validaciones.js"></script>
+            <link href="estilos/estilo.css" type="text/css" rel="stylesheet" />
+        </h:head>
+        <h:body>
+            <p:growl id="growl" sticky="true" showDetail="true" life="3000" />
+            <h:form>  
+                <div style="background-color: #ffffff; height: 200px; text-align: center">
+                    <h:graphicImage url="imagenes/ImagenLogo/logo-sistema.png" 
+                                    height="100" width="900" 
+                                    style="background-color: #34495e">
+                    </h:graphicImage>
+                </div>
+                <div style="background-color: #34495e; height: 500px;">
+                    <p:panelGrid columns="2"  id="dlg" style="position: absolute; top: 250px; left: 500px;">
+                        <f:facet name="header">CIMSE</f:facet>
+                        <h:outputLabel for="username" value="Usuario:" />
+                        <p:inputText id="username" value="#{accesoSistema.usuario.padUsuario}" 
+                                     required="true" label="usuario" />
+
+                        <h:outputLabel for="password" value="Contraseña:" />
+                        <p:password id="password" value="#{accesoSistema.usuario.padContrasenia}"
+                                    required="true" label="Contraseña" />
+
+                        <f:facet name="footer">
+                            <p:commandButton value="Acceder" update="growl" icon="ui-icon-home"
+                                             action="#{accesoSistema.accederSistema}"
+                                             />
+                        </f:facet>  
+                    </p:panelGrid>
+                </div>
+
+                
+                                    </h:form>
+
+                                    <script type="text/javascript">
+                                        function handleLoginRequest(xhr, status, args) {
+                                            if (args.validationFailed || !args.loggedIn) {
+                                                PF('dlg').jq.effect("shake", {times: 5}, 100);
+                                            } else {
+                                                PF('dlg').hide();
+                                                $('#loginLink').fadeOut();
+                                            }
+                                        }
+                                    </script>
+                                    </h:body>
+                                    </ui:define>
+                                    </ui:composition>
+

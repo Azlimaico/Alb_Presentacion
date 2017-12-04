@@ -53,27 +53,22 @@ and open the template in the editor.
                                 <h:outputText value="#{object.damApellidos}" />
                             </p:column>
 
-                            <p:column   filterBy="#{object.damCedula}" headerText="CÉDULA"  width="100"
+                            <p:column   filterBy="#{object.damCedula}" headerText="CÉDULA "  width="78"
                                         filterMatchMode="contains">
                                 <h:outputText value="#{object.damCedula}" />
                             </p:column>
 
-                            <p:column   filterBy="#{object.albDiscapacidad.disTipo}" headerText="NIVEL DE DISCAPACIDAD"  width="110"
+                            <p:column   filterBy="#{object.albDiscapacidad.disTipo}" headerText="DISCAPACIDAD"  width="110"
                                         filterMatchMode="contains">
                                 <h:outputText value="#{object.albDiscapacidad.disTipo}" />
                             </p:column>
 
-                            <p:column    headerText="ESTADO CIVIL"  width="90"
-                                         filterMatchMode="contains">
+                            <p:column  filterBy="#{object.albEstadoCivil.eciTipo}"  headerText="ESTADO CIVIL"  width="90"
+                                       filterMatchMode="contains">
                                 <h:outputText value="#{object.albEstadoCivil.eciTipo}" />
                             </p:column>
 
-                            <p:column   headerText="DOMICILIO"  width="100"
-                                        filterMatchMode="contains">
-                                <h:outputText value="#{object.damDireccionDomicilio}" />
-                            </p:column>             
-
-                            <p:column  headerText="CELULAR"  width="100"
+                            <p:column  headerText="CELULAR"  width="60"
                                        filterMatchMode="contains">
                                 <h:outputText value="#{object.damCelular}" />
                             </p:column>
@@ -123,21 +118,34 @@ and open the template in the editor.
                           minHeight="40" closable="false" draggable="false" id="editarDamnificad" >           
                     <p:growl id="msgsUsuario"  />
 
-                    <h:panelGrid columns="2" cellpadding="3" >
+                    <h:panelGrid columns="4" cellpadding="3" >
 
                         <h:outputLabel value="Nombres : *" ></h:outputLabel>
-                        <p:inputText id="txt_NombreEditar"  value="#{damnificado.segDamnificadoObjects.damNombres}" 
-                                     required="true" >
-                        </p:inputText>
+                        <p:inputTextarea id="txt_NombreEditar" rows="2" cols="55" maxlength="100"  
+                                         value="#{damnificado.segDamnificadoObjects.damNombres}" required="true" 
+                                         style="text-transform: uppercase; font-weight:bold; color: black"/>
 
                         <h:outputLabel value="Apellidos : *" ></h:outputLabel>
-                        <p:inputText id="txt_ApellidosEditar"  value="#{damnificado.segDamnificadoObjects.damApellidos}" 
-                                     required="true" >
-                        </p:inputText>
+                        <p:inputTextarea id="txt_ApellidosEditar"  rows="2" cols="55" maxlength="100"  
+                                         value="#{damnificado.segDamnificadoObjects.damApellidos}"  required="true" 
+                                         style="text-transform: uppercase; font-weight:bold; color: black"/>
+
+                        <h:outputLabel value="Datos Materno: *" ></h:outputLabel>
+                        <p:inputTextarea id="txt_datosMat_Edit"  rows="2" cols="55" maxlength="100"  
+                                         value="#{damnificado.segDamnificadoObjects.damDatosMadre}" 
+                                         required="true" 
+                                         style="text-transform: uppercase; font-weight:bold; color: black"/>
+
+                        <h:outputLabel value="Datos Paterno: *" ></h:outputLabel>
+                        <p:inputTextarea id="txt_datosPat_Edit"  rows="2" cols="55" maxlength="100"  
+                                         value="#{damnificado.segDamnificadoObjects.damDatosPadre}" 
+                                         required="true" 
+                                         style="text-transform: uppercase; font-weight:bold; color: black"/>
 
                         <h:outputLabel value="Cédula : *" ></h:outputLabel>
                         <p:inputText id="txt_CedulaEditar"  value="#{damnificado.segDamnificadoObjects.damCedula}" 
-                                     required="true" >
+                                     required="true" 
+                                     size="10" maxlength="10">
                         </p:inputText>
 
                         <h:outputLabel value="Estado Civil: *" ></h:outputLabel>
@@ -146,16 +154,24 @@ and open the template in the editor.
                             <f:selectItems value="#{damnificado.listaEditarEstadoCivil}" /> 
                         </p:selectOneMenu>
 
-                        <p:outputLabel for="consoleEditar" value="Sexo:" />
+                        <p:outputLabel for="consoleEditar" value="Sexo: *" />
                         <p:selectOneRadio id="consoleEditar" value="#{damnificado.segDamnificadoObjects.damSexo}">
                             <f:selectItem itemLabel="M" itemValue="1" />
                             <f:selectItem itemLabel="F" itemValue="0" />
                         </p:selectOneRadio>
 
+                        <h:outputLabel value="Fecha de Nacimiento: *" ></h:outputLabel>
+                        <p:calendar value="#{damnificado.segDamnificadoObjects.damFechaNacimiento}" pattern="MM/dd/yyyy"/>
+                        
+                        <h:outputLabel value="Lugar de Nacimiento: *" ></h:outputLabel>
+                        <p:inputTextarea id="txt_naci_Edit"  rows="3" cols="55" maxlength="100"  
+                                         value="#{damnificado.segDamnificadoObjects.damLugarNacimiento}"  required="true" 
+                                         style="text-transform: uppercase; font-weight:bold; color: black"/>
+
                         <h:outputLabel value="Dirección domicilio: *" ></h:outputLabel>
-                        <p:inputText id="txt_domicilio_Edit"  value="#{damnificado.segDamnificadoObjects.damDireccionDomicilio}" 
-                                     required="true" >
-                        </p:inputText>
+                        <p:inputTextarea id="txt_domicilio_Edit"  rows="3" cols="55" maxlength="100"  
+                                         value="#{damnificado.segDamnificadoObjects.damDireccionDomicilio}"  required="true" 
+                                         style="text-transform: uppercase; font-weight:bold; color: black"/>
 
                         <h:outputLabel value="Nivel de Instrucción: *" ></h:outputLabel>
                         <p:selectOneMenu  id="txtinstruccion_edit"  value="#{damnificado.idSeleccionNivInstrucc}" style="width:150px" >
@@ -169,24 +185,15 @@ and open the template in the editor.
                             <f:selectItems value="#{damnificado.listaEditarProfesion}" /> 
                         </p:selectOneMenu>
 
-                        <h:outputLabel value="Datos Materno: *" ></h:outputLabel>
-                        <p:inputText id="txt_datosMat_Edit"  value="#{damnificado.segDamnificadoObjects.damDatosMadre}" 
-                                     required="true" >
-                        </p:inputText> 
-
-                        <h:outputLabel value="Datos Paterno: *" ></h:outputLabel>
-                        <p:inputText id="txt_datosPat_Edit"  value="#{damnificado.segDamnificadoObjects.damDatosPadre}" 
-                                     required="true" >
-                        </p:inputText>
-
-                        <h:outputLabel value="Cédula: *" ></h:outputLabel>
-                        <p:inputText id="txt_cedula_Edit"  value="#{damnificado.segDamnificadoObjects.damCedula}" 
-                                     required="true" >
+                        <h:outputLabel value="Celular: *" ></h:outputLabel>
+                        <p:inputText id="txt_celular_Edit"  value="#{damnificado.segDamnificadoObjects.damCelular}" 
+                                     required="true" 
+                                     size="11" maxlength="10">
                         </p:inputText> 
 
                         <h:outputLabel value="E-mail: *" ></h:outputLabel>
                         <p:inputText id="txt_mail_Edit"  value="#{damnificado.segDamnificadoObjects.damEmail}" 
-                                     required="true" >
+                                     required="true" size="30" maxlength="30">
                         </p:inputText>
 
                         <h:outputLabel value="Nivel Discapacidad: *" ></h:outputLabel>
@@ -195,7 +202,7 @@ and open the template in the editor.
                             <f:selectItems value="#{damnificado.listaEditarDiscapacida}" /> 
                         </p:selectOneMenu>
 
-                        <p:outputLabel for="embarazoEditar" value="Embarazo:" />
+                        <p:outputLabel for="embarazoEditar" value="Embarazo: *" />
                         <p:selectOneRadio id="embarazoEditar" value="#{damnificado.segDamnificadoObjects.damEmbarazo}">
                             <f:selectItem itemLabel="SI  " itemValue="1" />
                             <f:selectItem itemLabel="  NO  " itemValue="0" />
@@ -208,9 +215,9 @@ and open the template in the editor.
                         </p:selectOneMenu>
 
                         <h:outputLabel value="Observaciones : *" ></h:outputLabel>
-                        <p:inputText id="txt_observa_Edit"  value="#{damnificado.segDamnificadoObjects.damObservaciones}" 
-                                     required="true" >
-                        </p:inputText>             
+                        <p:inputTextarea id="txt_observa_Edit"  rows="3" cols="55" maxlength="100"  
+                                         value="#{damnificado.segDamnificadoObjects.damObservaciones}"  required="true" 
+                                         style="text-transform: uppercase; font-weight:bold; color: black"/>
 
                         <f:facet name="footer">
                             <p:commandButton id="editar" value="GUARDAR" update="msgs,:formh:" icon="fa fa-save"
@@ -234,104 +241,104 @@ and open the template in the editor.
             <h:form id="jC" > 
                 <p:dialog header="NUEVO DAMNIFICADO" widgetVar="pNuevoDamnificado" id="dlgNuevoJ" 
                           closable="false">
-                    <h:panelGrid columns="2" cellpadding="2">
-                        <h:outputLabel value="Nombres: " />
-                        <p:inputText id="nombre" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{damnificado.albDamnificado.damNombres}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />  
-                        <p:outputLabel value="Apellidos:" />
-                        <p:inputText id="apellidos" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{damnificado.albDamnificado.damApellidos}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     /> 
+                    <h:panelGrid columns="4" cellpadding="3">
+                        <h:outputLabel value="Nombres: *" />
+                        <p:inputTextarea id="nombre" rows="2" cols="55" maxlength="100"  
+                                         value="#{damnificado.albDamnificado.damNombres}"  required="true" 
+                                         style="text-transform: uppercase; font-weight:bold; color: black"/>
 
-                        <p:outputLabel value="Cédula:" />
+                        <p:outputLabel value="Apellidos: *" />
+                        <p:inputTextarea id="apellidos" rows="2" cols="55" maxlength="100"  
+                                         value="#{damnificado.albDamnificado.damApellidos}"  required="true" 
+                                         style="text-transform: uppercase; font-weight:bold; color: black"/>
+
+                        <p:outputLabel value="Datos Materno: *" />
+                        <p:inputTextarea id="madre" rows="2" cols="55" maxlength="100"  
+                                         value="#{damnificado.albDamnificado.damDatosMadre}"  required="true" 
+                                         style="text-transform: uppercase; font-weight:bold; color: black"/>
+
+                        <p:outputLabel value="Datos Paterno: *" />
+                        <p:inputTextarea id="padre" rows="2" cols="55" maxlength="100"  
+                                         value="#{damnificado.albDamnificado.damDatosPadre}" required="true" 
+                                         style="text-transform: uppercase; font-weight:bold; color: black"/>               
+
+                        <p:outputLabel value="Cédula: *"/>
                         <p:inputText id="cedula" style="text-transform: uppercase; font-weight:bold; color: black " 
                                      value="#{damnificado.albDamnificado.damCedula}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
+                                     size="10" maxlength="10"/>
 
-                        <p:outputLabel value="Estado Civil:" />
+                        <p:outputLabel value="Estado Civil: *"/>
                         <p:selectOneMenu  id="estadoCivil" value="#{damnificado.idSeleccionEstadoCivil}" style="width:150px">
                             <f:selectItem  itemValue="" itemLabel="Seleccione Estado Civil: " noSelectionOption="false" />
                             <f:selectItems value="#{damnificado.listaEditarEstadoCivil}" />
                         </p:selectOneMenu>
 
-                        <p:outputLabel for="console" value="Sexo:" />
+                        <p:outputLabel for="console" value="Sexo: *"/>
                         <p:selectOneRadio id="console" value="#{damnificado.albDamnificado.damSexo}">
                             <f:selectItem itemLabel="M  " itemValue="1" />
                             <f:selectItem itemLabel="  F" itemValue="0" />
                         </p:selectOneRadio>
 
-                        <p:outputLabel value="Lugar de Nacimiento:" />
-                        <p:inputText id="LugarNacim" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{damnificado.albDamnificado.damLugarNacimiento}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
+                        
+                        <p:outputLabel value="Fecha de Nacimiento: *" />
+                        <p:calendar value="#{damnificado.albDamnificado.damFechaNacimiento}" pattern="MM/dd/yyyy"/>
 
-                        <p:outputLabel value="Direccion de domicilio:" />
-                        <p:inputText id="domicilio" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{damnificado.albDamnificado.damDireccionDomicilio}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
+                        <p:outputLabel value="Lugar de Nacimiento: *" />
+                        <p:inputTextarea id="LugarNacim" rows="3" cols="55" maxlength="100"  
+                                         value="#{damnificado.albDamnificado.damLugarNacimiento}" required="true" 
+                                         style="text-transform: uppercase; font-weight:bold; color: black"/> 
 
-                        <p:outputLabel value="Nivel de Instrucción:" />
+                        <p:outputLabel value="Direccion de domicilio: *" />
+                        <p:inputTextarea id="domicilio"  rows="3" cols="55" maxlength="100"  
+                                         value="#{damnificado.albDamnificado.damDireccionDomicilio}"   required="true" 
+                                         style="text-transform: uppercase; font-weight:bold; color: black"/>
+
+                        <p:outputLabel value="Nivel de Instrucción: *" />
                         <p:selectOneMenu  id="instruccion" value="#{damnificado.idSeleccionNivInstrucc}" style="width:150px">
                             <f:selectItem  itemValue="" itemLabel="Seleccione Nivel de Instrucción: " noSelectionOption="false" />
                             <f:selectItems value="#{damnificado.listaEditarNivInstrucc}" />
                         </p:selectOneMenu>
 
-                        <p:outputLabel value="Ocupación:" />
+                        <p:outputLabel value="Ocupación: *" />
                         <p:selectOneMenu  id="ocupacion" value="#{damnificado.idSeleccionProfesion}" style="width:150px">
                             <f:selectItem  itemValue="" itemLabel="Seleccione Ocupación: " noSelectionOption="false" />
                             <f:selectItems value="#{damnificado.listaEditarProfesion}" />
                         </p:selectOneMenu>
 
-                        <p:outputLabel value="Datos Padre:" />
-                        <p:inputText id="padre" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{damnificado.albDamnificado.damDatosPadre}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
-                        <p:outputLabel value="Datos Madre:" />
-                        <p:inputText id="madre" style="text-transform: uppercase; font-weight:bold; color: black " 
-                                     value="#{damnificado.albDamnificado.damDatosMadre}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
-                        <p:outputLabel value="Celular:" />
+
+                        <p:outputLabel value="Celular: *" />
                         <p:inputText id="celular" style="text-transform: uppercase; font-weight:bold; color: black " 
                                      value="#{damnificado.albDamnificado.damCelular}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />
-                        <p:outputLabel value="E-mail:" />
+                                     size="10" maxlength="10"/>
+
+                        <p:outputLabel value="E-mail: *" />
                         <p:inputText id="mail" style=" font-weight:bold; color: black " 
                                      value="#{damnificado.albDamnificado.damEmail}" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
+                                     size="30" required="true" maxlength="30"
                                      />
 
-                        <p:outputLabel value="Nivel de discapacidad:" />
+                        <p:outputLabel value="Discapacidad: *" />
                         <p:selectOneMenu  id="discapacidad" value="#{damnificado.idSeleccionDiscapacidad}" style="width:150px">
                             <f:selectItem  itemValue="" itemLabel="Seleccione Nivel de discapacidad: " noSelectionOption="false" />
                             <f:selectItems value="#{damnificado.listaEditarDiscapacida}" />
                         </p:selectOneMenu>
 
-                        <p:outputLabel for="embarazo" value="Embarazo:" />
+                        <p:outputLabel for="embarazo" value="Embarazo: *" />
                         <p:selectOneRadio id="embarazo" value="#{damnificado.albDamnificado.damEmbarazo}">
                             <f:selectItem itemLabel="SI" itemValue="1" />
                             <f:selectItem itemLabel="NO" itemValue="0" />
                         </p:selectOneRadio>
 
-                        <p:outputLabel value="Núcleo familiar:" />
+                        <p:outputLabel value="Núcleo familiar: *" />
                         <p:selectOneMenu  id="familia" value="#{damnificado.idSeleccionNumFlia}" style="width:150px">
                             <f:selectItem  itemValue="" itemLabel="Seleccione Núcleo familiar: " noSelectionOption="false" />
                             <f:selectItems value="#{damnificado.listaEditarNumFlia}" />
                         </p:selectOneMenu>
 
-                        <p:outputLabel value="Observaciones:" />
-                        <p:inputText id="observaciones" value="#{damnificado.albDamnificado.damObservaciones}" 
-                                     style="text-transform: uppercase; font-weight:bold; color: black" 
-                                     size="#{PForm.anchoCajaTextoNombre}" maxlength="#{PForm.longitudMaximaCaracteresNombres}"
-                                     />  
+                        <p:outputLabel value="Observaciones: *" />
+                        <p:inputTextarea id="observaciones" rows="3" cols="55" maxlength="100"  
+                                         value="#{damnificado.albDamnificado.damObservaciones}" required="true" 
+                                         style="text-transform: uppercase; font-weight:bold; color: black"/>
 
                         <h:panelGrid columns="2" cellpadding="1">
                             <p:commandButton value="GUARDAR"  update="msgs,:formh:,:jC" icon="fa fa-save"
@@ -355,13 +362,34 @@ and open the template in the editor.
             <h:form id="asignarAlbergue" >     
                 <p:dialog header="ASIGNACIÓN ALBERGUE" widgetVar="asiAlb" id="dlgAsigAlb" 
                           closable="false">
-                    <h:panelGrid columns="2" cellpadding="1">
+                    <h:panelGrid columns="2" cellpadding="3">
                         <h:outputLabel value="Nombres :" ></h:outputLabel>
                         <h:outputText id="txt_nombre"  value="#{damnificado.segDamnificadoObjects1.damNombres}" />
                         <h:outputLabel value="Apellidos :" ></h:outputLabel>
                         <h:outputText id="txt_apellidos"  value="#{damnificado.segDamnificadoObjects1.damApellidos}" />
 
-                        <h:outputLabel value="Albergue: " ></h:outputLabel>
+                          <p:outputLabel value="Provincia: *" />
+                          <p:selectOneMenu  id="provincia" value="#{damnificado.idSeleccionCO}" style="width:150px">
+                            <p:ajax update="canton" />  
+                            <f:selectItem  itemValue="" itemLabel="Seleccione Provincia: " noSelectionOption="false" />
+                            <f:selectItems value="#{damnificado.listaProvincia1}" />
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="Cantón: *" />
+                        <p:selectOneMenu  id="canton" value="#{damnificado.idSeleccionCanton}"  style="width:150px">
+                            <p:ajax update="parroquia"  /> 
+                            <f:selectItem  itemValue="" itemLabel="Seleccione Cantón: " noSelectionOption="false" />
+                            <f:selectItems value="#{damnificado.listaCanton}" />                            
+                        </p:selectOneMenu>
+
+                        <h:outputLabel value="Parroquia: *" />
+                        <p:selectOneMenu  id="parroquia" value="#{damnificado.idSeleccionParroquia}" style="width:150px">
+                            <p:ajax update="txtAlbergue_asig"  />
+                            <f:selectItem  itemValue="" itemLabel="Seleccione Parroquia: " noSelectionOption="false" />
+                            <f:selectItems value="#{damnificado.listaParroquia}" />                            
+                        </p:selectOneMenu>
+                        
+                        <h:outputLabel value="Albergue: *" ></h:outputLabel>
                         <p:selectOneMenu  id="txtAlbergue_asig"  value="#{damnificado.idSeleccionAlbergue}" style="width:150px" >
                             <f:selectItem  itemValue="" itemLabel="Seleccione Albergue" noSelectionOption="false"  />
                             <f:selectItems value="#{damnificado.listaAsignarAlbergue}" /> 

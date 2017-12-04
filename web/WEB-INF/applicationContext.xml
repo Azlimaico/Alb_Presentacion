@@ -60,6 +60,13 @@ http://www.springframework.org/schema/tx/spring-tx-4.1.xsd">
         <property name="sessionFactory" ref="SessionFactory" />
     </bean>
     
+    <bean id="AlbEmpresaServicioImpl" class="com.negocio.servicio.general.sistema.AlbEmpresaServicioImpl">
+        <property name="albEmpresaDao" ref="AlbEmpresaDao" />
+    </bean>
+    <bean id="AlbEmpresaDao" class="com.negocio.dao.general.sistema.AlbEmpresaDaoImpl">
+        <property name="sessionFactory" ref="SessionFactory" />
+    </bean>
+    
     <bean id="AlbFamiliaServicioImpl" class="com.negocio.servicio.general.sistema.AlbFamiliaServicioImpl">
         <property name="albFamiliaDao" ref="AlbFamiliaDao" />
     </bean>
@@ -130,6 +137,13 @@ http://www.springframework.org/schema/tx/spring-tx-4.1.xsd">
         <property name="sessionFactory" ref="SessionFactory" />
     </bean>
     
+    <bean id="AlbTipoAlbergueServicioImpl" class="com.negocio.servicio.general.sistema.AlbTipoAlbergueServicioImpl">
+        <property name="albTipoAlbergueDao" ref="AlbTipoAlbergueDao" />
+    </bean>
+    <bean id="AlbTipoAlbergueDao" class="com.negocio.dao.general.sistema.AlbTipoAlbergueDaoImpl">
+        <property name="sessionFactory" ref="SessionFactory" />
+    </bean>
+
     <bean id="AlbCarpaServicioImpl" class="com.negocio.servicio.general.sistema.AlbCarpaServicioImpl">
         <property name="albCarpaDao" ref="AlbCarpaDao" />
     </bean>
@@ -190,6 +204,7 @@ http://www.springframework.org/schema/tx/spring-tx-4.1.xsd">
                 <value>com/persistencia/albergue/servicio/AlbServicio.hbm.xml</value>
                 <value>com/persistencia/albergue/servicio/AlbSituacion.hbm.xml</value>
                 <value>com/persistencia/general/sistema/AlbAvanceImplementacion.hbm.xml</value>
+                <value>com/persistencia/general/sistema/AlbTipoAlbergue.hbm.xml</value>
                 <value>com/persistencia/general/sistema/AlbCanton.hbm.xml</value>
                  <value>com/persistencia/general/sistema/AlbParroquia.hbm.xml</value>
                 <value>com/persistencia/general/sistema/AlbCarpa.hbm.xml</value>

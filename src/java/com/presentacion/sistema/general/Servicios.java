@@ -10,6 +10,7 @@ import com.negocio.servicio.albergue.ServicioSituacionAlbergueServicio;
 import com.negocio.servicio.albergue.servicio.basico.AlbServicioServicio;
 import com.negocio.servicio.albergue.servicio.basico.AlbSituacionServicio;
 import com.negocio.servicio.general.sistema.AlbCarpaServicio;
+import com.negocio.servicio.general.sistema.AlbEmpresaServicio;
 import com.negocio.servicio.general.sistema.AlbVehiculoServicio;
 import com.persistencia.albergue.AlbAlbergue;
 import com.persistencia.albergue.ServicioSituacionAlbergue;
@@ -103,6 +104,10 @@ public class Servicios implements Serializable {
     private AlbAlbergue albAlbergue = new AlbAlbergue();
     private List<AlbAlbergue> listaTempAlbAlbergue = new ArrayList<>();
     private Long IdGeneral;
+    private Long IdSeleccionEmpresa;
+     List<SelectItem> genListaSelectedEmpresa = new ArrayList<SelectItem>();
+     @ManagedProperty(value = "#{AlbEmpresaServicioImpl}")
+    AlbEmpresaServicio albEmpresaServicio;
     //EDITAR SERVICIO AGUA
     private AlbSituacion selectedServicioEditar = new AlbSituacion();
     private AlbSituacion segSituacionObjects = new AlbSituacion();
@@ -201,7 +206,7 @@ public class Servicios implements Serializable {
     AlbVehiculoServicio albVehiculoServicio;
     private AlbVehiculo albVehiculo = new AlbVehiculo();
     private List<AlbVehiculo> listaTempAlbVehiculo = new ArrayList<>();
-    
+
     //CARPAS
     private List<AlbCarpa> listaCarpa = new ArrayList<>();
     private List<AlbCarpa> listaCarpaAux = new ArrayList<>();
@@ -209,14 +214,13 @@ public class Servicios implements Serializable {
     AlbCarpaServicio albCarpaServicio;
     private AlbCarpa albCarpa = new AlbCarpa();
     private List<AlbCarpa> listaTempAlbCarpa = new ArrayList<>();
-    
+
     //EDITAR SERVICIO CARPAS
     private AlbCarpa selectedCarpaEditar = new AlbCarpa();
     private AlbCarpa segCarpaObjects = new AlbCarpa();
     private Long IdEditarCarpa;
     //ELIMINAR SERVICIO VEHICULOS
     private AlbCarpa selectedServicioCarpaEliminar = new AlbCarpa();
-
 
     @PostConstruct
     public void init() {
@@ -283,7 +287,7 @@ public class Servicios implements Serializable {
         return genListaSelectedTipoCarpa;
 
     }
-    
+
     public AlbServicioServicio getAlbServicioServicio() {
         return albServicioServicio;
     }
@@ -404,8 +408,6 @@ public class Servicios implements Serializable {
     public void setIdSeleccionTipoCarpa(Long IdSeleccionTipoCarpa) {
         this.IdSeleccionTipoCarpa = IdSeleccionTipoCarpa;
     }
-    
-    
 
     public AlbAlbergue getSelectedAlbergueAsignar() {
         return selectedAlbergueAsignar;
@@ -446,22 +448,22 @@ public class Servicios implements Serializable {
                     if (obj.getServicioSituacionAlbergue().getAlbServicio().getSerNombre().equals("ELECTRICIDAD")) {
                         listaElectricidad.add(obj);
                     }
-                    if (obj.getServicioSituacionAlbergue().getAlbServicio().getSerNombre().equals("TELECOMUNICACIONES Y SERVICIO A INTERNET")) {
+                    if (obj.getServicioSituacionAlbergue().getAlbServicio().getSerNombre().equals("TELECOMUNICACIONES")) {
                         listaInternet.add(obj);
                     }
-                    if (obj.getServicioSituacionAlbergue().getAlbServicio().getSerNombre().equals("SANEAMIENTO AMBIENTAL, BATERIAS SANITARIAS, DUCHAS, LAVANDERIAS")) {
+                    if (obj.getServicioSituacionAlbergue().getAlbServicio().getSerNombre().equals("SANEAMIENTO AMBIENTAL")) {
                         listaBateriasSanitarias.add(obj);
                     }
                     if (obj.getServicioSituacionAlbergue().getAlbServicio().getSerNombre().equals("SERVICIOS DE SALUD")) {
                         listaServicioSalud.add(obj);
                     }
-                    if (obj.getServicioSituacionAlbergue().getAlbServicio().getSerNombre().equals("MANEJO DE DESECHOS SOLIDOS")) {
+                    if (obj.getServicioSituacionAlbergue().getAlbServicio().getSerNombre().equals("DESECHOS SOLIDOS")) {
                         listaDesechosSolidos.add(obj);
                     }
                     if (obj.getServicioSituacionAlbergue().getAlbServicio().getSerNombre().equals("EDUCACION")) {
                         listaEducacion.add(obj);
                     }
-                    if (obj.getServicioSituacionAlbergue().getAlbServicio().getSerNombre().equals("CONSUMO DE COMBUSTIBLES FOSILES")) {
+                    if (obj.getServicioSituacionAlbergue().getAlbServicio().getSerNombre().equals("CONSUMO DE COMBUSTIBLES")) {
                         listaCombustibleFosil.add(obj);
                     }
                     if (obj.getServicioSituacionAlbergue().getAlbServicio().getSerNombre().equals("PROCESAMIENTO DE ALIMENTOS")) {
@@ -473,7 +475,7 @@ public class Servicios implements Serializable {
                     if (obj.getServicioSituacionAlbergue().getAlbServicio().getSerNombre().equals("DEPORTE Y RECREACION")) {
                         listaDeporte.add(obj);
                     }
-                    if (obj.getServicioSituacionAlbergue().getAlbServicio().getSerNombre().equals("DESCRIPCION NORMAS")) {
+                    if (obj.getServicioSituacionAlbergue().getAlbServicio().getSerNombre().equals("NORMAS")) {
                         listaNormas.add(obj);
                     }
                 }
@@ -484,7 +486,7 @@ public class Servicios implements Serializable {
                     listaVehiculoAux.add(objV);
                 }
             }
-            for (AlbCarpa objC: listaCarpa) {
+            for (AlbCarpa objC : listaCarpa) {
                 carpa = objC.getAlbAlbergue().getAlbId();
                 if (carpa == IdGeneral) {
                     listaCarpaAux.add(objC);
@@ -504,8 +506,8 @@ public class Servicios implements Serializable {
     }
 
     public void guardarServicioAgua() {
-        String nombre = albEmpresa.getEmpNombre();
-        if ("".equals(nombre) || "".equals(albSituacion.getSitMetProvision()) || "".equals(albSituacion.getSitAlmacenamiento()) || "".equals(albSituacion.getSitAguaBebible())) {
+        
+        if ("".equals(albSituacion.getSitMetProvision()) || "".equals(albSituacion.getSitAlmacenamiento()) || "".equals(albSituacion.getSitAguaBebible())) {
             mensajeEAS.errorLlenarDatos();
         } else {
             try {
@@ -513,9 +515,10 @@ public class Servicios implements Serializable {
                 objTipoEmpresa.setTieId(IdSeleccionAgua);
                 albEmpresa.setAlbTipoEmpresa(objTipoEmpresa);
                 albEmpresa.setEmpEstado(1);
+                albEmpresa.setEmpId(IdSeleccionEmpresa);
                 listaTempAlbEmpresa.clear();
                 listaTempAlbEmpresa.add(albEmpresa);
-                getAlbServicioServicio().guardarEmpresa(listaTempAlbEmpresa);
+              //getAlbServicioServicio().guardarEmpresa(listaTempAlbEmpresa);
                 albServicio.setAlbEmpresa(albEmpresa);
                 albServicio.setSerEstado(1);
                 for (AlbServicio obj : listaServicio) {
@@ -787,6 +790,7 @@ public class Servicios implements Serializable {
                 objTipoEmpresa.setTieId(IdSeleccionAgua);
                 albEmpresa.setAlbTipoEmpresa(objTipoEmpresa);
                 albEmpresa.setEmpEstado(1);
+                albEmpresa.setEmpId(IdSeleccionEmpresa);
                 listaTempAlbEmpresa.clear();
                 listaTempAlbEmpresa.add(albEmpresa);
                 getAlbServicioServicio().guardarEmpresa(listaTempAlbEmpresa);
@@ -969,13 +973,14 @@ public class Servicios implements Serializable {
                 objTipoEmpresa.setTieId(IdSeleccionAgua);
                 albEmpresa.setAlbTipoEmpresa(objTipoEmpresa);
                 albEmpresa.setEmpEstado(1);
+                albEmpresa.setEmpId(IdSeleccionEmpresa);
                 listaTempAlbEmpresa.clear();
                 listaTempAlbEmpresa.add(albEmpresa);
                 getAlbServicioServicio().guardarEmpresa(listaTempAlbEmpresa);
                 albServicio.setAlbEmpresa(albEmpresa);
                 albServicio.setSerEstado(1);
                 for (AlbServicio obj : listaServicio) {
-                    if (obj.getSerNombre().equals("TELECOMUNICACIONES Y SERVICIO A INTERNET")) {
+                    if (obj.getSerNombre().equals("TELECOMUNICACIONES")) {
                         albServicio.setSerNombre(obj.getSerNombre());
                         listaTempAlbServicio.clear();
                         listaTempAlbServicio.add(albServicio);
@@ -1159,13 +1164,14 @@ public class Servicios implements Serializable {
                 objTipoEmpresa.setTieId(IdSeleccionAgua);
                 albEmpresa.setAlbTipoEmpresa(objTipoEmpresa);
                 albEmpresa.setEmpEstado(1);
+                albEmpresa.setEmpId(IdSeleccionEmpresa);
                 listaTempAlbEmpresa.clear();
                 listaTempAlbEmpresa.add(albEmpresa);
                 getAlbServicioServicio().guardarEmpresa(listaTempAlbEmpresa);
                 albServicio.setAlbEmpresa(albEmpresa);
                 albServicio.setSerEstado(1);
                 for (AlbServicio obj : listaServicio) {
-                    if (obj.getSerNombre().equals("SANEAMIENTO AMBIENTAL, BATERIAS SANITARIAS, DUCHAS, LAVANDERIAS")) {
+                    if (obj.getSerNombre().equals("SANEAMIENTO AMBIENTAL")) {
                         albServicio.setSerNombre(obj.getSerNombre());
                         listaTempAlbServicio.clear();
                         listaTempAlbServicio.add(albServicio);
@@ -1405,6 +1411,7 @@ public class Servicios implements Serializable {
                 objTipoEmpresa.setTieId(IdSeleccionAgua);
                 albEmpresa.setAlbTipoEmpresa(objTipoEmpresa);
                 albEmpresa.setEmpEstado(1);
+                albEmpresa.setEmpId(IdSeleccionEmpresa);
                 listaTempAlbEmpresa.clear();
                 listaTempAlbEmpresa.add(albEmpresa);
                 getAlbServicioServicio().guardarEmpresa(listaTempAlbEmpresa);
@@ -1587,13 +1594,14 @@ public class Servicios implements Serializable {
                 objTipoEmpresa.setTieId(IdSeleccionAgua);
                 albEmpresa.setAlbTipoEmpresa(objTipoEmpresa);
                 albEmpresa.setEmpEstado(1);
+                albEmpresa.setEmpId(IdSeleccionEmpresa);
                 listaTempAlbEmpresa.clear();
                 listaTempAlbEmpresa.add(albEmpresa);
                 getAlbServicioServicio().guardarEmpresa(listaTempAlbEmpresa);
                 albServicio.setAlbEmpresa(albEmpresa);
                 albServicio.setSerEstado(1);
                 for (AlbServicio obj : listaServicio) {
-                    if (obj.getSerNombre().equals("MANEJO DE DESECHOS SOLIDOS")) {
+                    if (obj.getSerNombre().equals("DESECHOS SOLIDOS")) {
                         albServicio.setSerNombre(obj.getSerNombre());
                         listaTempAlbServicio.clear();
                         listaTempAlbServicio.add(albServicio);
@@ -1769,6 +1777,7 @@ public class Servicios implements Serializable {
                 objTipoEmpresa.setTieId(IdSeleccionAgua);
                 albEmpresa.setAlbTipoEmpresa(objTipoEmpresa);
                 albEmpresa.setEmpEstado(1);
+                albEmpresa.setEmpId(IdSeleccionEmpresa);
                 listaTempAlbEmpresa.clear();
                 listaTempAlbEmpresa.add(albEmpresa);
                 getAlbServicioServicio().guardarEmpresa(listaTempAlbEmpresa);
@@ -1955,13 +1964,14 @@ public class Servicios implements Serializable {
                 objTipoEmpresa.setTieId(IdSeleccionAgua);
                 albEmpresa.setAlbTipoEmpresa(objTipoEmpresa);
                 albEmpresa.setEmpEstado(1);
+                albEmpresa.setEmpId(IdSeleccionEmpresa);
                 listaTempAlbEmpresa.clear();
                 listaTempAlbEmpresa.add(albEmpresa);
                 getAlbServicioServicio().guardarEmpresa(listaTempAlbEmpresa);
                 albServicio.setAlbEmpresa(albEmpresa);
                 albServicio.setSerEstado(1);
                 for (AlbServicio obj : listaServicio) {
-                    if (obj.getSerNombre().equals("CONSUMO DE COMBUSTIBLES FOSILES")) {
+                    if (obj.getSerNombre().equals("CONSUMO DE COMBUSTIBLES")) {
                         albServicio.setSerNombre(obj.getSerNombre());
                         listaTempAlbServicio.clear();
                         listaTempAlbServicio.add(albServicio);
@@ -2136,6 +2146,7 @@ public class Servicios implements Serializable {
                 objTipoEmpresa.setTieId(IdSeleccionAgua);
                 albEmpresa.setAlbTipoEmpresa(objTipoEmpresa);
                 albEmpresa.setEmpEstado(1);
+                albEmpresa.setEmpId(IdSeleccionEmpresa);
                 listaTempAlbEmpresa.clear();
                 listaTempAlbEmpresa.add(albEmpresa);
                 getAlbServicioServicio().guardarEmpresa(listaTempAlbEmpresa);
@@ -2321,6 +2332,7 @@ public class Servicios implements Serializable {
                 objTipoEmpresa.setTieId(IdSeleccionAgua);
                 albEmpresa.setAlbTipoEmpresa(objTipoEmpresa);
                 albEmpresa.setEmpEstado(1);
+                albEmpresa.setEmpId(IdSeleccionEmpresa);
                 listaTempAlbEmpresa.clear();
                 listaTempAlbEmpresa.add(albEmpresa);
                 getAlbServicioServicio().guardarEmpresa(listaTempAlbEmpresa);
@@ -2502,6 +2514,7 @@ public class Servicios implements Serializable {
                 objTipoEmpresa.setTieId(IdSeleccionAgua);
                 albEmpresa.setAlbTipoEmpresa(objTipoEmpresa);
                 albEmpresa.setEmpEstado(1);
+                albEmpresa.setEmpId(IdSeleccionEmpresa);
                 listaTempAlbEmpresa.clear();
                 listaTempAlbEmpresa.add(albEmpresa);
                 getAlbServicioServicio().guardarEmpresa(listaTempAlbEmpresa);
@@ -2679,13 +2692,14 @@ public class Servicios implements Serializable {
                 objTipoEmpresa.setTieId(IdSeleccionAgua);
                 albEmpresa.setAlbTipoEmpresa(objTipoEmpresa);
                 albEmpresa.setEmpEstado(1);
+                albEmpresa.setEmpId(IdSeleccionEmpresa);
                 listaTempAlbEmpresa.clear();
                 listaTempAlbEmpresa.add(albEmpresa);
                 getAlbServicioServicio().guardarEmpresa(listaTempAlbEmpresa);
                 albServicio.setAlbEmpresa(albEmpresa);
                 albServicio.setSerEstado(1);
                 for (AlbServicio obj : listaServicio) {
-                    if (obj.getSerNombre().equals("DESCRIPCION NORMAS")) {
+                    if (obj.getSerNombre().equals("NORMAS")) {
                         albServicio.setSerNombre(obj.getSerNombre());
                         listaTempAlbServicio.clear();
                         listaTempAlbServicio.add(albServicio);
@@ -2946,8 +2960,8 @@ public class Servicios implements Serializable {
         try {
             AlbTipoVehiculo objTipoVehiculo = new AlbTipoVehiculo();
             AlbAlbergue objAlbergue = new AlbAlbergue();
-            AlbVehiculo obj= new AlbVehiculo();
-            if (IdSeleccionTipoVehi== null) {
+            AlbVehiculo obj = new AlbVehiculo();
+            if (IdSeleccionTipoVehi == null) {
                 objTipoVehiculo.setTivId(segVehiObjects.getAlbTipoVehiculo().getTivId());
             } else {
                 objTipoVehiculo.setTivId(IdSeleccionTipoVehi);
@@ -2960,7 +2974,7 @@ public class Servicios implements Serializable {
             obj.setVehConductores(segVehiObjects.getVehConductores());
             obj.setVehEstado(1);
 
-            if ("".equals(albVehiculo.getVehConductores()) ) {
+            if ("".equals(albVehiculo.getVehConductores())) {
                 mensajeEAS.errorLlenarDatos();
             } else {
                 listaTempAlbVehiculo.clear();
@@ -2989,7 +3003,7 @@ public class Servicios implements Serializable {
         this.selectedServicioVehiEliminar = selectedServicioVehiEliminar;
         eliminarVehiSistema(selectedServicioVehiEliminar);
     }
-    
+
     public void eliminarVehiSistema(AlbVehiculo obj) {
         try {
             obj.setVehEstado(ParametrosObjetos.INACTIVO);
@@ -3002,7 +3016,7 @@ public class Servicios implements Serializable {
             mensajeEAS.error();
         }
     }
-    
+
     public void cargarTableVehi() {
         albVehiculo = new AlbVehiculo();
         listaVehiculo.clear();
@@ -3032,9 +3046,9 @@ public class Servicios implements Serializable {
     public void setAlbCarpa(AlbCarpa albCarpa) {
         this.albCarpa = albCarpa;
     }
-    
+
     public void guardarServicioCarpa() {
-        if ((albCarpa.getCarTotal()==null) || (albCarpa.getCarDisponibles()==null)) {
+        if ((albCarpa.getCarTotal() == null) || (albCarpa.getCarDisponibles() == null)) {
             mensajeEAS.errorLlenarDatos();
         } else {
             try {
@@ -3071,7 +3085,7 @@ public class Servicios implements Serializable {
         this.selectedCarpaEditar = selectedCarpaEditar;
         editarCarpaSistema(selectedCarpaEditar);
     }
-    
+
     public void editarCarpaSistema(AlbCarpa obj) {
         try {
             segCarpaObjects = new AlbCarpa();
@@ -3101,14 +3115,14 @@ public class Servicios implements Serializable {
     public void setSegCarpaObjects(AlbCarpa segCarpaObjects) {
         this.segCarpaObjects = segCarpaObjects;
     }
-    
+
     public void editarServicioCarpa() {
 
         try {
-            AlbTipoCarpa objTipoCarpa= new AlbTipoCarpa();
+            AlbTipoCarpa objTipoCarpa = new AlbTipoCarpa();
             AlbAlbergue objAlbergue = new AlbAlbergue();
-            AlbCarpa obj= new AlbCarpa();
-            if (IdSeleccionTipoCarpa== null) {
+            AlbCarpa obj = new AlbCarpa();
+            if (IdSeleccionTipoCarpa == null) {
                 objTipoCarpa.setTicId(segCarpaObjects.getAlbTipoCarpa().getTicId());
             } else {
                 objTipoCarpa.setTicId(IdSeleccionTipoCarpa);
@@ -3120,9 +3134,9 @@ public class Servicios implements Serializable {
             obj.setCarTotal(segCarpaObjects.getCarTotal());
             obj.setCarEstado(1);
 
-            if ((segCarpaObjects.getCarTotal()==null) || (segCarpaObjects.getCarDisponibles()==null)) {
-            mensajeEAS.errorLlenarDatos();
-        } else {
+            if ((segCarpaObjects.getCarTotal() == null) || (segCarpaObjects.getCarDisponibles() == null)) {
+                mensajeEAS.errorLlenarDatos();
+            } else {
                 listaTempAlbCarpa.clear();
                 obj.setAlbAlbergue(objAlbergue);
                 listaTempAlbCarpa.add(obj);
@@ -3149,8 +3163,8 @@ public class Servicios implements Serializable {
         this.selectedServicioCarpaEliminar = selectedServicioCarpaEliminar;
         eliminarCarpaSistema(selectedServicioCarpaEliminar);
     }
-    
-     public void eliminarCarpaSistema(AlbCarpa obj) {
+
+    public void eliminarCarpaSistema(AlbCarpa obj) {
         try {
             obj.setCarEstado(ParametrosObjetos.INACTIVO);
             getAlbCarpaServicio().guardarCarpaEl(obj);
@@ -3162,12 +3176,40 @@ public class Servicios implements Serializable {
             mensajeEAS.error();
         }
     }
-    
+
     public void cargarTableCarpa() {
         albCarpa = new AlbCarpa();
         listaCarpa.clear();
         this.listaCarpa.addAll(getAlbCarpaServicio().listarCarpa());
     }
 
-}
+    public Long getIdSeleccionEmpresa() {
+        return IdSeleccionEmpresa;
+    }
 
+    public void setIdSeleccionEmpresa(Long IdSeleccionEmpresa) {
+        this.IdSeleccionEmpresa = IdSeleccionEmpresa;
+    }
+    
+    public List<SelectItem> getListaEmpresa() {
+        this.genListaSelectedEmpresa = new ArrayList<SelectItem>();
+        if (IdSeleccionAgua!= null) {
+            List<AlbEmpresa> lista = getAlbEmpresaServicio().listarEmpresaCmbx(IdSeleccionAgua);
+            for (AlbEmpresa obj : lista) {
+                SelectItem selectItem = new SelectItem(obj.getEmpId(), obj.getEmpNombre());
+                this.genListaSelectedEmpresa.add(selectItem);
+            }
+        }
+        return genListaSelectedEmpresa;
+    }
+
+    public AlbEmpresaServicio getAlbEmpresaServicio() {
+        return albEmpresaServicio;
+    }
+
+    public void setAlbEmpresaServicio(AlbEmpresaServicio albEmpresaServicio) {
+        this.albEmpresaServicio = albEmpresaServicio;
+    }
+
+    
+}
